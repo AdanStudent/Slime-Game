@@ -24,12 +24,12 @@ namespace Assets.Scripts.Player.Commands
         public override void Execute()
         {
             rgbd.velocity += force;
-            Debug.Log(this.Log());
         }
 
         public override void UnExecute()
         {
             rgbd.velocity += -force;
+            Debug.Log(this.Log());
 
         }
 

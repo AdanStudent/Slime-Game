@@ -16,10 +16,24 @@ public class InputHandler : MonoBehaviour
         player.freezeRotation = true;
     }
 
+    bool undo;
     // Update is called once per frame
     void Update()
     {
         PlayerInput();
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            undo = true;
+        }
+
+        if (undo)
+        {
+            for (int i = 0; i < moves.Count-1; i++)
+            {
+                moves.Pop().UnExecute();
+            }
+        }
     }
 
     Move_Command movementCommand;

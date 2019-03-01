@@ -24,7 +24,7 @@ namespace Assets.Scripts.Player.Commands
         public override void Execute()
         {
             rgbd.AddForce(force, ForceMode.VelocityChange);
-
+            Debug.Log(this.Log());
         }
 
         public override void UnExecute()

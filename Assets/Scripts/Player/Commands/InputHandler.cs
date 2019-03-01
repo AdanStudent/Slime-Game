@@ -13,6 +13,7 @@ public class InputHandler : MonoBehaviour
     void Start()
     {
         moves = new Stack<Move_Command>();
+        player.freezeRotation = true;
     }
 
     // Update is called once per frame
@@ -24,26 +25,29 @@ public class InputHandler : MonoBehaviour
     Move_Command movementCommand;
     private void PlayerInput()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        float inputX = Input.GetAxis("Horizontal");
+        float inputY = Input.GetAxis("Vertical");
+
+        if (inputX > 0)
         {
             movementCommand = new Move_Command(new Vector3(1, 0), player, MoveDirection.MovePosX);
             movementCommand.Execute();
             moves.Push(movementCommand);
             
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (inputX < 0)
         {
             movementCommand = new Move_Command(new Vector3(-1, 0), player, MoveDirection.MoveNegX);
             movementCommand.Execute();
             moves.Push(movementCommand);
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (inputY > 0)
         {
             movementCommand = new Move_Command(new Vector3(0, 0, 1), player, MoveDirection.MovePosZ);
             movementCommand.Execute();
             moves.Push(movementCommand);
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (inputY < 0)
         {
             movementCommand = new Move_Command(new Vector3(0, 0, -1), player, MoveDirection.MoveNegZ);
             movementCommand.Execute();

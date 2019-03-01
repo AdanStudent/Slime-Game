@@ -23,13 +23,14 @@ namespace Assets.Scripts.Player.Commands
 
         public override void Execute()
         {
-            rgbd.AddForce(force, ForceMode.VelocityChange);
+            rgbd.velocity += force;
             Debug.Log(this.Log());
         }
 
         public override void UnExecute()
         {
-            rgbd.AddForce(-force, ForceMode.VelocityChange);
+            rgbd.velocity += -force;
+
         }
 
         public override string Log()

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Player.Commands;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,28 @@ public class InputHandler : MonoBehaviour
     void Update()
     {
         PlayerInput();
+        MouseInput();
+       // CallReplay();
+    }
 
+    private float turnSmoothVel;
+    private float turnSmoothTime = 0.1f;
+    private void MouseInput()
+    {
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 inputDir = input.normalized;
+
+        if (inputDir != Vector2.zero)
+        {
+            Debug.Log("This will need to be refactored into Command Pattern");
+            float targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
+            player.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(player.transform.eulerAngles.y, targetRotation, ref turnSmoothVel, turnSmoothTime);
+
+        }
+    }
+
+    private void CallReplay()
+    {
         if (Input.GetKeyDown(KeyCode.K))
         {
             undo = true;
@@ -29,42 +51,41 @@ public class InputHandler : MonoBehaviour
 
         if (undo)
         {
-            for (int i = 0; i < moves.Count-1; i++)
+            for (int i = 0; i < moves.Count - 1; i++)
             {
                 moves.Pop().UnExecute();
             }
         }
     }
 
+    float inputX;
+    float inputY;
     Move_Command movementCommand;
+
     private void PlayerInput()
     {
-        float inputX = Input.GetAxis("Horizontal");
-        float inputY = Input.GetAxis("Vertical");
+        inputX = Input.GetAxis("Horizontal");
+        inputY = Input.GetAxis("Vertical");
 
         if (inputX > 0)
         {
             movementCommand = new Move_Command(new Vector3(1, 0), player, MoveDirection.MovePosX);
-            movementCommand.Execute();
             moves.Push(movementCommand);
             
         }
         if (inputX < 0)
         {
             movementCommand = new Move_Command(new Vector3(-1, 0), player, MoveDirection.MoveNegX);
-            movementCommand.Execute();
             moves.Push(movementCommand);
         }
         if (inputY > 0)
         {
             movementCommand = new Move_Command(new Vector3(0, 0, 1), player, MoveDirection.MovePosZ);
-            movementCommand.Execute();
             moves.Push(movementCommand);
         }
         if (inputY < 0)
         {
             movementCommand = new Move_Command(new Vector3(0, 0, -1), player, MoveDirection.MoveNegZ);
-            movementCommand.Execute();
             moves.Push(movementCommand);
         }
     }

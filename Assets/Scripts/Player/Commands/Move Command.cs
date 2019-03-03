@@ -19,6 +19,8 @@ namespace Assets.Scripts.Player.Commands
             force = f;
             rgbd = rb;
             direction = md;
+
+            this.Execute();
         }
 
         public override void Execute()

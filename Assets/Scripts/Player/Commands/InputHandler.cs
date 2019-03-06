@@ -9,6 +9,7 @@ public class InputHandler : MonoBehaviour
     //keeping reference of all the Move Commands that the player is calling 
     Stack<Move_Command> moves;
     public Rigidbody player;
+    public float Speed = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,8 @@ public class InputHandler : MonoBehaviour
             player.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(player.transform.eulerAngles.y, targetRotation, ref turnSmoothVel, turnSmoothTime);
 
         }
+        float targetSpeed = inputDir.magnitude * Speed;
+        player.transform.Translate(player.transform.forward * targetSpeed * Time.deltaTime, Space.World);
     }
 
     private void CallReplay()
@@ -64,29 +67,29 @@ public class InputHandler : MonoBehaviour
 
     private void PlayerInput()
     {
-        inputX = Input.GetAxis("Horizontal");
-        inputY = Input.GetAxis("Vertical");
+        //inputX = Input.GetAxis("Horizontal");
+        //inputY = Input.GetAxis("Vertical");
 
-        if (inputX > 0)
-        {
-            movementCommand = new Move_Command(new Vector3(1, 0), player, MoveDirection.MovePosX);
-            moves.Push(movementCommand);
+        //if (inputX > 0)
+        //{
+        //    movementCommand = new Move_Command(new Vector3(1, 0), player, MoveDirection.MovePosX);
+        //    moves.Push(movementCommand);
             
-        }
-        if (inputX < 0)
-        {
-            movementCommand = new Move_Command(new Vector3(-1, 0), player, MoveDirection.MoveNegX);
-            moves.Push(movementCommand);
-        }
-        if (inputY > 0)
-        {
-            movementCommand = new Move_Command(new Vector3(0, 0, 1), player, MoveDirection.MovePosZ);
-            moves.Push(movementCommand);
-        }
-        if (inputY < 0)
-        {
-            movementCommand = new Move_Command(new Vector3(0, 0, -1), player, MoveDirection.MoveNegZ);
-            moves.Push(movementCommand);
-        }
+        //}
+        //if (inputX < 0)
+        //{
+        //    movementCommand = new Move_Command(new Vector3(-1, 0), player, MoveDirection.MoveNegX);
+        //    moves.Push(movementCommand);
+        //}
+        //if (inputY > 0)
+        //{
+        //    movementCommand = new Move_Command(new Vector3(0, 0, 1), player, MoveDirection.MovePosZ);
+        //    moves.Push(movementCommand);
+        //}
+        //if (inputY < 0)
+        //{
+        //    movementCommand = new Move_Command(new Vector3(0, 0, -1), player, MoveDirection.MoveNegZ);
+        //    moves.Push(movementCommand);
+        //}
     }
 }

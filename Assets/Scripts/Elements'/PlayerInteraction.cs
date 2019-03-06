@@ -21,8 +21,9 @@ public class PlayerInteraction : MonoBehaviour
     //Set the new element type for player if new element is picked up
     public void SetType(ElementEnum.Elements element)
     {
+        Debug.Log(this+" Current Type: " + elementType.ToString());
         elementType = element;
-        Debug.Log("Type: " + elementType.ToString());
+        Debug.Log(this+" New Type: " + elementType.ToString());
     }
 
     public void SetActiveAgain()

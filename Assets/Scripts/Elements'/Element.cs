@@ -51,7 +51,7 @@ public class Element : MonoBehaviour
         if(other.tag=="Player")
         {
             other.GetComponent<PlayerInteraction>().SetType(elementType);
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 }

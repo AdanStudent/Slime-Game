@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public enum MoveDirection { MovePosX, MoveNegX, MovePosY, MoveNegY, MovePosZ, MoveNegZ }
+//public enum MoveDirection { MovePosX, MoveNegX, MovePosY, MoveNegY, MovePosZ, MoveNegZ }
 
 namespace Assets.Scripts.Player.Commands
 {
@@ -11,33 +11,32 @@ namespace Assets.Scripts.Player.Commands
     {
         protected float moveDistance = 1.0f;
         //protected MoveDirection direction;
-        protected Rigidbody rgbd;
-        protected Vector3 force;
+        protected Transform playerTransform;
+        protected Vector3 translation;
 
-        public Move_Command(Vector3 f, Rigidbody rb)
+        public Move_Command(Vector3 f, Transform pT)
         {
-            force = f;
-            rgbd = rb;
-            //direction = md;
+            translation = f;
+            playerTransform = pT;
 
             this.Execute();
         }
 
         public override void Execute()
         {
-            rgbd.velocity += force;
+            playerTransform.Translate(translation, Space.World);
         }
 
         public override void UnExecute()
         {
-            rgbd.velocity += -force;
+            playerTransform.Translate(-translation, Space.World);
             Debug.Log(this.Log());
 
         }
 
         public override string Log()
         {
-            return $"{this.GetType()} has been called, force: {this.force}";
+            return $"{this.GetType()} has been called, force: {this.translation}";
         }
     }
 }

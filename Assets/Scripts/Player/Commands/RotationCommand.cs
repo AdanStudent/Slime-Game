@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Player.Commands
 {
-    class RotationCommand : Command
+    class CameraRotationCommand : Command
     {
         //keeps the player's current rotation
         protected Vector3 currentRotation;
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Player.Commands
         protected Transform camTransform;
 
 
-        public RotationCommand(Vector3 currRot, Vector3 currPos, float dist, Transform camTar, Transform camTrans)
+        public CameraRotationCommand(Vector3 currRot, Vector3 currPos, float dist, Transform camTar, Transform camTrans)
         {
             this.currentRotation = currRot;
             this.currentPosition = currPos;

@@ -7,14 +7,14 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour
 {
     //keeping reference of all the Move Commands that the player is calling 
-    Stack<Move_Command> moves;
+    Stack<Command> moves;
     public Rigidbody player;
     public float Speed = 5f;
 
     // Start is called before the first frame update
     void Start()
     {
-        moves = new Stack<Move_Command>();
+        moves = new Stack<Command>();
         player.freezeRotation = true;
     }
 
@@ -38,9 +38,10 @@ public class InputHandler : MonoBehaviour
         {
             Debug.Log("This will need to be refactored into Command Pattern");
             float targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
-            player.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(player.transform.eulerAngles.y, targetRotation, ref turnSmoothVel, turnSmoothTime);
+            //player.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(player.transform.eulerAngles.y, targetRotation, ref turnSmoothVel, turnSmoothTime);
 
         }
+
         float targetSpeed = inputDir.magnitude * Speed;
         player.transform.Translate(player.transform.forward * targetSpeed * Time.deltaTime, Space.World);
     }

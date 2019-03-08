@@ -23,9 +23,10 @@ public class PlayerCameraController : MonoBehaviour
         pitch -= Input.GetAxis("Mouse Y") * mouseSens;
         pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
 
-        currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw), ref rotationSmoothVel, rotationSmoothTime);
-        transform.eulerAngles = currentRotation;
+        currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw),
+            ref rotationSmoothVel, rotationSmoothTime);
 
+        transform.eulerAngles = currentRotation;
         transform.position = target.position - transform.forward * dstFromTarget;
     }
 }

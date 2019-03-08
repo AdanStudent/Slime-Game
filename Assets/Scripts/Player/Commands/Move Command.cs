@@ -10,15 +10,15 @@ namespace Assets.Scripts.Player.Commands
     public class Move_Command : Command
     {
         protected float moveDistance = 1.0f;
-        protected MoveDirection direction;
+        //protected MoveDirection direction;
         protected Rigidbody rgbd;
         protected Vector3 force;
 
-        public Move_Command(Vector3 f, Rigidbody rb, MoveDirection md)
+        public Move_Command(Vector3 f, Rigidbody rb)
         {
             force = f;
             rgbd = rb;
-            direction = md;
+            //direction = md;
 
             this.Execute();
         }
@@ -37,7 +37,7 @@ namespace Assets.Scripts.Player.Commands
 
         public override string Log()
         {
-            return $"{this.GetType()} has been called, force: {this.force}, direction: {direction.ToString()}";
+            return $"{this.GetType()} has been called, force: {this.force}";
         }
     }
 }

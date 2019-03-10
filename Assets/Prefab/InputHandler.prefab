@@ -44,3 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  Speed: 5
+  mouseSens: 6
+  target: {fileID: 0}
+  dstFromTarget: 3
+  pitchMinMax: {x: -40, y: 85}
+  rotationSmoothTime: 0.12
+  camTransform: {fileID: 0}

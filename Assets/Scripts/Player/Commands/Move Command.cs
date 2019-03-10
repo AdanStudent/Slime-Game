@@ -9,8 +9,6 @@ namespace Assets.Scripts.Player.Commands
 
     public class Move_Command : Command
     {
-        protected float moveDistance = 1.0f;
-        //protected MoveDirection direction;
         protected Transform playerTransform;
         protected Vector3 translation;
 

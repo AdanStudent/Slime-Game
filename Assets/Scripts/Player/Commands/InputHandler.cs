@@ -23,15 +23,14 @@ public class InputHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerInput();
-        MouseInput();
+
+        MouseInputForPlayerMovement();
        // CallReplay();
     }
 
     private float turnSmoothVel;
     private float turnSmoothTime = 0.1f;
-    private Move_Command moveCommand;
-    private void MouseInput()
+    private void MouseInputForPlayerMovement()
     {
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 inputDir = input.normalized;
@@ -44,16 +43,20 @@ public class InputHandler : MonoBehaviour
                 ref turnSmoothVel, turnSmoothTime);
 
             player.transform.eulerAngles = playerMovement;
-
+            PlayerRotationCommand playerRotationCommand = new PlayerRotationCommand(playerMovement, player.transform);
+            moves.Push(playerRotationCommand);
         }
 
         float targetSpeed = inputDir.magnitude * Speed;
 
         Vector3 translation = player.transform.forward * targetSpeed * Time.deltaTime;
-        moveCommand = new Move_Command(translation, player.transform);
+
+        Move_Command moveCommand = new Move_Command(translation, player.transform);
+        moves.Push(moveCommand);
     
     }
 
+    //this is just being used to Test out the Replay not intended to actually be called outside of testing
     private void CallReplay()
     {
         if (Input.GetKeyDown(KeyCode.K))
@@ -70,35 +73,4 @@ public class InputHandler : MonoBehaviour
         }
     }
 
-    float inputX;
-    float inputY;
-    Move_Command movementCommand;
-
-   private void PlayerInput()
-    {
-        //inputX = Input.GetAxis("Horizontal");
-        //inputY = Input.GetAxis("Vertical");
-
-        //if (inputX > 0)
-        //{
-        //    movementCommand = new Move_Command(new Vector3(1, 0), player, MoveDirection.MovePosX);
-        //    moves.Push(movementCommand);
-
-        //}
-        //if (inputX < 0)
-        //{
-        //    movementCommand = new Move_Command(new Vector3(-1, 0), player, MoveDirection.MoveNegX);
-        //    moves.Push(movementCommand);
-        //}
-        //if (inputY > 0)
-        //{
-        //    movementCommand = new Move_Command(new Vector3(0, 0, 1), player, MoveDirection.MovePosZ);
-        //    moves.Push(movementCommand);
-        //}
-        //if (inputY < 0)
-        //{
-        //    movementCommand = new Move_Command(new Vector3(0, 0, -1), player, MoveDirection.MoveNegZ);
-        //    moves.Push(movementCommand);
-        //}
-    }
 }

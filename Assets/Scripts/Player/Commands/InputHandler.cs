@@ -26,7 +26,7 @@ public class InputHandler : MonoBehaviour
 
         MouseInputForPlayerMovement();
         MouseInputForCameraRotation();
-        CallReplay();
+        //CallReplay();
     }
 
     //how sensitive the mouse's movement should be
@@ -65,16 +65,8 @@ public class InputHandler : MonoBehaviour
         currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw),
             ref rotationSmoothVel, rotationSmoothTime);
 
-        //this is the camera's transform
-        camTransform.eulerAngles = currentRotation;
-        camTransform.position = target.position - camTransform.forward * dstFromTarget;
-
         CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform);
         moves.Push(cameraRotation);
-        if (cameraRotation == null)
-        {
-            Debug.Log("Command doesn't exist");
-        }
     }
 
     private float turnSmoothVel;

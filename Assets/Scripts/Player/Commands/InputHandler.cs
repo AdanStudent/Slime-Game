@@ -3,20 +3,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class InputHandler : MonoBehaviour
+public class InputHandler : NetworkBehaviour
 {
     //keeping reference of all the Move Commands that the player is calling 
-    private Stack<Command> moves;
-
-    public Rigidbody player;
+    Stack<Move_Command> moves;
+    public Rigidbody playerb;
+    public GameObject player;
     public float Speed = 5f;
 
     // Start is called before the first frame update
     void Start()
     {
-        moves = new Stack<Command>();
-        player.freezeRotation = true;
+        moves = new Stack<Move_Command>();
+        playerb = this.gameObject.GetComponent<Rigidbody>();
+        player = playerb.gameObject;
+        playerb.freezeRotation = true;
     }
 
     bool undo;
@@ -73,6 +76,10 @@ public class InputHandler : MonoBehaviour
     private float turnSmoothTime = 0.1f;
     private void MouseInputForPlayerMovement()
     {
+        if (hasAuthority == false)
+        {
+            return;
+        }
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 inputDir = input.normalized;
 

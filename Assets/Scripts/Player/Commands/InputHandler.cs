@@ -20,6 +20,7 @@ public class InputHandler : NetworkBehaviour
         playerb = this.gameObject.GetComponent<Rigidbody>();
         player = playerb.gameObject;
         playerb.freezeRotation = true;
+        camTransform = Camera.main.transform;
     }
 
     bool undo;

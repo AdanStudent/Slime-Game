@@ -28,6 +28,11 @@ public class InputHandler : NetworkBehaviour
     void Update()
     {
 
+        if (hasAuthority == false)
+        {
+            return;
+        }
+
         MouseInputForPlayerMovement();
         MouseInputForCameraRotation();
         //CallReplay();
@@ -77,10 +82,7 @@ public class InputHandler : NetworkBehaviour
     private float turnSmoothTime = 0.1f;
     private void MouseInputForPlayerMovement()
     {
-        if (hasAuthority == false)
-        {
-            return;
-        }
+        
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 inputDir = input.normalized;
 
@@ -90,7 +92,6 @@ public class InputHandler : NetworkBehaviour
             Vector3 playerMovement = Vector3.up * Mathf.SmoothDampAngle(player.transform.eulerAngles.y, targetRotation, 
                 ref turnSmoothVel, turnSmoothTime);
 
-            player.transform.eulerAngles = playerMovement;
             PlayerRotationCommand playerRotationCommand = new PlayerRotationCommand(playerMovement, player.transform);
             moves.Push(playerRotationCommand);
         }

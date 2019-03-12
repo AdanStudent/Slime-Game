@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 public class InputHandler : NetworkBehaviour
 {
     //keeping reference of all the Move Commands that the player is calling 
-    Stack<Move_Command> moves;
+    Stack<Command> moves;
     public Rigidbody playerb;
     public GameObject player;
     public float Speed = 5f;
@@ -16,7 +16,7 @@ public class InputHandler : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moves = new Stack<Move_Command>();
+        moves = new Stack<Command>();
         playerb = this.gameObject.GetComponent<Rigidbody>();
         player = playerb.gameObject;
         playerb.freezeRotation = true;

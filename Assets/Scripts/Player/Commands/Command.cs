@@ -9,5 +9,4 @@ public abstract class Command
     
     //Logs which command has run
     public abstract string Log();
-
 }

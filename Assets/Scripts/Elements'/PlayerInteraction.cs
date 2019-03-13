@@ -5,11 +5,19 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     public ElementEnum.Elements elementType = ElementEnum.Elements.None;
-    
+    private Renderer renderer1;
+    public Material ash;
+    public Material fire;
+    public Material grass;
+    public Material water;
+    public Material cheese;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        renderer1 = gameObject.GetComponent<Renderer>();
+        ChangeMaterial();
+        gameObject.GetComponent<Rigidbody>().freezeRotation = true;
     }
 
     // Update is called once per frame
@@ -23,12 +31,38 @@ public class PlayerInteraction : MonoBehaviour
     {
         Debug.Log(this+" Current Type: " + elementType.ToString());
         elementType = element;
+        ChangeMaterial();
         Debug.Log(this+" New Type: " + elementType.ToString());
     }
 
     public void SetActiveAgain()
     {
         gameObject.SetActive(true);
+    }
+
+    public void ChangeMaterial()
+    {
+        switch(elementType)
+        {
+            case ElementEnum.Elements.Ash:
+                renderer1.material = ash;
+                break;
+            case ElementEnum.Elements.Cheese:
+                renderer1.material = cheese;
+                break;
+            case ElementEnum.Elements.Fire:
+                renderer1.material = fire;
+                break;
+            case ElementEnum.Elements.Grass:
+                renderer1.material = grass;
+                break;
+            case ElementEnum.Elements.Water:
+                renderer1.material = water;
+                break;
+            default:
+                renderer1.material = ash;
+                break;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

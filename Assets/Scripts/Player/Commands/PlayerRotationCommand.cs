@@ -17,6 +17,8 @@ namespace Assets.Scripts.Player.Commands
         {
             this.rotateTowards = rotTow;
             this.playerTransform = pTransform;
+
+            this.Execute();
         }
 
         public override void Execute()

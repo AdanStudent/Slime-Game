@@ -30,5 +30,8 @@ public class Server : NetworkBehaviour
         Debug.Log("Spawning Object");
     }
 
+   
+    
+
 
 }

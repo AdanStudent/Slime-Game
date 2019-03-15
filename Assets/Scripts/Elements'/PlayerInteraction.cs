@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    //player's element type
     public ElementEnum.Elements elementType = ElementEnum.Elements.None;
+    //Object renderer
     private Renderer renderer1;
+    //element materials
     public Material ash;
     public Material fire;
     public Material grass;
@@ -15,8 +18,11 @@ public class PlayerInteraction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //initialize the render
         renderer1 = gameObject.GetComponent<Renderer>();
+        //intialize material
         ChangeMaterial();
+        //freeze rotation
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
     }
 
@@ -35,11 +41,13 @@ public class PlayerInteraction : MonoBehaviour
         Debug.Log(this+" New Type: " + elementType.ToString());
     }
 
+    //Spawn the player again
     public void SetActiveAgain()
     {
         gameObject.SetActive(true);
     }
 
+    //change the player's element type
     public void ChangeMaterial()
     {
         switch(elementType)
@@ -65,70 +73,85 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+
+    public void ComparePlayersElementTypes(Collider other)
+    {
+        PlayerInteraction interaction = other.GetComponent<PlayerInteraction>();
+        switch (elementType)
+        {
+            //check other player against current element
+            case ElementEnum.Elements.Ash:
+                //Destroy self if lose
+                switch (interaction.elementType)
+                {
+                    //cheese always wins
+                    case ElementEnum.Elements.Cheese:
+                        Debug.Log(this + " Loses to cheese");
+                        gameObject.SetActive(false);
+                        break;
+                        //Grass beats ash
+                    case ElementEnum.Elements.Grass:
+                        Debug.Log(this + " Loses to Grass");
+                        gameObject.SetActive(false);
+                        break;
+                }
+                break;
+                //cheese always win
+            case ElementEnum.Elements.Cheese:
+                Debug.Log("Cheese always wins");
+                break;
+            case ElementEnum.Elements.Fire:
+                switch (interaction.elementType)
+                {
+                    //cheese always wins
+                    case ElementEnum.Elements.Cheese:
+                        Debug.Log(this + " Loses to Cheese");
+                        gameObject.SetActive(false);
+                        break;
+                        //water beats fire
+                    case ElementEnum.Elements.Water:
+                        Debug.Log(this + " Loses to Water");
+                        gameObject.SetActive(false);
+                        break;
+                }
+                break;
+
+            case ElementEnum.Elements.Water:
+                switch (interaction.elementType)
+                {
+                    //ahs beats water
+                    case ElementEnum.Elements.Ash:
+                        Debug.Log(this + " Loses to Ash");
+                        gameObject.SetActive(false);
+                        break;
+                    case ElementEnum.Elements.Cheese:
+                        Debug.Log(this + " Loses to Cheese");
+                        gameObject.SetActive(false);
+                        break;
+                }
+                break;
+            case ElementEnum.Elements.Grass:
+                switch (interaction.elementType)
+                {
+                    case ElementEnum.Elements.Cheese:
+                        Debug.Log(this + " Loses to Cheese");
+                        gameObject.SetActive(false);
+                        break;
+                        //fire beats grass
+                    case ElementEnum.Elements.Fire:
+                        Debug.Log(this + " Loses to Fire");
+                        gameObject.SetActive(false);
+                        break;
+                }
+                break;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag=="Player")
         {
-            PlayerInteraction interaction = other.GetComponent<PlayerInteraction>();
-            switch(elementType)
-            {
-                case ElementEnum.Elements.Ash:
-                    //Destroy self if lose
-                    switch (interaction.elementType)
-                    {
-                        case ElementEnum.Elements.Cheese:
-                            Debug.Log(this + " Loses to cheese");
-                            gameObject.SetActive(false);
-                            break;
-                        case ElementEnum.Elements.Grass:
-                            Debug.Log(this + " Loses to Grass");
-                            gameObject.SetActive(false);
-                            break;
-                    }
-                    break;
-                case ElementEnum.Elements.Cheese:
-                    Debug.Log("Cheese always wins");
-                    break;
-                case ElementEnum.Elements.Fire:
-                    switch (interaction.elementType)
-                    {
-                        case ElementEnum.Elements.Cheese:
-                            Debug.Log(this + " Loses to Cheese");
-                            gameObject.SetActive(false);
-                            break;
-                        case ElementEnum.Elements.Water:
-                            Debug.Log(this + " Loses to Water");
-                            gameObject.SetActive(false);
-                            break;
-                    }
-                    break;
-                case ElementEnum.Elements.Water:
-                    switch (interaction.elementType)
-                    {
-                        case ElementEnum.Elements.Ash:
-                            Debug.Log(this + " Loses to Ash");
-                            gameObject.SetActive(false);
-                            break;
-                        case ElementEnum.Elements.Cheese:
-                            Debug.Log(this + " Loses to Cheese");
-                            gameObject.SetActive(false);
-                            break;
-                    }
-                    break;
-                case ElementEnum.Elements.Grass:
-                    switch (interaction.elementType)
-                    {
-                        case ElementEnum.Elements.Cheese:
-                            Debug.Log(this + " Loses to Cheese");
-                            gameObject.SetActive(false);
-                            break;
-                        case ElementEnum.Elements.Fire:
-                            Debug.Log(this + " Loses to Fire");
-                            gameObject.SetActive(false);
-                            break;
-                    }
-                    break;
-            }
+            ComparePlayersElementTypes(other);
         }
     }
 }

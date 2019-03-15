@@ -6,15 +6,60 @@ using UnityEngine;
 public class ElementSpawn : MonoBehaviour
 {
     public Material[] elements=new Material[5];
+    public GameObject potion;
+    public int elementsToSpawn;
+    private bool spawnedCheese;
+    public int elementsSpawned=0;
+    private List<Vector3> previousSpawnPoints;
+    private BoxCollider spawnArea;
+    private bool validPosition;
+
     // Start is called before the first frame update
     void Start()
     {
+        spawnedCheese = false;
+        elementsSpawned = 0;
+        spawnArea = GetComponent<BoxCollider>();
+        previousSpawnPoints = new List<Vector3>();
+        validPosition = false;
+        SpawnPotions();
+       
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SpawnPotions()
+    {
+        while (elementsSpawned < elementsToSpawn)
+        {
+            Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawnArea.bounds.min.x, spawnArea.bounds.max.x),
+                spawnArea.transform.position.y, UnityEngine.Random.Range(spawnArea.bounds.min.z, spawnArea.bounds.max.z));
+
+            Collider[] colliders = Physics.OverlapSphere(spawnPoint, 4);
+
+            // Go through each collider collected
+            foreach (Collider col in colliders)
+            {
+                // If this collider is tagged "Obstacle"
+                if (col.tag == "SpawnArea")
+                {
+                    // Then this position is not a valid spawn position
+                    validPosition = true;
+                }
+            }
+            if (!previousSpawnPoints.Contains(spawnPoint)&&validPosition)
+            {
+                Debug.Log("Spawn");
+                validPosition = false;
+                ChangeMaterial();
+                Instantiate(potion, spawnPoint, transform.rotation);
+                previousSpawnPoints.Add(spawnPoint);
+            }
+        }
     }
 
     public void ChangeMaterial()
@@ -24,20 +69,35 @@ public class ElementSpawn : MonoBehaviour
         switch (elementIndex)
         {
             case 0:
-                gameObject.GetComponent<Renderer>().material = elements[0];
+                potion.GetComponent<Renderer>().material = elements[0];
+                potion.GetComponent<Element>().elementType = ElementEnum.Elements.Ash;
+                elementsSpawned++;
                 break;
             case 1:
-                gameObject.GetComponent<Renderer>().material = elements[1];
+                potion.GetComponent<Renderer>().material = elements[1];
+                potion.GetComponent<Element>().elementType = ElementEnum.Elements.Fire;
+                elementsSpawned++;
                 break;
             case 2:
-                gameObject.GetComponent<Renderer>().material = elements[2];
+                potion.GetComponent<Renderer>().material = elements[2];
+                potion.GetComponent<Element>().elementType = ElementEnum.Elements.Grass;
+                elementsSpawned++;
                 break;
             case 3:
-                gameObject.GetComponent<Renderer>().material = elements[3];
+                potion.GetComponent<Renderer>().material = elements[3];
+                potion.GetComponent<Element>().elementType = ElementEnum.Elements.Water;
+                elementsSpawned++;
                 break;
             case 4:
-                gameObject.GetComponent<Renderer>().material = elements[4];
+                if (!spawnedCheese)
+                {
+                    potion.GetComponent<Renderer>().material = elements[4];
+                    potion.GetComponent<Element>().elementType = ElementEnum.Elements.Cheese;
+                    elementsSpawned++;
+                    spawnedCheese = true;
+                }
                 break;
         }
+
     }
 }

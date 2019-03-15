@@ -6,9 +6,11 @@ using UnityEngine;
 public class Element : MonoBehaviour
 {
     public ElementEnum.Elements elementType=ElementEnum.Elements.None;
+    private ElementSpawn spawnArea;
     // Start is called before the first frame update
     void Start()
     {
+        spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<ElementSpawn>();
          if(elementType==ElementEnum.Elements.None)
         {
             RandomType();

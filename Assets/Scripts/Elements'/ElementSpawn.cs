@@ -23,7 +23,7 @@ public class ElementSpawn : NetworkBehaviour
         spawnArea = GetComponent<BoxCollider>();
         previousSpawnPoints = new List<Vector3>();
         validPosition = false;
-        SpawnPotions();
+        RpcSpawnPotions();
        
     }
 
@@ -33,7 +33,8 @@ public class ElementSpawn : NetworkBehaviour
         
     }
 
-    public void SpawnPotions()
+    [ClientRpc]
+    public void RpcSpawnPotions()
     {
         
         while (elementsSpawned < elementsToSpawn)

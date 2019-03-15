@@ -6,14 +6,22 @@ using UnityEngine.Networking;
 public class Server : NetworkBehaviour
 {
     public GameObject playerUnit;
+    public GameObject spawnArea;
+    // public GameObject spawnArea;
     // Start is called before the first frame update
     void Start()
     {
+        if(isServer == true)
+        {
+            //SpawnArea();
+        }
         if (isLocalPlayer == false)
         {
             return;
         }
         CmdSpawnPersonalPlayer();
+        CmdSpawnArea();
+        
     }
 
     // Update is called once per frame
@@ -30,8 +38,14 @@ public class Server : NetworkBehaviour
         Debug.Log("Spawning Object");
     }
 
-   
-    
+    [Command]
+  void CmdSpawnArea()
+    {
+        GameObject SpawnArea = Instantiate(spawnArea);
+        NetworkServer.Spawn(SpawnArea);
+        Debug.Log("Spawn Area is Spawning");
+    }
+
 
 
 }

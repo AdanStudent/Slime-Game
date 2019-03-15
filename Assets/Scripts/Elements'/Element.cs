@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Element : MonoBehaviour
+public class Element : NetworkBehaviour
 {
+    [SyncVar]
     public ElementEnum.Elements elementType=ElementEnum.Elements.None;
     private ElementSpawn spawnArea;
     // Start is called before the first frame update
@@ -52,7 +54,7 @@ public class Element : MonoBehaviour
     {
         if(other.tag=="Player")
         {
-            other.GetComponent<PlayerInteraction>().SetType(elementType);
+            other.GetComponent<PlayerInteraction>().RpcSetType(elementType);
             Destroy(gameObject);
         }
     }

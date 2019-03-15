@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4196706761026398382}
   - component: {fileID: 3249112062176547379}
-  - component: {fileID: 7676066973380832216}
+  - component: {fileID: 6587758428639413732}
   m_Layer: 0
   m_Name: Server
   m_TagString: Untagged
@@ -65,7 +65,7 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &7676066973380832216
+--- !u!114 &6587758428639413732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,4 +78,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerUnit: {fileID: 9076648427423868313, guid: 0023a4476a1580747b876bb78147e40d,
+    type: 3}
+  spawnArea: {fileID: 2186477657866881519, guid: 9e850e4d505885a4e8156aa66df3331e,
     type: 3}

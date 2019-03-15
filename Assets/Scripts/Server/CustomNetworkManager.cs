@@ -12,9 +12,10 @@ public class CustomNetworkManager : NetworkManager
 {
     public ServerNetworkDiscovery SND;
     public CustomNetworkDiscovery CND;
-        //Chekcking to see if at menu
-        // public bool isatStartup = true;
-        public const int PORT = 26000;
+    
+    //Chekcking to see if at menu
+    // public bool isatStartup = true;
+    public const int PORT = 26000;
     private int lastInt = 0;
     private bool foundServer = false;
     ConnectionConfig connection;
@@ -72,8 +73,6 @@ public class CustomNetworkManager : NetworkManager
        
 
     }
- 
-
 
     void SetIPAddress()
     {
@@ -108,21 +107,20 @@ public class CustomNetworkManager : NetworkManager
 
     }
 
+ 
 
-
-
-    private void OnLevelWasLoaded(int level)
-    {
-        if(level == 0)
-        {
-            SetupMenuSceneButtons();
-        }
-        else
-        {
-           // foundServer = false;
-            SetupOtherSceneButtons();
-        }
-    }
+    /*   private void OnLevelWasLoaded(int level)
+       {
+           if(level == )
+           {
+               SetupMenuSceneButtons();
+           }
+           else
+           {
+              // foundServer = false;
+               SetupOtherSceneButtons();
+           }
+       }*/
 
     void SetupMenuSceneButtons()
     {

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class ElementSpawn : MonoBehaviour
+public class ElementSpawn : NetworkBehaviour
 {
     public Material[] elements=new Material[5];
     public GameObject potion;
@@ -34,6 +35,7 @@ public class ElementSpawn : MonoBehaviour
 
     public void SpawnPotions()
     {
+        
         while (elementsSpawned < elementsToSpawn)
         {
             Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawnArea.bounds.min.x, spawnArea.bounds.max.x),

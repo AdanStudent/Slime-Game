@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2186477657866881522}
   - component: {fileID: 2186477657866881521}
   - component: {fileID: 2186477657866881520}
+  - component: {fileID: 6491813984131660739}
   m_Layer: 0
   m_Name: SpawnArea
-  m_TagString: Untagged
+  m_TagString: SpawnArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2186477657866881519}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.53, z: 5.4}
-  m_LocalScale: {x: 5.956303, y: 1, z: 11.157796}
+  m_LocalPosition: {x: 0, y: 1.72, z: 5.4}
+  m_LocalScale: {x: 29.061937, y: 1, z: 22.86344}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -40,7 +41,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2186477657866881519}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -63,6 +64,39 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 2dbbeb58ce443624fa8044affb84d4fe, type: 2}
   - {fileID: 2100000, guid: 35f524810b866a840b4321ea60394554, type: 2}
   - {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
-  potion: {fileID: 4247605188432156350, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
+  potion: {fileID: 18, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
   elementsToSpawn: 4
   elementsSpawned: 0
+--- !u!114 &6491813984131660739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2186477657866881519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0

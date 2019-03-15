@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerInteraction : MonoBehaviour
+public class PlayerInteraction : NetworkBehaviour
 {
     //player's element type
-    public ElementEnum.Elements elementType = ElementEnum.Elements.None;
+  
+    public ElementEnum.Elements elementType = ElementEnum.Elements.Ash;
     //Object renderer
     private Renderer renderer1;
     //element materials
@@ -31,9 +33,9 @@ public class PlayerInteraction : MonoBehaviour
     {
         
     }
-
+    [ClientRpc]
     //Set the new element type for player if new element is picked up
-    public void SetType(ElementEnum.Elements element)
+    public void RpcSetType(ElementEnum.Elements element)
     {
         Debug.Log(this+" Current Type: " + elementType.ToString());
         elementType = element;

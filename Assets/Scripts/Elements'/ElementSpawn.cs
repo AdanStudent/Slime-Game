@@ -23,7 +23,7 @@ public class ElementSpawn : NetworkBehaviour
         spawnArea = GetComponent<BoxCollider>();
         previousSpawnPoints = new List<Vector3>();
         validPosition = false;
-        CmdSpawnPotions();
+        RpcSpawnPotions();
        
     }
 
@@ -33,8 +33,8 @@ public class ElementSpawn : NetworkBehaviour
         
     }
 
-    [Command]
-    public void CmdSpawnPotions()
+    [ClientRpc]
+    public void RpcSpawnPotions()
     {
         
         while (elementsSpawned < elementsToSpawn)
@@ -61,7 +61,6 @@ public class ElementSpawn : NetworkBehaviour
                 ChangeMaterial();
                 GameObject p=Instantiate(potion, spawnPoint, transform.rotation)as GameObject;
                 p.transform.parent = transform;
-                NetworkServer.Spawn(p);
                 previousSpawnPoints.Add(spawnPoint);
             }
         }

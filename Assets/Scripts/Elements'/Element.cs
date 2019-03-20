@@ -7,13 +7,13 @@ using UnityEngine.Networking;
 public class Element : NetworkBehaviour
 {
     [SyncVar]
-    public ElementEnum.Elements elementType=ElementEnum.Elements.None;
+    public ElementEnum.Elements elementType = ElementEnum.Elements.None;
     private ElementSpawn spawnArea;
     // Start is called before the first frame update
     void Start()
     {
         spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<ElementSpawn>();
-         if(elementType==ElementEnum.Elements.None)
+        if (elementType == ElementEnum.Elements.None)
         {
             RandomType();
         }
@@ -22,7 +22,7 @@ public class Element : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void RandomType()
@@ -30,7 +30,7 @@ public class Element : NetworkBehaviour
         System.Random rnd = new System.Random(Guid.NewGuid().GetHashCode());
         int typeNum = rnd.Next(0, 5);
         //randomly set element type if one was not set
-        switch(typeNum)
+        switch (typeNum)
         {
             case 0:
                 elementType = ElementEnum.Elements.Ash;
@@ -52,7 +52,7 @@ public class Element : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag=="Player")
+        if (other.tag == "Player")
         {
             other.GetComponent<PlayerInteraction>().RpcSetType(elementType);
             Destroy(gameObject);

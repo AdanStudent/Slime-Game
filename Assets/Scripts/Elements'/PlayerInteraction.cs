@@ -43,8 +43,9 @@ public class PlayerInteraction : NetworkBehaviour
         Debug.Log(this+" New Type: " + elementType.ToString());
     }
 
+    [ClientRpc]
     //Spawn the player again
-    public void SetActiveAgain()
+    public void RpcSetActiveAgain()
     {
         gameObject.SetActive(true);
     }
@@ -75,8 +76,8 @@ public class PlayerInteraction : NetworkBehaviour
         }
     }
 
-
-    public void ComparePlayersElementTypes(Collider other)
+    [ClientRpc]
+    public void RpcComparePlayersElementTypes(GameObject other)
     {
         PlayerInteraction interaction = other.GetComponent<PlayerInteraction>();
         switch (elementType)
@@ -153,7 +154,7 @@ public class PlayerInteraction : NetworkBehaviour
     {
         if(other.tag=="Player")
         {
-            ComparePlayersElementTypes(other);
+            RpcComparePlayersElementTypes(other.gameObject);
         }
     }
 }

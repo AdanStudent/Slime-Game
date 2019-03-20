@@ -39,11 +39,20 @@ public class Server : NetworkBehaviour
     }
 
     [Command]
-  void CmdSpawnArea()
+    void CmdSpawnArea()
     {
-        GameObject SpawnArea = Instantiate(spawnArea);
-        NetworkServer.Spawn(SpawnArea);
-        Debug.Log("Spawn Area is Spawning");
+        GameObject spawn = GameObject.FindGameObjectWithTag("SpawnArea");
+        if (spawn == null)
+        {
+            GameObject SpawnArea = Instantiate(spawnArea);
+            NetworkServer.Spawn(SpawnArea);
+            Debug.Log("Spawn Area is Spawning");
+        }
+        else
+        {
+            GameObject SpawnArea = Instantiate(spawn);
+            NetworkServer.Spawn(spawn);
+        }
     }
 
 

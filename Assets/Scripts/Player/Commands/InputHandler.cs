@@ -12,6 +12,8 @@ public class InputHandler : NetworkBehaviour
     public Rigidbody playerb;
     public GameObject player;
     public float Speed = 5f;
+    public float HealthPoints = 100f; // Start the player at 100 HP
+    
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,7 @@ public class InputHandler : NetworkBehaviour
         }
 
         MouseInputForPlayerMovement();
+        MouseInputForAttack();
         MouseInputForCameraRotation();
         //CallReplay();
     }
@@ -78,6 +81,12 @@ public class InputHandler : NetworkBehaviour
         moves.Push(cameraRotation);
     }
 
+    private void MouseInputForAttack()
+    {
+        if(Input.GetButtonDown("Fire1"))
+            HitAttackFunction();
+    }
+
     private float turnSmoothVel;
     private float turnSmoothTime = 0.1f;
     private void MouseInputForPlayerMovement()
@@ -105,6 +114,23 @@ public class InputHandler : NetworkBehaviour
             moves.Push(moveCommand);
         }
     
+    }
+
+    private void HitAttackFunction()
+    {
+        RaycastHit targetHit;
+        if(Physics.Raycast(player.transform.position, player.transform.forward,out targetHit,20f))
+        {
+            //Attack_Command attackCommand = new Attack_Command(targetHit.collider.gameObject);
+            print("Is Raycasting!");
+            Debug.Log(targetHit.transform.name);
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        // Raycast to get the player in front, then get the raycast hit gameObject to pass into the command
+        //Attack_Command attackCommand = new Attack_Command();
     }
 
     //this is just being used to Test out the Replay not intended to actually be called outside of testing

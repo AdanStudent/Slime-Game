@@ -53,6 +53,7 @@ public class Element : NetworkBehaviour
 
     public void SetMaterial()
     {
+        print(elementType);
         //set the material according to the element type chosen
         switch (elementType)
         {

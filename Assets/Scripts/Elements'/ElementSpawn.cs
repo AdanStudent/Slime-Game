@@ -108,7 +108,6 @@ public class ElementSpawn : NetworkBehaviour
 
                 temp.position = spawnPoint;
 
-                print(temp.elementType);
                 spawnedPotions.Add(temp);
                 //add the transform to the list of previously used locations
                 previousSpawnPoints.Add(spawnPoint);
@@ -164,8 +163,6 @@ public class ElementSpawn : NetworkBehaviour
                 }
                 break;
         }
-
-        print(type);
 
         return (int)type;
 

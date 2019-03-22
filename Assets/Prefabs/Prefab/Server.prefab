@@ -81,6 +81,7 @@ MonoBehaviour:
     type: 3}
   spawnArea: {fileID: 2186477657866881519, guid: 9e850e4d505885a4e8156aa66df3331e,
     type: 3}
+  potion: {fileID: 18, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
   spawnPoints:
   - {fileID: 1211455116610217180, guid: 23c7301f3065ef24e9f0345e906c566d, type: 3}
   - {fileID: 643847652392032678, guid: a8de0a5556fa9034ea6d1a5dbcba8d8c, type: 3}

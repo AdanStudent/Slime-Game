@@ -28,7 +28,7 @@ public class ElementSpawn : NetworkBehaviour
     //list of spawn points previously used
     private List<Vector3> previousSpawnPoints;
     //synced list of structs
-    public List<GameObject> spawnedPotions;
+    public List<ElementStruct> spawnedPotions;
     //collider for spawn area
     private BoxCollider spawnArea;
     //bool to determine if location is valid spawn point
@@ -40,7 +40,7 @@ public class ElementSpawn : NetworkBehaviour
             //if (GameObject.FindGameObjectWithTag("Potion") == null)
             //{
             //}
-            spawnedPotions = new List<GameObject>();
+            spawnedPotions = new List<ElementStruct>();
             spawnedCheese = false;
             elementsSpawned = 0;
             spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<BoxCollider>();
@@ -52,7 +52,6 @@ public class ElementSpawn : NetworkBehaviour
             //    RpcSpawnPotions();
             //    spawned = true;
             //}
-            CmdSpawnPotions();
        
     }
 
@@ -62,16 +61,20 @@ public class ElementSpawn : NetworkBehaviour
         
     }
 
-
-    [Command]
-    public void CmdSpawnPotions()
+    public List<ElementStruct> SpawnPotions()
     {
+        previousSpawnPoints = new List<Vector3>();
+        spawnedPotions = new List<ElementStruct>();
+
 
         while (elementsSpawned < elementsToSpawn)
         {
+            BoxCollider spawn = gameObject.GetComponent<BoxCollider>();
+
             //get the spawn point
-            Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawnArea.bounds.min.x, spawnArea.bounds.max.x),
-                spawnArea.transform.position.y, UnityEngine.Random.Range(spawnArea.bounds.min.z, spawnArea.bounds.max.z));
+            Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
+                spawn.transform.position.y, UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z));
+
 
             //check for overlap
             Collider[] colliders = Physics.OverlapSphere(spawnPoint, 4);
@@ -90,29 +93,38 @@ public class ElementSpawn : NetworkBehaviour
             //then spawn a potion
             if (!previousSpawnPoints.Contains(spawnPoint) && validPosition)
             {
-                Debug.Log("Spawn");
+                //Debug.Log("Spawn");
+
                 //reset valid boolean
                 validPosition = false;
+                ElementStruct temp = new ElementStruct();
 
                 //set the material and element type of the potion
-                ChangeMaterial();
+                temp.elementType=ChangeMaterial();
                 //instatiate the gameobject and assign it to a variable so that it can be added as a child
-                GameObject p = Instantiate(potion, spawnPoint, transform.rotation);
+                //GameObject p = Instantiate(potion, spawnPoint, transform.rotation);
                 //add the potion as a child to the spawn area object
                 //p.transform.parent = transform;
-                spawnedPotions.Add(p);
+
+                temp.position = spawnPoint;
+
+                print(temp.elementType);
+                spawnedPotions.Add(temp);
                 //add the transform to the list of previously used locations
                 previousSpawnPoints.Add(spawnPoint);
             }
         }
+
+        return spawnedPotions;
     }
 
     //set the material and element type 
-    public void ChangeMaterial()
+    public int ChangeMaterial()
     {
         //randomly choose element type
         System.Random rnd = new System.Random(Guid.NewGuid().GetHashCode());
         int elementIndex = rnd.Next(0, 5);
+        ElementEnum.Elements type = ElementEnum.Elements.None;
         //set the material according to the element type chosen
         switch (elementIndex)
         {
@@ -120,20 +132,24 @@ public class ElementSpawn : NetworkBehaviour
                 potion.GetComponent<Renderer>().material = elements[0];
                 potion.GetComponent<Element>().elementType = ElementEnum.Elements.Ash;
                 elementsSpawned++;
+                type = ElementEnum.Elements.Ash;
                 break;
             case 1:
                 potion.GetComponent<Renderer>().material = elements[1];
                 potion.GetComponent<Element>().elementType = ElementEnum.Elements.Fire;
+                type = ElementEnum.Elements.Fire;
                 elementsSpawned++;
                 break;
             case 2:
                 potion.GetComponent<Renderer>().material = elements[2];
                 potion.GetComponent<Element>().elementType = ElementEnum.Elements.Grass;
+                type = ElementEnum.Elements.Grass;
                 elementsSpawned++;
                 break;
             case 3:
                 potion.GetComponent<Renderer>().material = elements[3];
                 potion.GetComponent<Element>().elementType = ElementEnum.Elements.Water;
+                type = ElementEnum.Elements.Water;
                 elementsSpawned++;
                 break;
                 //only one cheese potion should occur if any
@@ -142,13 +158,16 @@ public class ElementSpawn : NetworkBehaviour
                 {
                     potion.GetComponent<Renderer>().material = elements[4];
                     potion.GetComponent<Element>().elementType = ElementEnum.Elements.Cheese;
+                    type = ElementEnum.Elements.Cheese;
                     elementsSpawned++;
                     spawnedCheese = true;
                 }
                 break;
         }
 
+        print(type);
 
+        return (int)type;
 
     }
 }

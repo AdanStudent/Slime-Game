@@ -8,7 +8,7 @@ public class Element : NetworkBehaviour
 {
     [SyncVar]
     public ElementEnum.Elements elementType = ElementEnum.Elements.None;
-    private ElementSpawn spawnArea;
+    public ElementSpawn spawnArea;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +46,29 @@ public class Element : NetworkBehaviour
                 break;
             case 4:
                 elementType = ElementEnum.Elements.Cheese;
+                break;
+        }
+    }
+
+    public void SetMaterial()
+    {
+        //set the material according to the element type chosen
+        switch (elementType)
+        {
+            case ElementEnum.Elements.Ash:
+                GetComponent<Renderer>().material = spawnArea.elements[0];
+                break;
+            case ElementEnum.Elements.Fire:
+                GetComponent<Renderer>().material = spawnArea.elements[1];
+                break;
+            case ElementEnum.Elements.Grass:
+                GetComponent<Renderer>().material = spawnArea.elements[2];
+                break;
+            case ElementEnum.Elements.Water:
+                GetComponent<Renderer>().material = spawnArea.elements[3];
+                break;
+            case ElementEnum.Elements.Cheese:
+                GetComponent<Renderer>().material = spawnArea.elements[4];
                 break;
         }
     }

@@ -65,8 +65,10 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 35f524810b866a840b4321ea60394554, type: 2}
   - {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
   potion: {fileID: 18, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
+  spawned: 0
   elementsToSpawn: 4
   elementsSpawned: 0
+  spawnedPotions: []
 --- !u!114 &6491813984131660739
 MonoBehaviour:
   m_ObjectHideFlags: 0

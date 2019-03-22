@@ -7,6 +7,7 @@ public class Server : NetworkBehaviour
 {
     public GameObject playerUnit;
     public GameObject spawnArea;
+    public List<Transform> spawnPoints;
     // public GameObject spawnArea;
     // Start is called before the first frame update
     void Start()
@@ -19,8 +20,8 @@ public class Server : NetworkBehaviour
         {
             return;
         }
-        CmdSpawnPersonalPlayer();
         CmdSpawnArea();
+        CmdSpawnPersonalPlayer();
         
     }
 
@@ -33,7 +34,9 @@ public class Server : NetworkBehaviour
     [Command]
     void CmdSpawnPersonalPlayer()
     {
-        GameObject myPlayer = Instantiate(playerUnit);
+        System.Random rnd = new System.Random();
+        int index = rnd.Next(0,spawnPoints.Count);
+        GameObject myPlayer = Instantiate(playerUnit,spawnPoints[index].position,spawnPoints[index].rotation);
         NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
         Debug.Log("Spawning Object");
     }
@@ -47,11 +50,6 @@ public class Server : NetworkBehaviour
             GameObject SpawnArea = Instantiate(spawnArea);
             NetworkServer.Spawn(SpawnArea);
             Debug.Log("Spawn Area is Spawning");
-        }
-        else
-        {
-            GameObject SpawnArea = Instantiate(spawn);
-            NetworkServer.Spawn(spawn);
         }
     }
 

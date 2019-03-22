@@ -18,6 +18,7 @@ public class Server : NetworkBehaviour
     public GameObject spawnArea;
     public GameObject potion;
     public List<Transform> spawnPoints;
+    [SyncVar]
     public SyncListElement elementList;
     // public GameObject spawnArea;
     // Start is called before the first frame update
@@ -81,10 +82,23 @@ public class Server : NetworkBehaviour
         }
         else
         {
+            GameObject[] serverObjs = GameObject.FindGameObjectsWithTag("Server");
+            Server server=null;
+            foreach(GameObject s in serverObjs)
+            {
+                if(s.GetComponent<Server>().elementList.Count>0)
+                {
+                    server = s.GetComponent<Server>();
+                    break;
+                }
+            }
+            if (server != null)
+                elementList = server.elementList;
             foreach(ElementStruct p in elementList)
             {
                 potion.transform.position = p.position;
                 potion.GetComponent<Element>().elementType = (ElementEnum.Elements)p.elementType;
+                print(potion.GetComponent<Element>().elementType);
                 potion.GetComponent<Element>().SetMaterial();
                 GameObject temp = Instantiate(potion);
                 NetworkServer.Spawn(temp);

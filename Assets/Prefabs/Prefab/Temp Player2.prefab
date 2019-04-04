@@ -216,8 +216,8 @@ MonoBehaviour:
   mouseSens: 6
   target: {fileID: 1180425703981644177}
   dstFromTarget: 3
-  pitchMinMax: {x: -40, y: 85}
-  rotationSmoothTime: 0.12
+  pitchMinMax: {x: -30, y: 85}
+  rotationSmoothTime: 0.26
   camTransform: {fileID: 0}
 --- !u!114 &1855868781923371568
 MonoBehaviour:

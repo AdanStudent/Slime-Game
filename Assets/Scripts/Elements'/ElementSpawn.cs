@@ -66,52 +66,60 @@ public class ElementSpawn : NetworkBehaviour
         previousSpawnPoints = new List<Vector3>();
         spawnedPotions = new List<ElementStruct>();
 
-
-        while (elementsSpawned < elementsToSpawn)
+        for (int i = 0; i < elementsToSpawn; i++)
         {
-            BoxCollider spawn = gameObject.GetComponent<BoxCollider>();
-
-            //get the spawn point
-            Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
-                spawn.transform.position.y, UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z));
-
-
-            //check for overlap
-            Collider[] colliders = Physics.OverlapSphere(spawnPoint, 4);
-
-            // Go through each collider collected
-            foreach (Collider col in colliders)
+            bool foundPosition = false;
+            Vector3 spawnPoint = new Vector3(0, 0, 0);
+            while (!foundPosition)
             {
-                // If this collider is tagged "Obstacle"
-                if (col.tag == "SpawnArea")
+                BoxCollider spawn = gameObject.GetComponent<BoxCollider>();
+
+                //get the spawn point
+                spawnPoint = new Vector3(UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
+                    spawn.transform.position.y, UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z));
+
+
+                //check for overlap
+                Collider[] colliders = Physics.OverlapSphere(spawnPoint, 4);
+
+                // Go through each collider collected
+                foreach (Collider col in colliders)
                 {
-                    // Then this position is not a valid spawn position
-                    validPosition = true;
+                    // If this collider is tagged "Obstacle"
+                    if (col.tag == "SpawnArea")
+                    {
+                        // Then this position is not a valid spawn position
+                        validPosition = true;
+                    }
+                }
+                //if it has not previously spawned at this position and is not overlapping 
+                //then spawn a potion
+                if (!previousSpawnPoints.Contains(spawnPoint) && validPosition)
+                {
+                    foundPosition = true;
                 }
             }
-            //if it has not previously spawned at this position and is not overlapping 
-            //then spawn a potion
-            if (!previousSpawnPoints.Contains(spawnPoint) && validPosition)
-            {
-                //Debug.Log("Spawn");
 
-                //reset valid boolean
-                validPosition = false;
-                ElementStruct temp = new ElementStruct();
+            //Debug.Log("Spawn");
 
-                //set the material and element type of the potion
-                temp.elementType=ChangeMaterial();
-                //instatiate the gameobject and assign it to a variable so that it can be added as a child
-                //GameObject p = Instantiate(potion, spawnPoint, transform.rotation);
-                //add the potion as a child to the spawn area object
-                //p.transform.parent = transform;
+            //reset valid boolean
+            validPosition = false;
+            ElementStruct temp = new ElementStruct();
 
-                temp.position = spawnPoint;
+            //set the material and element type of the potion
+            temp.elementType = ChangeMaterial();
+            //instatiate the gameobject and assign it to a variable so that it can be added as a child
+            //GameObject p = Instantiate(potion, spawnPoint, transform.rotation);
+            //add the potion as a child to the spawn area object
+            //p.transform.parent = transform;
 
-                spawnedPotions.Add(temp);
-                //add the transform to the list of previously used locations
-                previousSpawnPoints.Add(spawnPoint);
-            }
+            temp.position = spawnPoint;
+
+            spawnedPotions.Add(temp);
+            //add the transform to the list of previously used locations
+            previousSpawnPoints.Add(spawnPoint);
+
+
         }
 
         return spawnedPotions;

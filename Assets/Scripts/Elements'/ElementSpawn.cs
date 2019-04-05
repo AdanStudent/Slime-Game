@@ -33,7 +33,8 @@ public class ElementSpawn : NetworkBehaviour
     private BoxCollider spawnArea;
     //bool to determine if location is valid spawn point
     private bool validPosition;
-
+    public List<GameObject> elementReference = new List<GameObject>();
+    public int potionsInScene = 4;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +47,7 @@ public class ElementSpawn : NetworkBehaviour
             spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<BoxCollider>();
             previousSpawnPoints = new List<Vector3>();
             validPosition = false;
+        potionsInScene = elementsToSpawn;
             //if (!spawned)
             //{
             //    Debug.Log("First Spawn");
@@ -58,7 +60,15 @@ public class ElementSpawn : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(potionsInScene <= 0)
+        {
+            foreach(GameObject go in elementReference)
+            {
+                go.SetActive(true);
+                potionsInScene = elementsToSpawn;
+
+            }
+        }
     }
 
     public List<ElementStruct> SpawnPotions()

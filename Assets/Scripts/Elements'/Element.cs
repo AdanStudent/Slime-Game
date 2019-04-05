@@ -13,7 +13,9 @@ public class Element : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<ElementSpawn>();
+        spawnArea.elementReference.Add(this.gameObject);
         if (elementType == ElementEnum.Elements.None)
         {
             RandomType();
@@ -79,8 +81,14 @@ public class Element : NetworkBehaviour
     {
         if (other.tag == "Player")
         {
-            other.GetComponent<PlayerInteraction>().RpcSetType(elementType);
+            if(isServer == true)
+                other.GetComponent<PlayerInteraction>().RpcSetType(elementType);
+            else
+                other.GetComponent<PlayerInteraction>().CmdSetType(elementType);
             gameObject.SetActive(false);
+            spawnArea.potionsInScene--;
+            
+            Debug.Log(spawnArea.potionsInScene);
         }
     }
 }

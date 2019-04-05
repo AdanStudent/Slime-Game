@@ -68,7 +68,8 @@ MonoBehaviour:
   spawned: 0
   elementsToSpawn: 4
   elementsSpawned: 0
-  spawnedPotions: []
+  elementReference: []
+  potionsInScene: 4
 --- !u!114 &6491813984131660739
 MonoBehaviour:
   m_ObjectHideFlags: 0

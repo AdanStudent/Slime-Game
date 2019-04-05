@@ -28,6 +28,11 @@ public class PlayerInteraction : NetworkBehaviour
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
     }
 
+    [Command]
+    public void CmdSetType(ElementEnum.Elements elements)
+    {
+        RpcSetType(elements);
+    }
 
     [ClientRpc]
     //Set the new element type for player if new element is picked up
@@ -146,11 +151,19 @@ public class PlayerInteraction : NetworkBehaviour
         }
     }
 
+    [Command]
+    void CmdComparePlayersElementTypes(GameObject other)
+    {
+        RpcComparePlayersElementTypes(other);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag=="Player")
         {
-            RpcComparePlayersElementTypes(other.gameObject);
+            if (isServer == true)
+                RpcComparePlayersElementTypes(other.gameObject);
+            else
+                CmdComparePlayersElementTypes(other.gameObject);
         }
     }
 }

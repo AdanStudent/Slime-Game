@@ -28,11 +28,7 @@ public class PlayerInteraction : NetworkBehaviour
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
     [ClientRpc]
     //Set the new element type for player if new element is picked up
     public void RpcSetType(ElementEnum.Elements element)

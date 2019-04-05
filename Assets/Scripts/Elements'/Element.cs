@@ -51,9 +51,10 @@ public class Element : NetworkBehaviour
         }
     }
 
-    public void SetMaterial()
+    [Command]
+    public void CmdSetMaterial()
     {
-        print(elementType);
+
         //set the material according to the element type chosen
         switch (elementType)
         {

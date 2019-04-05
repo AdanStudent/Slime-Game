@@ -51,7 +51,6 @@ public class Element : NetworkBehaviour
         }
     }
 
-    [Command]
     public void CmdSetMaterial()
     {
 
@@ -81,7 +80,7 @@ public class Element : NetworkBehaviour
         if (other.tag == "Player")
         {
             other.GetComponent<PlayerInteraction>().RpcSetType(elementType);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

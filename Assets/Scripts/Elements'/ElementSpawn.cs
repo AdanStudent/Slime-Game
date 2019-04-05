@@ -128,26 +128,26 @@ public class ElementSpawn : NetworkBehaviour
         switch (elementIndex)
         {
             case 0:
-                potion.GetComponent<Renderer>().material = elements[0];
-                potion.GetComponent<Element>().elementType = ElementEnum.Elements.Ash;
+               // potion.GetComponent<Renderer>().material = elements[0];
+               // potion.GetComponent<Element>().elementType = ElementEnum.Elements.Ash;
                 elementsSpawned++;
                 type = ElementEnum.Elements.Ash;
                 break;
             case 1:
-                potion.GetComponent<Renderer>().material = elements[1];
-                potion.GetComponent<Element>().elementType = ElementEnum.Elements.Fire;
+                //potion.GetComponent<Renderer>().material = elements[1];
+                //potion.GetComponent<Element>().elementType = ElementEnum.Elements.Fire;
                 type = ElementEnum.Elements.Fire;
                 elementsSpawned++;
                 break;
             case 2:
-                potion.GetComponent<Renderer>().material = elements[2];
-                potion.GetComponent<Element>().elementType = ElementEnum.Elements.Grass;
+               // potion.GetComponent<Renderer>().material = elements[2];
+                //potion.GetComponent<Element>().elementType = ElementEnum.Elements.Grass;
                 type = ElementEnum.Elements.Grass;
                 elementsSpawned++;
                 break;
             case 3:
-                potion.GetComponent<Renderer>().material = elements[3];
-                potion.GetComponent<Element>().elementType = ElementEnum.Elements.Water;
+                //potion.GetComponent<Renderer>().material = elements[3];
+                //potion.GetComponent<Element>().elementType = ElementEnum.Elements.Water;
                 type = ElementEnum.Elements.Water;
                 elementsSpawned++;
                 break;
@@ -155,8 +155,8 @@ public class ElementSpawn : NetworkBehaviour
             case 4:
                 if (!spawnedCheese)
                 {
-                    potion.GetComponent<Renderer>().material = elements[4];
-                    potion.GetComponent<Element>().elementType = ElementEnum.Elements.Cheese;
+                   //potion.GetComponent<Renderer>().material = elements[4];
+                   // potion.GetComponent<Element>().elementType = ElementEnum.Elements.Cheese;
                     type = ElementEnum.Elements.Cheese;
                     elementsSpawned++;
                     spawnedCheese = true;

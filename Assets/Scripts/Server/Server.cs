@@ -11,6 +11,7 @@ public class Server : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        NetworkManager.singleton.maxConnections = 4;
         if(isServer == true)
         {
             //SpawnArea();

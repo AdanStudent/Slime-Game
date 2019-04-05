@@ -35,6 +35,7 @@ public class Server : NetworkBehaviour
 
     void Start()
     {
+        NetworkManager.singleton.maxConnections = 4;
         if(isServer == true)
         {
             //SpawnArea();

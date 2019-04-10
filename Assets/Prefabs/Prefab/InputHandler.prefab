@@ -43,11 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c902dfd3bcea956459d1dfe2c9ee53bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerb: {fileID: 0}
   player: {fileID: 0}
   Speed: 5
   mouseSens: 6
   target: {fileID: 0}
   dstFromTarget: 3
-  pitchMinMax: {x: -40, y: 85}
-  rotationSmoothTime: 0.12
+  pitchMinMax: {x: -30, y: 85}
+  rotationSmoothTime: 0.26
   camTransform: {fileID: 0}

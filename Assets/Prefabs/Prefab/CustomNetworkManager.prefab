@@ -57,10 +57,15 @@ MonoBehaviour:
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
   m_OfflineScene: MultiplayerExample 1
-  m_OnlineScene: MultiplayerExample
+  m_OnlineScene: GreyBox_Main
   m_SpawnPrefabs:
   - {fileID: 9076648427423868313, guid: 0023a4476a1580747b876bb78147e40d, type: 3}
   - {fileID: 2186477657866881519, guid: 9e850e4d505885a4e8156aa66df3331e, type: 3}
+  - {fileID: 20, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
+  - {fileID: 22, guid: db37d6c223a9d314e927d84caa583068, type: 3}
+  - {fileID: 18, guid: 1eaa8817e01cb3c4b811197f98971e44, type: 3}
+  - {fileID: 21, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
+  - {fileID: 19, guid: 31f043fb58320a64da1bc2d1e4dc4378, type: 3}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -103,7 +108,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -118,5 +123,3 @@ MonoBehaviour:
   matchMaker: {fileID: 0}
   SND: {fileID: 0}
   CND: {fileID: 0}
-  spawnArea: {fileID: 2186477657866881519, guid: 9e850e4d505885a4e8156aa66df3331e,
-    type: 3}

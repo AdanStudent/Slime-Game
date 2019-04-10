@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Potion
   - SpawnArea
+  - Server
   layers:
   - Default
   - TransparentFX

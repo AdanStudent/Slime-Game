@@ -26,6 +26,9 @@ public class Server : NetworkBehaviour
     public GameObject potionWater;
    // [SyncVar]
     public GameObject potionCheese;
+
+    public GameObject Timer;
+
     public List<Transform> spawnPoints;
     //list of elements in the scene
     [SyncVar]
@@ -47,6 +50,7 @@ public class Server : NetworkBehaviour
 
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
+        CmdSpawnTimer();
         
     }
 
@@ -58,6 +62,13 @@ public class Server : NetworkBehaviour
         GameObject myPlayer = Instantiate(playerUnit,spawnPoints[index].position,spawnPoints[index].rotation);
         NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
         Debug.Log("Spawning Object");
+    }
+
+    [Command]
+    void CmdSpawnTimer()
+    {
+        GameObject timer = Instantiate(Timer);
+        NetworkServer.Spawn(timer);
     }
 
     [Command]

@@ -80,16 +80,28 @@ public class ElementSpawn : NetworkBehaviour
 
 
                 //check for overlap
-                Collider[] colliders = Physics.OverlapSphere(spawnPoint, 4);
+                Collider[] colliders = Physics.OverlapSphere(spawnPoint, 2);
 
                 // Go through each collider collected
                 foreach (Collider col in colliders)
                 {
                     // If this collider is tagged "Obstacle"
-                    if (col.tag == "SpawnArea")
+                    if (colliders.Length<=2)
                     {
                         // Then this position is not a valid spawn position
                         validPosition = true;
+                    }
+                    else
+                    {
+                        validPosition = false;
+                    }
+                }
+                //Make sure potions are spaced out
+                foreach(Vector3 sp in previousSpawnPoints)
+                {
+                    if(Vector3.Distance(spawnPoint,sp)<5)
+                    {
+                        validPosition = false;
                     }
                 }
                 //if it has not previously spawned at this position and is not overlapping 

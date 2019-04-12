@@ -30,6 +30,9 @@ public class Server : NetworkBehaviour
     //list of elements in the scene
     [SyncVar]
     public SyncListElement elementList = new SyncListElement();
+    public GameObject myPlayer;
+    private GameObject SpawnArea;
+    private ElementSpawn elementSpawnRef;
     // public GameObject spawnArea;
     // Start is called before the first frame update
 
@@ -44,7 +47,7 @@ public class Server : NetworkBehaviour
         {
             return;
         }
-
+        
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
         
@@ -55,11 +58,12 @@ public class Server : NetworkBehaviour
     {
         System.Random rnd = new System.Random();
         int index = rnd.Next(0,spawnPoints.Count);
-        GameObject myPlayer = Instantiate(playerUnit,spawnPoints[index].position,spawnPoints[index].rotation);
+        myPlayer = Instantiate(playerUnit,spawnPoints[index].position,spawnPoints[index].rotation);
         NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
         Debug.Log("Spawning Object");
     }
 
+    
     [Command]
     void CmdSpawnArea()
     {
@@ -70,7 +74,7 @@ public class Server : NetworkBehaviour
         if (spawn == null)
         {
             //instantiate the spawn area and then spawn it on the network
-            GameObject SpawnArea = Instantiate(spawnArea);
+            SpawnArea = Instantiate(spawnArea);
             NetworkServer.Spawn(SpawnArea);
             //List of struct elements
             List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
@@ -106,8 +110,53 @@ public class Server : NetworkBehaviour
         //    }
         //}
     }
+    [Command]
+    public void CmdPotionRespawn()
+    {
+//         Debug.Log("Potion Respawn in server is called");
+//         List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
+//         elementList.Clear();
+//         Debug.Log("Length of temp Potions: " + tempPotions.Count);
+//         //spawn each potion
+//         for (int i = 0; i < tempPotions.Count; i++)
+//         {
+//             Debug.Log("New potions should be created");
+//             CmdSpawnPotions(tempPotions[i]);
+//             elementList.Add(tempPotions[i]);
+//         }
+    }
 
+    [ClientRpc]
+    public void RpcPlayerRespawn()
+    {
+       
+        StartCoroutine(PlayerRespawnWait());
+
+
+    }
+    [Command]
+    public void CmdPlayerRespawn()
+    {
+        RpcPlayerRespawn();
+    }
+
+    IEnumerator PlayerRespawnWait()
+    {
+
+        System.Random rnd = new System.Random();
+        int index = rnd.Next(0, spawnPoints.Count);
+        yield return new WaitForSeconds(3);
+        myPlayer.SetActive(true);
+        myPlayer.transform.position = spawnPoints[index].position;
+        myPlayer.transform.rotation = spawnPoints[index].rotation;
+
+    }
     
+    [ClientRpc]
+    public void RpcSpawnPotions(ElementStruct p)
+    {
+        CmdSpawnPotions(p);
+    }
     [Command]
     public void CmdSpawnPotions(ElementStruct p)
     {

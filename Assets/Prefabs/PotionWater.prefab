@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 67}
   - component: {fileID: 76}
   - component: {fileID: 55}
-  - component: {fileID: 77}
   - component: {fileID: 78}
+  - component: {fileID: 79}
   m_Layer: 0
   m_Name: PotionWater
   m_TagString: Potion
@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 18}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.132811, y: 1.72, z: 29.171705}
+  m_LocalPosition: {x: -3.3960953, y: 1.72, z: 29.25307}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -115,6 +115,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 35f524810b866a840b4321ea60394554, type: 2}
   - {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
   spawnArea: {fileID: 0}
+  potionsInScene: 1
 --- !u!54 &55
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -131,7 +132,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &77
+--- !u!114 &78
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,7 +165,7 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &78
+--- !u!114 &79
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

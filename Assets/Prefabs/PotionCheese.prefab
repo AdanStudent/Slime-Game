@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 30}
-  - component: {fileID: 49}
+  - component: {fileID: 50}
   - component: {fileID: 42}
-  - component: {fileID: 67}
+  - component: {fileID: 68}
   - component: {fileID: 73}
-  - component: {fileID: 55}
+  - component: {fileID: 56}
   - component: {fileID: 74}
   - component: {fileID: 75}
   m_Layer: 0
@@ -31,13 +31,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.534681, y: 1.72, z: 15.698001}
+  m_LocalPosition: {x: -4.4399977, y: 1.72, z: 14.030112}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &49
+--- !u!33 &50
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,7 +82,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &67
+--- !u!135 &68
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +115,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 35f524810b866a840b4321ea60394554, type: 2}
   - {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
   spawnArea: {fileID: 0}
---- !u!54 &55
+  potionsInScene: 1
+--- !u!54 &56
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

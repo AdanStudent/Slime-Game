@@ -34,14 +34,17 @@ public class ElementSpawn : NetworkBehaviour
     //bool to determine if location is valid spawn point
     private bool validPosition;
     public List<GameObject> elementReference = new List<GameObject>();
+    [SyncVar]
     public int potionsInScene = 4;
+    private Server serverRef;
+    private bool respawningPotions = false;
     // Start is called before the first frame update
     void Start()
     {
-            //if (GameObject.FindGameObjectWithTag("Potion") == null)
-            //{
-            //}
-            spawnedPotions = new List<ElementStruct>();
+
+        GameObject server = GameObject.FindGameObjectWithTag("Server");
+        serverRef = server.GetComponent<Server>();
+        spawnedPotions = new List<ElementStruct>();
             spawnedCheese = false;
             elementsSpawned = 0;
             spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<BoxCollider>();
@@ -56,26 +59,131 @@ public class ElementSpawn : NetworkBehaviour
             //}
        
     }
-
+    public void Check()
+    {
+        
+    }
     // Update is called once per frame
     void Update()
     {
-        if(potionsInScene <= 0)
+        CheckIfAnyPotionsAreLeftInScene();
+    }
+
+    public void CheckIfAnyPotionsAreLeftInScene()
+    {
+        if (GameObject.FindGameObjectsWithTag("Potion").Length <= 0 && respawningPotions == false)
         {
-            foreach(GameObject go in elementReference)
+            if(respawningPotions == true)
             {
-                go.SetActive(true);
-                potionsInScene = elementsToSpawn;
 
             }
+            else
+            {
+                respawningPotions = true;
+                StartCoroutine(RespawnPotions());
+            }
+            
+
+//             for (int i = 0; i < elementReference.Count; i++)
+//             {
+//                 if (elementReference[i].activeInHierarchy == true)
+//                 {
+//                     activeElements = true;
+//                 }
+//             }
+//             if (activeElements == false)
+//             {
+//                 
+//             }
         }
+        
+    }
+    IEnumerator RespawnPotions()
+    {
+           respawningPotions = true;
+            foreach (GameObject p in elementReference)
+            {
+                Destroy(p);
+            }
+            yield return new WaitForSecondsRealtime(1);
+            List<ElementStruct> tempPotions = SpawnPotions();
+            serverRef.elementList.Clear();
+            foreach (ElementStruct p in tempPotions)
+            {
+                serverRef.CmdSpawnPotions(p);
+                serverRef.elementList.Add(p);
+
+                Debug.Log("StartingCoroutine");
+            }
+            respawningPotions = false;
+        
+        
+        //serverRef.CmdPotionRespawn();
+        //         foreach (GameObject go in elementReference)
+        //         {
+        //             go.transform.position = RespawnPotionsNewLocation();
+        //             go.SetActive(true);
+        //         }
+
+
+    }
+
+    private void RespawnPotionsNewLocation()
+    {
+        List<ElementStruct> tempPotions = SpawnPotions();
+
+//         BoxCollider spawn = gameObject.GetComponent<BoxCollider>();
+//         float randX = UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x);
+//         float y = spawn.transform.position.y;
+//         float randZ = UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z);
+//         Vector3 spawnPoint = new Vector3(randX, y, randZ);
+//         return spawnPoint;
+        // 
+        //             //get the spawn point
+        //             Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
+        //                 spawn.transform.position.y, UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z));
+        // 
+        //             //get the spawn point
+        //             Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
+        //                 spawn.transform.position.y, UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z));
+        //         bool tempValidPosition = false;
+        //         Vector3 finalSpawnPoint = new Vector3(0, 0, 0);
+        //         while (tempValidPosition == false)
+        //         {
+        //             BoxCollider spawn = gameObject.GetComponent<BoxCollider>();
+        // 
+        //             //get the spawn point
+        //             Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
+        //                 spawn.transform.position.y, UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z));
+        // 
+        // 
+        //             //check for overlap
+        //             Collider[] colliders = Physics.OverlapSphere(spawnPoint, 4);
+        // 
+        //             // Go through each collider collected
+        //             foreach (Collider col in colliders)
+        //             {
+        //                 // If this collider is tagged "Obstacle"
+        //                 if (col.tag == "SpawnArea")
+        //                 {
+        //                     // Then this position is not a valid spawn position
+        //                     tempValidPosition = true;
+        //                     if (!previousSpawnPoints.Contains(spawnPoint) && tempValidPosition)
+        //                     {
+        //                         finalSpawnPoint = spawnPoint;
+        //                     }
+        //                 }
+        //             }
+        //             
+        //         }
+        //         return finalSpawnPoint;
     }
 
     public List<ElementStruct> SpawnPotions()
     {
         previousSpawnPoints = new List<Vector3>();
         spawnedPotions = new List<ElementStruct>();
-
+        elementsSpawned = 0;
 
         while (elementsSpawned < elementsToSpawn)
         {

@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.059233, y: 1.72, z: 12.674107}
+  m_LocalPosition: {x: 19.812695, y: 1.72, z: 9.333116}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -115,6 +115,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 35f524810b866a840b4321ea60394554, type: 2}
   - {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
   spawnArea: {fileID: 0}
+  potionsInScene: 1
 --- !u!54 &57
 Rigidbody:
   m_ObjectHideFlags: 0

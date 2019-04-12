@@ -10,6 +10,7 @@ public class Element : NetworkBehaviour
     public ElementEnum.Elements elementType = ElementEnum.Elements.None;
     public Material[] elements = new Material[5];
     public ElementSpawn spawnArea;
+    public bool potionsInScene = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,13 +21,14 @@ public class Element : NetworkBehaviour
         {
             RandomType();
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
+   
 
     void RandomType()
     {
@@ -86,9 +88,7 @@ public class Element : NetworkBehaviour
             else
                 other.GetComponent<PlayerInteraction>().CmdSetType(elementType);
             gameObject.SetActive(false);
-            spawnArea.potionsInScene--;
-            
-            Debug.Log(spawnArea.potionsInScene);
         }
     }
+
 }

@@ -11,10 +11,6 @@ public class ElementSpawn : NetworkBehaviour
     //materials for the potions
     public Material[] elements=new Material[5];
 
-    //potion gameobject
-    [SyncVar]
-    public GameObject potion;
-
     //boolean that makes sure that the potions are only spawned once
     [SyncVar]
     public bool spawned=false;
@@ -198,26 +194,23 @@ public class ElementSpawn : NetworkBehaviour
 
 
                 //check for overlap
-                Collider[] colliders = Physics.OverlapSphere(spawnPoint, 2);
+                Collider[] colliders = Physics.OverlapSphere(spawnPoint, 1);
 
-                // Go through each collider collected
-                foreach (Collider col in colliders)
+
+                // If this collider is tagged "Obstacle"
+                if (colliders.Length<=2)
                 {
-                    // If this collider is tagged "Obstacle"
-                    if (colliders.Length<=2)
-                    {
-                        // Then this position is not a valid spawn position
-                        validPosition = true;
-                    }
-                    else
-                    {
-                        validPosition = false;
-                    }
+                    // Then this position is not a valid spawn position
+                    validPosition = true;
+                }
+                else
+                {
+                    validPosition = false;
                 }
                 //Make sure potions are spaced out
-                foreach(Vector3 sp in previousSpawnPoints)
+                foreach (Vector3 sp in previousSpawnPoints)
                 {
-                    if(Vector3.Distance(spawnPoint,sp)<5)
+                    if(Vector3.Distance(spawnPoint,sp)<2)
                     {
                         validPosition = false;
                     }

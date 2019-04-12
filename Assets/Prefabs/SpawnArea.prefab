@@ -66,7 +66,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
   potion: {fileID: 18, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
   spawned: 0
-  elementsToSpawn: 4
+  elementsToSpawn: 7
   elementsSpawned: 0
   elementReference: []
   potionsInScene: 4

@@ -86,6 +86,7 @@ MonoBehaviour:
   potionGrass: {fileID: 21, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
   potionWater: {fileID: 18, guid: 1eaa8817e01cb3c4b811197f98971e44, type: 3}
   potionCheese: {fileID: 19, guid: 31f043fb58320a64da1bc2d1e4dc4378, type: 3}
+  Timer: {fileID: 4331672071120981379, guid: 5f1505df138401b498595d35f4360209, type: 3}
   spawnPoints:
   - {fileID: 1211455116610217180, guid: 23c7301f3065ef24e9f0345e906c566d, type: 3}
   - {fileID: 643847652392032678, guid: a8de0a5556fa9034ea6d1a5dbcba8d8c, type: 3}

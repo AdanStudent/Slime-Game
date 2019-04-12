@@ -26,6 +26,9 @@ public class Server : NetworkBehaviour
     public GameObject potionWater;
    // [SyncVar]
     public GameObject potionCheese;
+
+    public GameObject Timer;
+
     public List<Transform> spawnPoints;
     //list of elements in the scene
     [SyncVar]
@@ -50,6 +53,7 @@ public class Server : NetworkBehaviour
         
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
+        CmdSpawnTimer();
         
     }
 
@@ -64,6 +68,13 @@ public class Server : NetworkBehaviour
     }
 
     
+    [Command]
+    void CmdSpawnTimer()
+    {
+        GameObject timer = Instantiate(Timer);
+        NetworkServer.Spawn(timer);
+    }
+
     [Command]
     void CmdSpawnArea()
     {

@@ -13,6 +13,8 @@ public class InputHandler : NetworkBehaviour
     public GameObject player;
     public float Speed = 5f;
 
+    private Timer timer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,16 @@ public class InputHandler : NetworkBehaviour
         player = playerb.gameObject;
         playerb.freezeRotation = true;
         camTransform = Camera.main.transform;
+
+        Timer[] timers = FindObjectsOfType<Timer>();
+
+        for (int i = 0; i < timers.Length; i++)
+        {
+            if (timers[i].masterTimer)
+            {
+                timer = timers[i];
+            }
+        }
     }
 
     bool undo;
@@ -74,7 +86,7 @@ public class InputHandler : NetworkBehaviour
         currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw),
             ref rotationSmoothVel, rotationSmoothTime);
 
-        CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform);
+        CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform, timer.timer);
         moves.Push(cameraRotation);
     }
 
@@ -92,7 +104,7 @@ public class InputHandler : NetworkBehaviour
             Vector3 playerMovement = Vector3.up * Mathf.SmoothDampAngle(player.transform.eulerAngles.y, targetRotation, 
                 ref turnSmoothVel, turnSmoothTime);
 
-            PlayerRotationCommand playerRotationCommand = new PlayerRotationCommand(playerMovement, player.transform);
+            PlayerRotationCommand playerRotationCommand = new PlayerRotationCommand(playerMovement, player.transform, timer.timer);
             moves.Push(playerRotationCommand);
         }
 
@@ -101,28 +113,37 @@ public class InputHandler : NetworkBehaviour
         Vector3 translation = player.transform.forward * targetSpeed * Time.deltaTime;
         if (translation.magnitude > 0.001)
         {
-            Move_Command moveCommand = new Move_Command(translation, player.transform);
+            Move_Command moveCommand = new Move_Command(translation, player.transform, timer.timer);
             moves.Push(moveCommand);
         }
     
     }
 
+    float counter;
     //this is just being used to Test out the Replay not intended to actually be called outside of testing
     private void CallReplay()
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
             undo = true;
+            counter = 180;
         }
 
         
         if (undo)
         {
-            for (int i = 0; i < moves.Count - 1; i++)
+            if (moves.Peek().TimeOfExcution <= counter)
             {
-                moves.Pop().UnExecute();
+                if (moves.Peek().TimeOfExcution <= counter)
+                {
+                    counter = moves.Peek().TimeOfExcution;
+                    moves.Pop().UnExecute();
+                }
             }
-            undo = false;
+            else
+            {
+                counter -= Time.deltaTime;
+            }
         }
     }
 

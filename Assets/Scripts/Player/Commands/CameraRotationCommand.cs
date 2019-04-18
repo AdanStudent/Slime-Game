@@ -25,13 +25,16 @@ namespace Assets.Scripts.Player.Commands
         protected Transform camTransform;
 
 
-        public CameraRotationCommand(Vector3 currRot, Vector3 currPos, float dist, Transform camTar, Transform camTrans)
+        public CameraRotationCommand(Vector3 currRot, Vector3 currPos, float dist, Transform camTar, Transform camTrans, float time)
         {
             this.currentRotation = currRot;
             this.currentPosition = currPos;
             this.distFromTarget = dist;
             this.camTarget = camTar;
             this.camTransform = camTrans;
+
+            this.TimeOfExcution = time;
+
 
             this.Execute();
         }

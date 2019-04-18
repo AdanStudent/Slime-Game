@@ -12,7 +12,9 @@ public class Timer : NetworkBehaviour
     [SyncVar] public float timer = -1; //How long the game has been running. -1=waiting for players, -2=game is done
     [SyncVar] public int minPlayers; //Number of players required for the game to start
     [SyncVar] public bool masterTimer = false; //Is this the master timer?
- 
+
+    [SyncVar] public float masterDeltaTime;
+
     Timer serverTimer;
  
     void Start()
@@ -61,7 +63,8 @@ public class Timer : NetworkBehaviour
             }
             else
             {
-                timer += Time.deltaTime;
+                masterDeltaTime = Time.deltaTime;
+                timer += masterDeltaTime;
             }
         }
 

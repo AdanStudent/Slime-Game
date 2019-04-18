@@ -13,7 +13,7 @@ public class InputHandler : NetworkBehaviour
     public GameObject player;
     public float Speed = 5f;
 
-    private Timer timer;
+    private Timer currentTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class InputHandler : NetworkBehaviour
         {
             if (timers[i].masterTimer)
             {
-                timer = timers[i];
+                currentTimer = timers[i];
             }
         }
     }
@@ -45,9 +45,12 @@ public class InputHandler : NetworkBehaviour
             return;
         }
 
-        MouseInputForPlayerMovement();
-        MouseInputForCameraRotation();
-        //CallReplay();
+        if (!undo)
+        {
+            MouseInputForPlayerMovement();
+            MouseInputForCameraRotation();
+        }
+        CallReplay();
     }
 
     //how sensitive the mouse's movement should be
@@ -86,7 +89,7 @@ public class InputHandler : NetworkBehaviour
         currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw),
             ref rotationSmoothVel, rotationSmoothTime);
 
-        CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform, timer.timer);
+        CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform, currentTimer.timer);
         moves.Push(cameraRotation);
     }
 
@@ -104,7 +107,7 @@ public class InputHandler : NetworkBehaviour
             Vector3 playerMovement = Vector3.up * Mathf.SmoothDampAngle(player.transform.eulerAngles.y, targetRotation, 
                 ref turnSmoothVel, turnSmoothTime);
 
-            PlayerRotationCommand playerRotationCommand = new PlayerRotationCommand(playerMovement, player.transform, timer.timer);
+            PlayerRotationCommand playerRotationCommand = new PlayerRotationCommand(playerMovement, player.transform, currentTimer.timer);
             moves.Push(playerRotationCommand);
         }
 
@@ -113,7 +116,7 @@ public class InputHandler : NetworkBehaviour
         Vector3 translation = player.transform.forward * targetSpeed * Time.deltaTime;
         if (translation.magnitude > 0.001)
         {
-            Move_Command moveCommand = new Move_Command(translation, player.transform, timer.timer);
+            Move_Command moveCommand = new Move_Command(translation, player.transform, currentTimer.timer);
             moves.Push(moveCommand);
         }
     
@@ -126,15 +129,17 @@ public class InputHandler : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             undo = true;
-            counter = 180;
+            counter = currentTimer.timer;
+            print("Undo Started");
         }
 
         
         if (undo)
         {
-            if (moves.Peek().TimeOfExcution <= counter)
+            if (moves.Peek().TimeOfExcution > counter /*&& moves.Peek().TimeOfExcution > counter - 10*/) 
+                // this second half will be for once this is working so its on;y the last 10 seconds of the round
             {
-                if (moves.Peek().TimeOfExcution <= counter)
+                //if (moves.Peek().TimeOfExcution <= counter)
                 {
                     counter = moves.Peek().TimeOfExcution;
                     moves.Pop().UnExecute();
@@ -142,7 +147,7 @@ public class InputHandler : NetworkBehaviour
             }
             else
             {
-                counter -= Time.deltaTime;
+                counter -= currentTimer.masterDeltaTime;
             }
         }
     }

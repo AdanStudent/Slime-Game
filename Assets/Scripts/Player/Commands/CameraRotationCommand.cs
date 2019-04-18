@@ -53,8 +53,8 @@ namespace Assets.Scripts.Player.Commands
 
         public override void UnExecute()
         {
-            camTransform.eulerAngles = -currentRotation;
-            camTransform.position = camTarget.position + camTransform.forward * distFromTarget;
+            camTransform.eulerAngles = currentRotation;
+            camTransform.position = camTarget.position - camTransform.forward * distFromTarget;
         }
     }
 }

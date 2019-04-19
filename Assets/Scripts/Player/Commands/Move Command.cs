@@ -12,10 +12,11 @@ namespace Assets.Scripts.Player.Commands
         protected Transform playerTransform;
         protected Vector3 translation;
 
-        public Move_Command(Vector3 f, Transform pT)
+        public Move_Command(Vector3 f, Transform pT, float time)
         {
             translation = f;
             playerTransform = pT;
+            this.TimeOfExcution = time;
 
             this.Execute();
         }

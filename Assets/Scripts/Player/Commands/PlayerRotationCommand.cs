@@ -13,10 +13,11 @@ namespace Assets.Scripts.Player.Commands
         Vector3 rotateTowards;
         Transform playerTransform;
 
-        public PlayerRotationCommand(Vector3 rotTow, Transform pTransform)
+        public PlayerRotationCommand(Vector3 rotTow, Transform pTransform, float time)
         {
             this.rotateTowards = rotTow;
             this.playerTransform = pTransform;
+            this.TimeOfExcution = time;
 
             this.Execute();
         }

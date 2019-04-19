@@ -3255,20 +3255,21 @@ MonoBehaviour:
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 0}
+  m_PlayerPrefab: {fileID: 3137993886046792375, guid: 3e95461e6fc9e564db7633dfad55fe92,
+    type: 3}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
-  m_OfflineScene: NetworkLobby
+  m_OfflineScene: Lobby
   m_OnlineScene: 
   m_SpawnPrefabs:
+  - {fileID: 9076648427423868313, guid: 0023a4476a1580747b876bb78147e40d, type: 3}
   - {fileID: 39, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
   - {fileID: 19, guid: 31f043fb58320a64da1bc2d1e4dc4378, type: 3}
   - {fileID: 41, guid: db37d6c223a9d314e927d84caa583068, type: 3}
-  - {fileID: 40, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
   - {fileID: 37, guid: 1eaa8817e01cb3c4b811197f98971e44, type: 3}
-  - {fileID: 9076648427423868313, guid: 0023a4476a1580747b876bb78147e40d, type: 3}
+  - {fileID: 40, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
   - {fileID: 2186477657866881519, guid: 9e850e4d505885a4e8156aa66df3331e, type: 3}
-  - {fileID: 4331672071120981379, guid: 5f1505df138401b498595d35f4360209, type: 3}
+  - {fileID: 6215896002768908045, guid: ca5aea97b65d3cb4d950f22609e0682a, type: 3}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -3325,25 +3326,26 @@ MonoBehaviour:
   isNetworkActive: 0
   matchMaker: {fileID: 0}
   m_ShowLobbyGUI: 0
-  m_MaxPlayers: 3
-  m_MaxPlayersPerConnection: 2
-  m_MinPlayers: 2
+  m_MaxPlayers: 4
+  m_MaxPlayersPerConnection: 1
+  m_MinPlayers: 1
   m_LobbyPlayerPrefab: {fileID: 11487034, guid: ad727d7e1462ecc4f83c898ecc501997,
     type: 3}
-  m_GamePlayerPrefab: {fileID: 0}
-  m_LobbyScene: 
-  m_PlayScene: 
+  m_GamePlayerPrefab: {fileID: 3137993886046792375, guid: 3e95461e6fc9e564db7633dfad55fe92,
+    type: 3}
+  m_LobbyScene: Lobby
+  m_PlayScene: NewAssetLevel
   lobbySlots: []
-  prematchCountdown: 3
+  prematchCountdown: 0
   topPanel: {fileID: 11424994}
   mainMenuPanel: {fileID: 22442386}
   lobbyPanel: {fileID: 22443498}
   infoPanel: {fileID: 11442006}
   countdownPanel: {fileID: 11413810}
-  addPlayerButton: {fileID: 144256}
+  addPlayerButton: {fileID: 161020}
   backButton: {fileID: 11477488}
-  statusInfo: {fileID: 11403930}
-  hostInfo: {fileID: 11415712}
+  statusInfo: {fileID: 11415712}
+  hostInfo: {fileID: 11403930}
   _playerNumber: 0
   _isMatchmaking: 0
 --- !u!114 &11415508

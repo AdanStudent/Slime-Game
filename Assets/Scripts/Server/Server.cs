@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -26,10 +28,16 @@ public class Server : NetworkBehaviour
     public GameObject potionWater;
    // [SyncVar]
     public GameObject potionCheese;
+
+    public GameObject Timer;
+
     public List<Transform> spawnPoints;
     //list of elements in the scene
     [SyncVar]
     public SyncListElement elementList = new SyncListElement();
+    public GameObject myPlayer;
+    private GameObject SpawnArea;
+    private ElementSpawn elementSpawnRef;
     // public GameObject spawnArea;
     // Start is called before the first frame update
 
@@ -44,9 +52,10 @@ public class Server : NetworkBehaviour
         {
             return;
         }
-
+        
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
+        CmdSpawnTimer();
         
     }
 
@@ -54,10 +63,46 @@ public class Server : NetworkBehaviour
     void CmdSpawnPersonalPlayer()
     {
         System.Random rnd = new System.Random();
-        int index = rnd.Next(0,spawnPoints.Count);
-        GameObject myPlayer = Instantiate(playerUnit,spawnPoints[index].position,spawnPoints[index].rotation);
-        NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-        Debug.Log("Spawning Object");
+        int index = rnd.Next(0, spawnPoints.Count);
+        if (connectionToClient.isReady)
+        {
+            myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
+            NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
+        }
+        else
+        {
+            //connectionToClient.RegisterHandler(MsgType.Ready, OnReady);
+            StartCoroutine(WaitForReady());
+        }
+    }
+
+    IEnumerator WaitForReady()
+    {
+        while (!connectionToClient.isReady)
+        {
+            yield return new WaitForSeconds(0.25f);
+        }
+        OnReady();
+    }
+
+    [Server]
+    private void OnReady()
+    {
+        Debug.Log("Spawning Object1");
+        System.Random rnd = new System.Random();
+        int index = rnd.Next(0, spawnPoints.Count);
+        if (connectionToClient.isReady)
+        {
+            myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
+            NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
+        }
+    }
+
+    [Command]
+    void CmdSpawnTimer()
+    {
+        GameObject timer = Instantiate(Timer);
+        NetworkServer.Spawn(timer);
     }
 
     [Command]
@@ -70,7 +115,7 @@ public class Server : NetworkBehaviour
         if (spawn == null)
         {
             //instantiate the spawn area and then spawn it on the network
-            GameObject SpawnArea = Instantiate(spawnArea);
+            SpawnArea = Instantiate(spawnArea);
             NetworkServer.Spawn(SpawnArea);
             //List of struct elements
             List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
@@ -106,8 +151,53 @@ public class Server : NetworkBehaviour
         //    }
         //}
     }
+    [Command]
+    public void CmdPotionRespawn()
+    {
+//         Debug.Log("Potion Respawn in server is called");
+//         List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
+//         elementList.Clear();
+//         Debug.Log("Length of temp Potions: " + tempPotions.Count);
+//         //spawn each potion
+//         for (int i = 0; i < tempPotions.Count; i++)
+//         {
+//             Debug.Log("New potions should be created");
+//             CmdSpawnPotions(tempPotions[i]);
+//             elementList.Add(tempPotions[i]);
+//         }
+    }
 
+    [ClientRpc]
+    public void RpcPlayerRespawn()
+    {
+       
+        StartCoroutine(PlayerRespawnWait());
+
+
+    }
+    [Command]
+    public void CmdPlayerRespawn()
+    {
+        RpcPlayerRespawn();
+    }
+
+    IEnumerator PlayerRespawnWait()
+    {
+
+        System.Random rnd = new System.Random();
+        int index = rnd.Next(0, spawnPoints.Count);
+        yield return new WaitForSeconds(3);
+        myPlayer.SetActive(true);
+        myPlayer.transform.position = spawnPoints[index].position;
+        myPlayer.transform.rotation = spawnPoints[index].rotation;
+
+    }
     
+    [ClientRpc]
+    public void RpcSpawnPotions(ElementStruct p)
+    {
+        CmdSpawnPotions(p);
+    }
     [Command]
     public void CmdSpawnPotions(ElementStruct p)
     {
@@ -118,27 +208,32 @@ public class Server : NetworkBehaviour
             case ElementEnum.Elements.Ash:
                 potionAsh.transform.position = p.position;
                 potionAsh.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionAsh);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionAsh);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Fire:
                 potionFire.transform.position = p.position;
                 potionFire.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionFire);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionFire);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Grass:
                 potionGrass.transform.position = p.position;
                 potionGrass.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionGrass);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionGrass);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Water:
                 potionWater.transform.position = p.position;
                 potionWater.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionWater);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionWater);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Cheese:
                 potionCheese.transform.position = p.position;
                 potionCheese.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionCheese);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionCheese);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
         }
         if (temp != null)

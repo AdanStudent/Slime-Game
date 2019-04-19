@@ -10,21 +10,25 @@ public class Element : NetworkBehaviour
     public ElementEnum.Elements elementType = ElementEnum.Elements.None;
     public Material[] elements = new Material[5];
     public ElementSpawn spawnArea;
+    public bool potionsInScene = true;
     // Start is called before the first frame update
     void Start()
     {
+        
         spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<ElementSpawn>();
+        spawnArea.elementReference.Add(this.gameObject);
         if (elementType == ElementEnum.Elements.None)
         {
             RandomType();
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
+   
 
     void RandomType()
     {
@@ -79,8 +83,12 @@ public class Element : NetworkBehaviour
     {
         if (other.tag == "Player")
         {
-            other.GetComponent<PlayerInteraction>().RpcSetType(elementType);
+            if(isServer == true)
+                other.GetComponent<PlayerInteraction>().RpcSetType(elementType);
+            else
+                other.GetComponent<PlayerInteraction>().CmdSetType(elementType);
             gameObject.SetActive(false);
         }
     }
+
 }

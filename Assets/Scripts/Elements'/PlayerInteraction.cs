@@ -16,10 +16,13 @@ public class PlayerInteraction : NetworkBehaviour
     public Material grass;
     public Material water;
     public Material cheese;
+    private Server serverRef;
 
     // Start is called before the first frame update
     void Start()
     {
+        GameObject server = GameObject.FindGameObjectWithTag("Server");
+        serverRef = server.GetComponent<Server>();
         //initialize the render
         renderer1 = gameObject.GetComponent<Renderer>();
         //intialize material
@@ -28,6 +31,19 @@ public class PlayerInteraction : NetworkBehaviour
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
     }
 
+    private void callRespawn()
+    {
+        serverRef.myPlayer = this.gameObject;
+        if (isServer == true)
+            serverRef.RpcPlayerRespawn();
+        else
+            serverRef.CmdPlayerRespawn();
+    }
+    [Command]
+    public void CmdSetType(ElementEnum.Elements elements)
+    {
+        RpcSetType(elements);
+    }
 
     [ClientRpc]
     //Set the new element type for player if new element is picked up
@@ -39,12 +55,12 @@ public class PlayerInteraction : NetworkBehaviour
         Debug.Log(this+" New Type: " + elementType.ToString());
     }
 
-    [ClientRpc]
-    //Spawn the player again
-    public void RpcSetActiveAgain()
-    {
-        gameObject.SetActive(true);
-    }
+//     [ClientRpc]
+//     //Spawn the player again
+//     public void RpcSetActiveAgain()
+//     {
+//         gameObject.SetActive(true);
+//     }
 
     //change the player's element type
     public void ChangeMaterial()
@@ -86,11 +102,13 @@ public class PlayerInteraction : NetworkBehaviour
                     //cheese always wins
                     case ElementEnum.Elements.Cheese:
                         Debug.Log(this + " Loses to cheese");
+                        callRespawn();
                         gameObject.SetActive(false);
                         break;
                         //Grass beats ash
                     case ElementEnum.Elements.Grass:
                         Debug.Log(this + " Loses to Grass");
+                        callRespawn();
                         gameObject.SetActive(false);
                         break;
                 }
@@ -105,11 +123,13 @@ public class PlayerInteraction : NetworkBehaviour
                     //cheese always wins
                     case ElementEnum.Elements.Cheese:
                         Debug.Log(this + " Loses to Cheese");
+                        callRespawn();
                         gameObject.SetActive(false);
                         break;
                         //water beats fire
                     case ElementEnum.Elements.Water:
                         Debug.Log(this + " Loses to Water");
+                        callRespawn();
                         gameObject.SetActive(false);
                         break;
                 }
@@ -121,10 +141,12 @@ public class PlayerInteraction : NetworkBehaviour
                     //ahs beats water
                     case ElementEnum.Elements.Ash:
                         Debug.Log(this + " Loses to Ash");
+                        callRespawn();
                         gameObject.SetActive(false);
                         break;
                     case ElementEnum.Elements.Cheese:
                         Debug.Log(this + " Loses to Cheese");
+                        callRespawn();
                         gameObject.SetActive(false);
                         break;
                 }
@@ -134,11 +156,13 @@ public class PlayerInteraction : NetworkBehaviour
                 {
                     case ElementEnum.Elements.Cheese:
                         Debug.Log(this + " Loses to Cheese");
+                        callRespawn();
                         gameObject.SetActive(false);
                         break;
                         //fire beats grass
                     case ElementEnum.Elements.Fire:
                         Debug.Log(this + " Loses to Fire");
+                        callRespawn();
                         gameObject.SetActive(false);
                         break;
                 }
@@ -146,11 +170,20 @@ public class PlayerInteraction : NetworkBehaviour
         }
     }
 
+
+    [Command]
+    void CmdComparePlayersElementTypes(GameObject other)
+    {
+        RpcComparePlayersElementTypes(other);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag=="Player")
         {
-            RpcComparePlayersElementTypes(other.gameObject);
+            if (isServer == true)
+                RpcComparePlayersElementTypes(other.gameObject);
+            else
+                CmdComparePlayersElementTypes(other.gameObject);
         }
     }
 }

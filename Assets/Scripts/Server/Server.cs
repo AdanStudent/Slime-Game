@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -207,27 +208,32 @@ public class Server : NetworkBehaviour
             case ElementEnum.Elements.Ash:
                 potionAsh.transform.position = p.position;
                 potionAsh.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionAsh);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionAsh);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Fire:
                 potionFire.transform.position = p.position;
                 potionFire.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionFire);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionFire);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Grass:
                 potionGrass.transform.position = p.position;
                 potionGrass.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionGrass);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionGrass);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Water:
                 potionWater.transform.position = p.position;
                 potionWater.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionWater);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionWater);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Cheese:
                 potionCheese.transform.position = p.position;
                 potionCheese.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionCheese);
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionCheese);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
         }
         if (temp != null)

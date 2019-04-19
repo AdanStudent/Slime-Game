@@ -17,6 +17,7 @@ public class PlayerInteraction : NetworkBehaviour
     public Material water;
     public Material cheese;
     private Server serverRef;
+    public LivesStruct tempLives;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,30 @@ public class PlayerInteraction : NetworkBehaviour
         ChangeMaterial();
         //freeze rotation
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
+        
+       
+    }
+
+    private void Awake()
+    {
+        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 2);
+        if (isServer == true)
+            RpcUpdateStruct();
+        else
+            CmdUpdateStruct();
+        
+    }
+
+    [Command]
+    void CmdUpdateStruct()
+    {
+        RpcUpdateStruct();
+    }
+
+    [ClientRpc]
+    void RpcUpdateStruct()
+    {
+        serverRef.playerLives.Add(tempLives);
     }
 
     private void callRespawn()

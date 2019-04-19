@@ -9,9 +9,20 @@ public struct ElementStruct
     public int elementType;
     public Vector3 position;
 }
+public struct LivesStruct
+{
+    public string netID;
+    public int lives;
+    public LivesStruct(string net, int li)
+    {
+        netID = net;
+        lives = li;
+    }
+    //GameObject 
+}
 
 public class SyncListElement : SyncListStruct<ElementStruct> { }
-
+public class SyncListLives : SyncListStruct<LivesStruct> { }
 public class Server : NetworkBehaviour
 {
     public GameObject playerUnit;
@@ -36,6 +47,8 @@ public class Server : NetworkBehaviour
     public GameObject myPlayer;
     private GameObject SpawnArea;
     private ElementSpawn elementSpawnRef;
+    //Dictionary<string, int> playerLives = new Dictionary<string, int>();
+    public SyncListLives playerLives = new SyncListLives();
     // public GameObject spawnArea;
     // Start is called before the first frame update
 
@@ -54,8 +67,11 @@ public class Server : NetworkBehaviour
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
         CmdSpawnTimer();
-        
+
+
     }
+
+  
 
     [Command]
     void CmdSpawnPersonalPlayer()
@@ -63,9 +79,23 @@ public class Server : NetworkBehaviour
         System.Random rnd = new System.Random();
         int index = rnd.Next(0,spawnPoints.Count);
         myPlayer = Instantiate(playerUnit,spawnPoints[index].position,spawnPoints[index].rotation);
+        //myPlayer.GetComponent<PlayerId>().SetIdentity("Player " + myPlayer.GetComponent<NetworkIdentity>().netId.ToString()); 
         NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
+        Debug.Log("Initial net ID " + myPlayer.GetComponent<NetworkIdentity>().netId.ToString());
+        //RpcAddPlayersToDictonary(myPlayer.name);
         Debug.Log("Spawning Object");
     }
+   
+    //adds each player to dictonary
+    /*[ClientRpc]
+    void RpcAddPlayersToDictonary(string playerName)
+    {
+        playerLives.Add(playerName, 3);
+        foreach (KeyValuePair<string, int> pl in playerLives)
+        {
+            Debug.Log("Player: " + pl.Key + " Lives: " + pl.Value);
+        }
+    }*/
 
     
     [Command]
@@ -78,6 +108,8 @@ public class Server : NetworkBehaviour
     [Command]
     void CmdSpawnArea()
     {
+
+        
         //Get the spawn area object
         GameObject spawn = GameObject.FindGameObjectWithTag("SpawnArea");
 
@@ -121,29 +153,37 @@ public class Server : NetworkBehaviour
         //    }
         //}
     }
-    [Command]
-    public void CmdPotionRespawn()
-    {
-//         Debug.Log("Potion Respawn in server is called");
-//         List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
-//         elementList.Clear();
-//         Debug.Log("Length of temp Potions: " + tempPotions.Count);
-//         //spawn each potion
-//         for (int i = 0; i < tempPotions.Count; i++)
-//         {
-//             Debug.Log("New potions should be created");
-//             CmdSpawnPotions(tempPotions[i]);
-//             elementList.Add(tempPotions[i]);
-//         }
-    }
+  
 
     [ClientRpc]
     public void RpcPlayerRespawn()
     {
-       
-        StartCoroutine(PlayerRespawnWait());
+        bool foundPlayer = false;
+        int foundIndex = -1;
+        for (int i = 0; i < playerLives.Count; i++)
+        {
+            Debug.Log("Struct net id: " + playerLives[i].netID + " Player Net ID" + myPlayer.GetComponent<NetworkIdentity>().netId.ToString());
+            if(playerLives[i].netID == myPlayer.GetComponent<NetworkIdentity>().netId.ToString())
+            {
+                
+                foundPlayer = true;
+                foundIndex = i;
+                i = playerLives.Count + 1;
+            }
+        }
 
 
+        if(foundIndex != -1)
+        {
+            LivesStruct temp = playerLives[foundIndex];
+            temp.lives = temp.lives - 1;
+            playerLives[foundIndex] = temp;
+            if(playerLives[foundIndex].lives > 0)
+            {
+                StartCoroutine(PlayerRespawnWait());
+            }
+        }
+        
     }
     [Command]
     public void CmdPlayerRespawn()
@@ -153,6 +193,7 @@ public class Server : NetworkBehaviour
 
     IEnumerator PlayerRespawnWait()
     {
+       
 
         System.Random rnd = new System.Random();
         int index = rnd.Next(0, spawnPoints.Count);

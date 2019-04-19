@@ -39,7 +39,6 @@ public class InputHandler : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (hasAuthority == false)
         {
             return;
@@ -50,7 +49,54 @@ public class InputHandler : NetworkBehaviour
             MouseInputForPlayerMovement();
             MouseInputForCameraRotation();
         }
+
+        BeginReplay();
+        //SaveLast10Sec();
         CallReplay();
+    }
+
+    Stack<Command> replayCommands = new Stack<Command>();
+    private void SaveLast10Sec()
+    {
+        //Get current time
+        if (undo)
+        {
+            for (int i = 0; i < moves.Count - 1; i++)
+            {
+                if (moves.Peek().TimeOfExcution > counter - 10)
+                {
+                    replayCommands.Push(moves.Pop());
+                }
+                else
+                {
+                    //resetting the player's orginal position and rotation, also the camera's rotation
+                    if (replayCommands.Peek().GetType() is Move_Command || replayCommands.Peek().GetType() is PlayerRotationCommand)
+                    {
+                        this.player.transform.position = replayCommands.Peek().GetTransform.position;
+                        this.player.transform.rotation = replayCommands.Peek().GetTransform.rotation;
+                    }
+                    else
+                    {
+                        this.camTransform.rotation = replayCommands.Peek().GetTransform.rotation;
+                    }
+
+                    return;
+                }
+            }
+        }
+
+    }
+
+    private void BeginReplay()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            undo = true;
+            counter = currentTimer.timer;
+
+            currentTimer.timer = -2;
+            print("Undo Started, Stopped masterTimer");
+        }
     }
 
     //how sensitive the mouse's movement should be
@@ -125,15 +171,7 @@ public class InputHandler : NetworkBehaviour
     float counter;
     //this is just being used to Test out the Replay not intended to actually be called outside of testing
     private void CallReplay()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            undo = true;
-            counter = currentTimer.timer;
-            print("Undo Started");
-        }
-
-        
+    {        
         if (undo)
         {
             if (moves.Peek().TimeOfExcution > counter /*&& moves.Peek().TimeOfExcution > counter - 10*/) 

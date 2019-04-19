@@ -1,6 +1,12 @@
 ﻿//main class where other Commands can inherit from
+
 public abstract class Command
 {
+ 
+    //getting the transform component from the command
+    public UnityEngine.Transform GetTransform { get; set; }
+
+    //saving the Time at which the command is created
     public float TimeOfExcution { get; protected set; }
 
     //used to Execute action associated with it's command

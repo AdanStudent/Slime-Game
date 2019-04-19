@@ -1,26 +1,14 @@
 fileFormatVersion: 2
-guid: cf18bcaf6d3588748a7454efc75def46
+guid: edd21f292bd240448ad45c4c6aad47d3
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
-    100002: SlimeNEW:pSphere1
-    100004: SlimeNEW:pSphere2
-    100006: SlimeNEW:pSphere3
     400000: //RootNode
-    400002: SlimeNEW:pSphere1
-    400004: SlimeNEW:pSphere2
-    400006: SlimeNEW:pSphere3
-    2100000: lambert1
-    2300000: SlimeNEW:pSphere1
-    2300002: SlimeNEW:pSphere2
-    2300004: SlimeNEW:pSphere3
-    3300000: SlimeNEW:pSphere1
-    3300002: SlimeNEW:pSphere2
-    3300004: SlimeNEW:pSphere3
-    4300000: SlimeNEW:pSphere1
-    4300002: SlimeNEW:pSphere2
-    4300004: SlimeNEW:pSphere3
+    2100000: Slime
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Slime1
   externalObjects: {}
   materials:
     importMaterials: 1

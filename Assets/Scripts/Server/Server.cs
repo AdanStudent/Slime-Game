@@ -154,10 +154,29 @@ public class Server : NetworkBehaviour
         //}
     }
   
+    bool CheckWinState()
+    {
+        int someoneWon = 0;
+        foreach (LivesStruct ls in playerLives)
+        {
+            if(ls.lives <= 0)
+            {
+                someoneWon++;
+            }
+        }
 
+        if (someoneWon == playerLives.Count - 1)
+        { 
+            return true;
+        }
+        else
+            return false;
+    }
     [ClientRpc]
     public void RpcPlayerRespawn()
     {
+        CheckWinState();
+        Debug.Log("A player won");
         bool foundPlayer = false;
         int foundIndex = -1;
         for (int i = 0; i < playerLives.Count; i++)

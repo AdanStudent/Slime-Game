@@ -30,13 +30,13 @@ public class PlayerInteraction : NetworkBehaviour
         ChangeMaterial();
         //freeze rotation
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
-        
-       
+        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 2);
+        serverRef.playerLives.Add(tempLives);
     }
 
-    private void Awake()
+   /* private void Awake()
     {
-        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 2);
+        
         if (isServer == true)
             RpcUpdateStruct();
         else
@@ -49,7 +49,7 @@ public class PlayerInteraction : NetworkBehaviour
     {
         RpcUpdateStruct();
     }
-
+    */
     [ClientRpc]
     void RpcUpdateStruct()
     {

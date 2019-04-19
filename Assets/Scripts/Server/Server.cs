@@ -246,7 +246,7 @@ public class Server : NetworkBehaviour
         yield return new WaitForSeconds(3);
         myPlayer.SetActive(true);
         myPlayer.transform.position = spawnPoints[index].position;
-        myPlayer.transform.rotation = spawnPoints[index].rotation;
+       // myPlayer.transform.rotation = spawnPoints[index].rotation;
 
     }
     

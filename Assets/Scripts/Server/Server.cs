@@ -148,6 +148,7 @@ public class Server : NetworkBehaviour
             SpawnArea = Instantiate(spawnArea);
             NetworkServer.Spawn(SpawnArea);
             //List of struct elements
+            SpawnArea.GetComponent<ElementSpawn>().DetermineMinSpawnNum();
             List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
 
             //spawn each potion

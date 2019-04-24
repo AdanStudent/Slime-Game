@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
+using Prototype.NetworkLobby;
 
 
 public struct ElementStruct
@@ -193,12 +194,20 @@ public class Server : NetworkBehaviour
         }
 
         if (someoneWon == playerLives.Count - 1)
-        { 
+        {
+            RpcReturnToLobby();
             return true;
         }
         else
             return false;
     }
+
+    [ClientRpc]
+    public void RpcReturnToLobby()
+    {
+        LobbyManager.s_Singleton.SendReturnToLobby();
+    }
+
     [ClientRpc]
     public void RpcPlayerRespawn()
     {
@@ -265,32 +274,36 @@ public class Server : NetworkBehaviour
             case ElementEnum.Elements.Ash:
                 potionAsh.transform.position = p.position;
                 potionAsh.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionAsh);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionAsh);
+                temp.gameObject.name = "Ash";
+                temp.transform.parent = null;
                 break;
             case ElementEnum.Elements.Fire:
                 potionFire.transform.position = p.position;
                 potionFire.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionFire);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionFire);
+                temp.gameObject.name = "Fire";
+                temp.transform.parent = null;
                 break;
             case ElementEnum.Elements.Grass:
                 potionGrass.transform.position = p.position;
                 potionGrass.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionGrass);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionGrass);
+                temp.gameObject.name = "Grass";
+                temp.transform.parent = null;
                 break;
             case ElementEnum.Elements.Water:
                 potionWater.transform.position = p.position;
                 potionWater.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionWater);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionWater);
+                temp.gameObject.name = "Water";
                 break;
             case ElementEnum.Elements.Cheese:
                 potionCheese.transform.position = p.position;
                 potionCheese.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionCheese);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionCheese);
+                temp.gameObject.name = "Cheese";
+                temp.transform.parent = null;
                 break;
         }
         if (temp != null)

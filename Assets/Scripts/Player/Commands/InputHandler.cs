@@ -135,8 +135,9 @@ public class InputHandler : NetworkBehaviour
         currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw),
             ref rotationSmoothVel, rotationSmoothTime);
 
-        CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform, currentTimer.timer);
-        moves.Push(cameraRotation);
+        //CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform, currentTimer.timer);
+       
+       // moves.Push(cameraRotation);
     }
 
     private float turnSmoothVel;

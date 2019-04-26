@@ -34,6 +34,10 @@ public class ElementSpawn : NetworkBehaviour
     public int potionsInScene = 4;
     private Server serverRef;
     private bool respawningPotions = false;
+
+    int minNumOfElementsToSpawn = 0;
+    int currentElementsToSpawn;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,19 +45,33 @@ public class ElementSpawn : NetworkBehaviour
         GameObject server = GameObject.FindGameObjectWithTag("Server");
         serverRef = server.GetComponent<Server>();
         spawnedPotions = new List<ElementStruct>();
-            spawnedCheese = false;
-            elementsSpawned = 0;
-            spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<BoxCollider>();
-            previousSpawnPoints = new List<Vector3>();
-            validPosition = false;
+        spawnedCheese = false;
+        elementsSpawned = 0;
+        spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<BoxCollider>();
+        previousSpawnPoints = new List<Vector3>();
+        validPosition = false;
         potionsInScene = elementsToSpawn;
-            //if (!spawned)
-            //{
-            //    Debug.Log("First Spawn");
-            //    RpcSpawnPotions();
-            //    spawned = true;
-            //}
-       
+        //spawn one of each element for every set of 3 unitl there are no more 3
+        //if (!spawned)
+        //{
+        //    Debug.Log("First Spawn");
+        //    RpcSpawnPotions();
+        //    spawned = true;
+        //}
+
+    }
+
+    public void DetermineMinSpawnNum()
+    {
+        int elements = elementsToSpawn;
+        if (elements > 3)
+        {
+            elements--;
+            for (int i = 0; i < elements; i += 3)
+            {
+                minNumOfElementsToSpawn++;
+            }
+        }
     }
     public void Check()
     {
@@ -79,18 +97,6 @@ public class ElementSpawn : NetworkBehaviour
                 StartCoroutine(RespawnPotions());
             }
             
-
-//             for (int i = 0; i < elementReference.Count; i++)
-//             {
-//                 if (elementReference[i].activeInHierarchy == true)
-//                 {
-//                     activeElements = true;
-//                 }
-//             }
-//             if (activeElements == false)
-//             {
-//                 
-//             }
         }
         
     }
@@ -112,15 +118,6 @@ public class ElementSpawn : NetworkBehaviour
                 Debug.Log("StartingCoroutine");
             }
             respawningPotions = false;
-        
-        
-        //serverRef.CmdPotionRespawn();
-        //         foreach (GameObject go in elementReference)
-        //         {
-        //             go.transform.position = RespawnPotionsNewLocation();
-        //             go.SetActive(true);
-        //         }
-
 
     }
 
@@ -128,51 +125,6 @@ public class ElementSpawn : NetworkBehaviour
     {
         List<ElementStruct> tempPotions = SpawnPotions();
 
-//         BoxCollider spawn = gameObject.GetComponent<BoxCollider>();
-//         float randX = UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x);
-//         float y = spawn.transform.position.y;
-//         float randZ = UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z);
-//         Vector3 spawnPoint = new Vector3(randX, y, randZ);
-//         return spawnPoint;
-        // 
-        //             //get the spawn point
-        //             Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
-        //                 spawn.transform.position.y, UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z));
-        // 
-        //             //get the spawn point
-        //             Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
-        //                 spawn.transform.position.y, UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z));
-        //         bool tempValidPosition = false;
-        //         Vector3 finalSpawnPoint = new Vector3(0, 0, 0);
-        //         while (tempValidPosition == false)
-        //         {
-        //             BoxCollider spawn = gameObject.GetComponent<BoxCollider>();
-        // 
-        //             //get the spawn point
-        //             Vector3 spawnPoint = new Vector3(UnityEngine.Random.Range(spawn.bounds.min.x, spawn.bounds.max.x),
-        //                 spawn.transform.position.y, UnityEngine.Random.Range(spawn.bounds.min.z, spawn.bounds.max.z));
-        // 
-        // 
-        //             //check for overlap
-        //             Collider[] colliders = Physics.OverlapSphere(spawnPoint, 4);
-        // 
-        //             // Go through each collider collected
-        //             foreach (Collider col in colliders)
-        //             {
-        //                 // If this collider is tagged "Obstacle"
-        //                 if (col.tag == "SpawnArea")
-        //                 {
-        //                     // Then this position is not a valid spawn position
-        //                     tempValidPosition = true;
-        //                     if (!previousSpawnPoints.Contains(spawnPoint) && tempValidPosition)
-        //                     {
-        //                         finalSpawnPoint = spawnPoint;
-        //                     }
-        //                 }
-        //             }
-        //             
-        //         }
-        //         return finalSpawnPoint;
     }
 
     public List<ElementStruct> SpawnPotions()
@@ -210,7 +162,7 @@ public class ElementSpawn : NetworkBehaviour
                 //Make sure potions are spaced out
                 foreach (Vector3 sp in previousSpawnPoints)
                 {
-                    if(Vector3.Distance(spawnPoint,sp)<2)
+                    if(Vector3.Distance(spawnPoint,sp)<5)
                     {
                         validPosition = false;
                     }
@@ -248,47 +200,117 @@ public class ElementSpawn : NetworkBehaviour
         return spawnedPotions;
     }
 
+    List<Tuple<string,bool>> spawnedEqualAmount = new List<Tuple<string, bool>>()
+    {
+        new Tuple<string, bool>("Fire",false),
+        new Tuple<string, bool>("Grass",false),
+        new Tuple<string, bool>("Water",false),
+
+    };
+  
     //set the material and element type 
     public int ChangeMaterial()
     {
-        //randomly choose element type
-        System.Random rnd = new System.Random(Guid.NewGuid().GetHashCode());
-        int elementIndex = rnd.Next(0, 5);
+        int elementIndex=0;
+        if (currentElementsToSpawn < minNumOfElementsToSpawn && !spawnedEqualAmount[0].Item2)
+            elementIndex = 0;
+        else if (currentElementsToSpawn < minNumOfElementsToSpawn && !spawnedEqualAmount[1].Item2)
+            elementIndex = 1;
+        else if (currentElementsToSpawn < minNumOfElementsToSpawn && !spawnedEqualAmount[2].Item2)
+            elementIndex = 2;
+        else if(currentElementsToSpawn < minNumOfElementsToSpawn)
+            elementIndex = 3;
+        else if (spawnedEqualAmount[0].Item2 && spawnedEqualAmount[1].Item2 && spawnedEqualAmount[2].Item2)
+        {
+            //randomly choose element type
+            System.Random rnd = new System.Random(Guid.NewGuid().GetHashCode());
+            //range 0-3
+            elementIndex = rnd.Next(0, 400);
+            //for fire
+            if (elementIndex <= 100)
+                elementIndex = 0;
+            //for grass
+            else if (elementIndex > 100 && elementIndex <= 200)
+                elementIndex = 1;
+            //for water
+            else if (elementIndex > 200 && elementIndex <= 300)
+                elementIndex = 2;
+            //for cheese, based on the way the code is written, this is needed because cheese only has a chance of appearing in a round
+            //once or not at all to keep it fair
+            else if (elementIndex > 300 && elementIndex <= 400)
+                elementIndex = 3;
+        }
         ElementEnum.Elements type = ElementEnum.Elements.None;
+
         //set the material according to the element type chosen
         switch (elementIndex)
         {
+            //case 0:
+            //   // potion.GetComponent<Renderer>().material = elements[0];
+            //   // potion.GetComponent<Element>().elementType = ElementEnum.Elements.Ash;
+            //    elementsSpawned++;
+            //    type = ElementEnum.Elements.Ash;
+            //    break;
             case 0:
-               // potion.GetComponent<Renderer>().material = elements[0];
-               // potion.GetComponent<Element>().elementType = ElementEnum.Elements.Ash;
-                elementsSpawned++;
-                type = ElementEnum.Elements.Ash;
-                break;
-            case 1:
                 //potion.GetComponent<Renderer>().material = elements[1];
                 //potion.GetComponent<Element>().elementType = ElementEnum.Elements.Fire;
                 type = ElementEnum.Elements.Fire;
+                if (currentElementsToSpawn < minNumOfElementsToSpawn)
+                {
+                    currentElementsToSpawn++;
+                    if (currentElementsToSpawn >= minNumOfElementsToSpawn)
+                    {
+                        currentElementsToSpawn = 0;
+                        spawnedEqualAmount[0] = new Tuple<string, bool>("Fire", true);
+                    }
+                }
                 elementsSpawned++;
                 break;
-            case 2:
+            case 1:
                // potion.GetComponent<Renderer>().material = elements[2];
                 //potion.GetComponent<Element>().elementType = ElementEnum.Elements.Grass;
                 type = ElementEnum.Elements.Grass;
+                if (currentElementsToSpawn < minNumOfElementsToSpawn)
+                {
+                    currentElementsToSpawn++;
+                    if (currentElementsToSpawn >= minNumOfElementsToSpawn)
+                    {
+                        currentElementsToSpawn = 0;
+                        spawnedEqualAmount[1] = new Tuple<string, bool>("Grass", true);
+                    }
+                }
                 elementsSpawned++;
                 break;
-            case 3:
+            case 2:
                 //potion.GetComponent<Renderer>().material = elements[3];
                 //potion.GetComponent<Element>().elementType = ElementEnum.Elements.Water;
                 type = ElementEnum.Elements.Water;
+                if (currentElementsToSpawn < minNumOfElementsToSpawn)
+                {
+                    currentElementsToSpawn++;
+                    if (currentElementsToSpawn >= minNumOfElementsToSpawn)
+                    {
+                        currentElementsToSpawn = 0;
+                        spawnedEqualAmount[2] = new Tuple<string, bool>("Water", true);
+                    }
+                }
                 elementsSpawned++;
                 break;
                 //only one cheese potion should occur if any
-            case 4:
+            case 3:
                 if (!spawnedCheese)
                 {
                    //potion.GetComponent<Renderer>().material = elements[4];
                    // potion.GetComponent<Element>().elementType = ElementEnum.Elements.Cheese;
                     type = ElementEnum.Elements.Cheese;
+                    if (currentElementsToSpawn < 1)
+                    {
+                        currentElementsToSpawn++;
+                        if (currentElementsToSpawn >= 1)
+                        {
+                            currentElementsToSpawn = minNumOfElementsToSpawn+1;
+                        }
+                    }
                     elementsSpawned++;
                     spawnedCheese = true;
                 }

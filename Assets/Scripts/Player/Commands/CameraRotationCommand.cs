@@ -25,7 +25,7 @@ namespace Assets.Scripts.Player.Commands
         protected Transform camTransform;
 
 
-        public CameraRotationCommand(Vector3 currRot, Vector3 currPos, float dist, Transform camTar, Transform camTrans)
+        public CameraRotationCommand(Vector3 currRot, Vector3 currPos, float dist, Transform camTar, Transform camTrans, float time)
         {
             this.currentRotation = currRot;
             this.currentPosition = currPos;
@@ -33,12 +33,15 @@ namespace Assets.Scripts.Player.Commands
             this.camTarget = camTar;
             this.camTransform = camTrans;
 
+            this.TimeOfExcution = time;
+
+
             this.Execute();
         }
 
         public override void Execute()
         {
-            camTransform.eulerAngles = currentRotation;
+            camTransform.eulerAngles = new Vector3(currentRotation.x, currentRotation.y, currentRotation.z);
             camTransform.position = camTarget.position - camTransform.forward * distFromTarget;
         }
 
@@ -50,8 +53,8 @@ namespace Assets.Scripts.Player.Commands
 
         public override void UnExecute()
         {
-            camTransform.eulerAngles = -currentRotation;
-            camTransform.position = camTarget.position + camTransform.forward * distFromTarget;
+            camTransform.eulerAngles = currentRotation;
+            camTransform.position = camTarget.position - camTransform.forward * distFromTarget;
         }
     }
 }

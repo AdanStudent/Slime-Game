@@ -6,9 +6,9 @@ public class ElementEnum : MonoBehaviour
 {
     public enum Elements {
         Fire,
+        Water,
         Grass,
         Ash,
-        Water,
         Cheese,
         None
     };

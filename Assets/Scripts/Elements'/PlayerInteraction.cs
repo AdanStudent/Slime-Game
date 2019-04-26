@@ -8,6 +8,7 @@ public class PlayerInteraction : NetworkBehaviour
     //player's element type
   
     public ElementEnum.Elements elementType = ElementEnum.Elements.Ash;
+    public ElementEnum.Elements previousElementType = ElementEnum.Elements.Ash;
     //Object renderer
     private Renderer renderer1;
     //element materials
@@ -18,9 +19,11 @@ public class PlayerInteraction : NetworkBehaviour
     public Material cheese;
     private Server serverRef;
     private int lives;
-    public LivesStruct tempLives;
     public bool Respawning = false;
 
+    public LivesStruct tempLives;
+    Animator elementUI;
+    public float cheeseTime=7;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +31,22 @@ public class PlayerInteraction : NetworkBehaviour
         lives = 3;
         Respawning = false;
         GameObject server = GameObject.FindGameObjectWithTag("Server");
+        System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
+        int randomType = rnd.Next(0, 3);
+        switch(randomType)
+        {
+            case 0:
+                elementType = ElementEnum.Elements.Fire;
+                break;
+            case 1:
+                elementType = ElementEnum.Elements.Water;
+                break;
+            case 2:
+                elementType = ElementEnum.Elements.Grass;
+                break;
+        }
+        elementUI = GameObject.FindGameObjectWithTag("Animator").GetComponent<Animator>();
+        elementUI.SetInteger("Element", (int)elementType);
         serverRef = server.GetComponent<Server>();
         //initialize the render
         renderer1 = gameObject.GetComponent<Renderer>();
@@ -73,6 +92,28 @@ public class PlayerInteraction : NetworkBehaviour
         }
         lives = currentLives;*/
     }
+    float timePassed = 0;
+    private void Update()
+    {
+        //cheese is temporary
+        if(elementType==ElementEnum.Elements.Cheese)
+        {
+            //check timer
+            if(timePassed<cheeseTime)
+            {
+                timePassed += Time.deltaTime;
+            }
+            //if cheese time has passed then reset element
+            else
+            {
+                if (isServer == true)
+                    RpcSetType(previousElementType);
+                else
+                    CmdSetType(previousElementType);
+                timePassed = 0;
+            }
+        }
+    }
     private void callRespawn()
     {
         if (Respawning == false)
@@ -88,6 +129,7 @@ public class PlayerInteraction : NetworkBehaviour
                 serverRef.CmdPlayerRespawn();
         }
     }
+    //server command
     [Command]
     public void CmdSetType(ElementEnum.Elements elements)
     {
@@ -98,18 +140,18 @@ public class PlayerInteraction : NetworkBehaviour
     //Set the new element type for player if new element is picked up
     public void RpcSetType(ElementEnum.Elements element)
     {
+        //cheese is temporary so store previous type
+        if (element == ElementEnum.Elements.Cheese)
+            previousElementType = elementType;
+        //change material
         Debug.Log(this+" Current Type: " + elementType.ToString());
         elementType = element;
         ChangeMaterial();
+        elementUI.SetInteger("Element", (int)elementType);
         Debug.Log(this+" New Type: " + elementType.ToString());
     }
 
-//     [ClientRpc]
-//     //Spawn the player again
-//     public void RpcSetActiveAgain()
-//     {
-//         gameObject.SetActive(true);
-//     }
+
 
     //change the player's element type
     public void ChangeMaterial()
@@ -220,11 +262,13 @@ public class PlayerInteraction : NetworkBehaviour
     }
 
 
+    //sever command
     [Command]
     void CmdComparePlayersElementTypes(GameObject other)
     {
         RpcComparePlayersElementTypes(other);
     }
+    //compare element types
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag=="Player")

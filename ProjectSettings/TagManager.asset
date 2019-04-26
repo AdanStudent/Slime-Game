@@ -7,6 +7,8 @@ TagManager:
   - Potion
   - SpawnArea
   - Server
+  - Lobby
+  - Animator
   layers:
   - Default
   - TransparentFX

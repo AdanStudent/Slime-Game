@@ -3263,11 +3263,11 @@ MonoBehaviour:
   m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 9076648427423868313, guid: 0023a4476a1580747b876bb78147e40d, type: 3}
-  - {fileID: 39, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
-  - {fileID: 19, guid: 31f043fb58320a64da1bc2d1e4dc4378, type: 3}
-  - {fileID: 41, guid: db37d6c223a9d314e927d84caa583068, type: 3}
-  - {fileID: 37, guid: 1eaa8817e01cb3c4b811197f98971e44, type: 3}
-  - {fileID: 40, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
+  - {fileID: 65, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
+  - {fileID: 65, guid: 31f043fb58320a64da1bc2d1e4dc4378, type: 3}
+  - {fileID: 69, guid: db37d6c223a9d314e927d84caa583068, type: 3}
+  - {fileID: 68, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
+  - {fileID: 66, guid: 1eaa8817e01cb3c4b811197f98971e44, type: 3}
   - {fileID: 2186477657866881519, guid: 9e850e4d505885a4e8156aa66df3331e, type: 3}
   - {fileID: 6215896002768908045, guid: ca5aea97b65d3cb4d950f22609e0682a, type: 3}
   m_CustomConfig: 0

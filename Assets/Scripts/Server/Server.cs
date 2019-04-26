@@ -9,8 +9,20 @@ public struct ElementStruct
     public int elementType;
     public Vector3 position;
 }
-
+public struct LivesStruct
+{
+    public string netID;
+    public int lives;
+    public LivesStruct(string net, int li)
+    {
+        netID = net;
+        lives = li;
+    }
+    //GameObject 
+}
+public class SyncListLives : SyncListStruct<LivesStruct> { }
 public class SyncListElement : SyncListStruct<ElementStruct> { }
+
 
 public class Server : NetworkBehaviour
 {
@@ -36,6 +48,8 @@ public class Server : NetworkBehaviour
     public GameObject myPlayer;
     private GameObject SpawnArea;
     private ElementSpawn elementSpawnRef;
+    public SyncListLives playerLives = new SyncListLives();
+    bool duplicateCheck = false;
     // public GameObject spawnArea;
     // Start is called before the first frame update
 
@@ -54,9 +68,23 @@ public class Server : NetworkBehaviour
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
         CmdSpawnTimer();
-        
     }
 
+    void CheckForDuplicates()
+    {
+        for (int i = 0; i < playerLives.Count; i++)
+        {
+
+            for (int j = 0; j < playerLives.Count; j++)
+            {
+                if((i!=j) && (playerLives[i].netID == playerLives[j].netID))
+                {
+                    playerLives.RemoveAt(j);
+                }
+            }
+        }
+        duplicateCheck = true;
+    }
     [Command]
     void CmdSpawnPersonalPlayer()
     {
@@ -98,56 +126,84 @@ public class Server : NetworkBehaviour
             }
             Debug.Log("Spawn Area is Spawning");
         }
-        //else
-        //{
-        //    //Get the element list from another server
-        //    GameObject[] serverObjs = GameObject.FindGameObjectsWithTag("Server");
-        //    Server server=null;
-        //    foreach(GameObject s in serverObjs)
-        //    {
-        //        if(s.GetComponent<Server>().elementList.Count>0)
-        //        {
-        //            server = s.GetComponent<Server>();
-        //            break;
-        //        }
-        //    }
-        //    //set the element list
-        //    if (server != null)
-        //        elementList = server.elementList;
-        //    //Instatiate the potions
-        //    foreach(ElementStruct p in elementList)
-        //    {
-        //        CmdSpawnPotions(p);
-        //    }
-        //}
+        
     }
-    [Command]
-    public void CmdPotionRespawn()
-    {
-//         Debug.Log("Potion Respawn in server is called");
-//         List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
-//         elementList.Clear();
-//         Debug.Log("Length of temp Potions: " + tempPotions.Count);
-//         //spawn each potion
-//         for (int i = 0; i < tempPotions.Count; i++)
-//         {
-//             Debug.Log("New potions should be created");
-//             CmdSpawnPotions(tempPotions[i]);
-//             elementList.Add(tempPotions[i]);
-//         }
-    }
+
 
     [ClientRpc]
     public void RpcPlayerRespawn()
     {
-       
-        StartCoroutine(PlayerRespawnWait());
+        if(duplicateCheck == false)
+        {
+            CheckForDuplicates();
+        }
+
+        for (int i = 0; i < playerLives.Count; i++)
+        {
+            Debug.Log("Net ID: " + playerLives[i].netID + "  Players lives left " + playerLives[i].lives);
+        }
+        
+        bool foundPlayer = false;
+        int foundIndex = -1;
+        for (int i = 0; i < playerLives.Count; i++)
+        {
+            //Debug.Log("Struct net id: " + playerLives[i].netID + " Player Net ID" + myPlayer.GetComponent<NetworkIdentity>().netId.ToString() + "Struct net id Currentlives : " + playerLives[i].lives);
+            if (playerLives[i].netID == myPlayer.GetComponent<NetworkIdentity>().netId.ToString())
+            {
+
+                foundPlayer = true;
+                foundIndex = i;
+                i = playerLives.Count + 1;
+            }
+        }
+
+        
+        if (foundIndex != -1)
+        {
+            LivesStruct temp = playerLives[foundIndex];
+            temp.lives = temp.lives - 1;
+            playerLives[foundIndex] = temp;
+            if (playerLives[foundIndex].lives > 0)
+            {
+                StartCoroutine(PlayerRespawnWait());
+            }
+            Debug.Log("Results of Check winstate:" + CheckWinState());
+        }
 
 
+
+    }
+    bool CheckWinState()
+    {
+        string potentialWinner = "";
+        int someoneWon = 0;
+        
+        foreach (LivesStruct ls in playerLives)
+        {
+            Debug.Log("LS Check win state lives: " + ls.lives);
+            if (ls.lives <= 0)
+            {
+                someoneWon++;
+            }
+            else
+            {
+                potentialWinner = ls.netID;
+            }
+        }
+        Debug.Log("Count of player lives" + playerLives.Count + " SomeoneWon count: " + someoneWon + "Potential Winner: " + potentialWinner);
+
+        if (someoneWon == playerLives.Count - 1)
+        {
+            Debug.Log(potentialWinner + " Has one the game!");
+            return true;
+        }
+        else
+            return false;
     }
     [Command]
     public void CmdPlayerRespawn()
     {
+        Debug.Log("CMDPLAYERRESPAWN");
         RpcPlayerRespawn();
     }
 

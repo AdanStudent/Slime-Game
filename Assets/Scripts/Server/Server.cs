@@ -14,11 +14,11 @@ public struct ElementStruct
 }
 public struct LivesStruct
 {
-    public string netID;
+    public string Name;
     public int lives;
-    public LivesStruct(string net, int li)
+    public LivesStruct(string name, int li)
     {
-        netID = net;
+        Name = name;
         lives = li;
     }
     //GameObject 
@@ -185,17 +185,24 @@ public class Server : NetworkBehaviour
   
     bool CheckWinState()
     {
+        string potentialWinner = "";
         int someoneWon = 0;
+        //checks how many people are dead.  If someones dead then the someone won counter goes up.  If not, then their name is set as the potential winner
         foreach (LivesStruct ls in playerLives)
         {
             if(ls.lives <= 0)
             {
                 someoneWon++;
             }
+            else
+            {
+                potentialWinner = ls.Name;
+            }
         }
-
+        //checks to see if everyone is dead except one person.  If so, then that means the potential winner has one the game
         if (someoneWon == playerLives.Count - 1)
         {
+            Debug.Log(potentialWinner + "Has one the game!");
             RpcReturnToLobby();
             return true;
         }
@@ -212,14 +219,15 @@ public class Server : NetworkBehaviour
     [ClientRpc]
     public void RpcPlayerRespawn()
     {
+        //checks to see if anyone won firsr
         CheckWinState();
-        Debug.Log("A player won");
         bool foundPlayer = false;
         int foundIndex = -1;
         for (int i = 0; i < playerLives.Count; i++)
         {
-            Debug.Log("Struct net id: " + playerLives[i].netID + " Player Net ID" + myPlayer.GetComponent<NetworkIdentity>().netId.ToString());
-            if(playerLives[i].netID == myPlayer.GetComponent<NetworkIdentity>().netId.ToString())
+            Debug.Log("Struct name: " + playerLives[i].Name + " Player name" + myPlayer.name);
+            //looks for the player who just died in the list of structs, and then takes away one of their lives
+            if(playerLives[i].Name== myPlayer.name)
             {
                 
                 foundPlayer = true;

@@ -19,6 +19,7 @@ public class PlayerInteraction : NetworkBehaviour
     public Material cheese;
     private Server serverRef;
     public LivesStruct tempLives;
+    private int lives = 3;
     Animator elementUI;
     public float cheeseTime=7;
 
@@ -49,7 +50,7 @@ public class PlayerInteraction : NetworkBehaviour
         ChangeMaterial();
         //freeze rotation
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
-        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 2);
+        tempLives = new LivesStruct(this.gameObject.name, 3);
         serverRef.playerLives.Add(tempLives);
     }
 
@@ -82,9 +83,30 @@ public class PlayerInteraction : NetworkBehaviour
             }
         }
     }
+    private void OnGUI()
+    {
+       GUI.Label(new Rect(450, 10, 100, 20), $"Lives:{lives}");
+        
+    }
+    private void UpdateLives()
+    {
+        GameObject server = GameObject.FindGameObjectWithTag("Server");
+        serverRef = server.GetComponent<Server>();
+        int currentLives = lives;
+        for (int i = 0; i < serverRef.playerLives.Count; i++)
+        {
+            if(this.gameObject.name == serverRef.playerLives[i].Name)
+            {
+                currentLives = serverRef.playerLives[i].lives;
+                currentLives--;
+            }
+        }
+        lives = currentLives;
+    }
     private void callRespawn()
     {
         serverRef.myPlayer = this.gameObject;
+        UpdateLives();
         if (isServer == true)
             serverRef.RpcPlayerRespawn();
         else

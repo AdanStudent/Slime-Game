@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
 <<<<<<< HEAD
+<<<<<<< HEAD
   - component: {fileID: 76}
   - component: {fileID: 113}
   - component: {fileID: 170}
@@ -16,6 +17,8 @@ GameObject:
   - component: {fileID: 172}
   - component: {fileID: 173}
 =======
+=======
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
   - component: {fileID: 34}
   - component: {fileID: 53}
   - component: {fileID: 47}
@@ -24,6 +27,9 @@ GameObject:
   - component: {fileID: 59}
   - component: {fileID: 84}
   - component: {fileID: 85}
+<<<<<<< HEAD
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
+=======
 >>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
   m_Layer: 0
   m_Name: PotionGrass
@@ -41,7 +47,11 @@ Transform:
   m_GameObject: {fileID: 21}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_LocalPosition: {x: 0.52401733, y: 0.57, z: 17.059114}
+=======
+  m_LocalPosition: {x: 6.4276304, y: -0.31, z: 7.9523315}
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
 =======
   m_LocalPosition: {x: 6.4276304, y: -0.31, z: 7.9523315}
 >>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
@@ -52,8 +62,11 @@ Transform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!135 &113
 =======
+=======
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
 --- !u!33 &53
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -100,6 +113,9 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!135 &71
+<<<<<<< HEAD
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
+=======
 >>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
 SphereCollider:
   m_ObjectHideFlags: 0

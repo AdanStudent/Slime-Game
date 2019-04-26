@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
 <<<<<<< HEAD
+<<<<<<< HEAD
   - component: {fileID: 77}
   - component: {fileID: 114}
   - component: {fileID: 171}
@@ -16,6 +17,8 @@ GameObject:
   - component: {fileID: 174}
   - component: {fileID: 175}
 =======
+=======
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
   - component: {fileID: 35}
   - component: {fileID: 54}
   - component: {fileID: 48}
@@ -24,6 +27,9 @@ GameObject:
   - component: {fileID: 60}
   - component: {fileID: 86}
   - component: {fileID: 87}
+<<<<<<< HEAD
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
+=======
 >>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
   m_Layer: 0
   m_Name: PotionFire
@@ -41,7 +47,11 @@ Transform:
   m_GameObject: {fileID: 22}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_LocalPosition: {x: -11.355674, y: 0.57, z: 0.019604683}
+=======
+  m_LocalPosition: {x: 4.1492004, y: -0.31, z: 10.361374}
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
 =======
   m_LocalPosition: {x: 4.1492004, y: -0.31, z: 10.361374}
 >>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
@@ -52,8 +62,11 @@ Transform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!135 &114
 =======
+=======
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
 --- !u!33 &54
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -100,6 +113,9 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!135 &72
+<<<<<<< HEAD
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
+=======
 >>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -82,7 +82,6 @@ public class Server : NetworkBehaviour
         NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
         Debug.Log("Spawning Object");
     }
-<<<<<<< HEAD
    
     //adds each player to dictonary
     /*[ClientRpc]
@@ -94,8 +93,6 @@ public class Server : NetworkBehaviour
             Debug.Log("Player: " + pl.Key + " Lives: " + pl.Value);
         }
     }*/
-=======
->>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
 
     
     [Command]

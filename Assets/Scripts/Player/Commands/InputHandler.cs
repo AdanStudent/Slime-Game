@@ -12,16 +12,18 @@ public class InputHandler : NetworkBehaviour
     public Rigidbody playerb;
     public GameObject player;
     public float Speed = 5f;
-
+    [SyncVar]
+    int cameraNumeber = 0;
     private Timer currentTimer;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         moves = new Stack<Command>();
         playerb = this.gameObject.GetComponent<Rigidbody>();
         player = playerb.gameObject;
         playerb.freezeRotation = true;
+
         camTransform = Camera.main.transform;
 
         Timer[] timers = FindObjectsOfType<Timer>();
@@ -34,6 +36,8 @@ public class InputHandler : NetworkBehaviour
             }
         }
     }
+
+
 
     bool undo;
     // Update is called once per frame
@@ -179,14 +183,14 @@ public class InputHandler : NetworkBehaviour
     
     }
 
-    void OnDrawGizmos()
-    {
-        // Draws a 5 unit long red line in front of the object
-        Gizmos.color = Color.green;
-        Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
-        Gizmos.DrawRay(transform.position, direction);
-        print("Gizmo > " + direction);
-    }
+    //void OnDrawGizmos()
+    //{
+    //    // Draws a 5 unit long red line in front of the object
+    //    Gizmos.color = Color.green;
+    //    Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
+    //    Gizmos.DrawRay(transform.position, direction);
+    //    print("Gizmo > " + direction);
+    //}
 
 
     float counter;

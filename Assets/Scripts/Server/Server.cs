@@ -1,9 +1,9 @@
-﻿using System.Collections;
+﻿using Prototype.NetworkLobby;
+using System.Collections;
 using System.Collections.Generic;
 //using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
-using Prototype.NetworkLobby;
 
 
 public struct ElementStruct
@@ -73,18 +73,46 @@ public class Server : NetworkBehaviour
 
     }
 
-  
 
     [Command]
     void CmdSpawnPersonalPlayer()
     {
         System.Random rnd = new System.Random();
-        int index = rnd.Next(0,spawnPoints.Count);
-        myPlayer = Instantiate(playerUnit,spawnPoints[index].position,spawnPoints[index].rotation);
-        NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-        Debug.Log("Spawning Object");
+        int index = rnd.Next(0, spawnPoints.Count);
+        if (connectionToClient.isReady)
+        {
+            myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
+            NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
+        }
+        else
+        {
+            //connectionToClient.RegisterHandler(MsgType.Ready, OnReady);
+            StartCoroutine(WaitForReady());
+        }
     }
-   
+
+    IEnumerator WaitForReady()
+    {
+        while (!connectionToClient.isReady)
+        {
+            yield return new WaitForSeconds(0.25f);
+        }
+        OnReady();
+    }
+
+    [Server]
+    private void OnReady()
+    {
+        Debug.Log("Spawning Object1");
+        System.Random rnd = new System.Random();
+        int index = rnd.Next(0, spawnPoints.Count);
+        if (connectionToClient.isReady)
+        {
+            myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
+            NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
+        }
+    }
+
     //adds each player to dictonary
     /*[ClientRpc]
     void RpcAddPlayersToDictonary(string playerName)
@@ -96,7 +124,7 @@ public class Server : NetworkBehaviour
         }
     }*/
 
-    
+
     [Command]
     void CmdSpawnTimer()
     {
@@ -177,7 +205,7 @@ public class Server : NetworkBehaviour
     [ClientRpc]
     public void RpcReturnToLobby()
     {
-        LobbyManager.s_Singleton.SendReturnToLobby();
+       LobbyManager.s_Singleton.SendReturnToLobby();
     }
 
     [ClientRpc]

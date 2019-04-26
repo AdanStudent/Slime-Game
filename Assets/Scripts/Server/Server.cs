@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+//using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
+using Prototype.NetworkLobby;
 
 
 public struct ElementStruct
@@ -117,6 +119,7 @@ public class Server : NetworkBehaviour
             SpawnArea = Instantiate(spawnArea);
             NetworkServer.Spawn(SpawnArea);
             //List of struct elements
+            SpawnArea.GetComponent<ElementSpawn>().DetermineMinSpawnNum();
             List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
 
             //spawn each potion
@@ -163,12 +166,20 @@ public class Server : NetworkBehaviour
         }
 
         if (someoneWon == playerLives.Count - 1)
-        { 
+        {
+            RpcReturnToLobby();
             return true;
         }
         else
             return false;
     }
+
+    [ClientRpc]
+    public void RpcReturnToLobby()
+    {
+        LobbyManager.s_Singleton.SendReturnToLobby();
+    }
+
     [ClientRpc]
     public void RpcPlayerRespawn()
     {
@@ -236,26 +247,35 @@ public class Server : NetworkBehaviour
                 potionAsh.transform.position = p.position;
                 potionAsh.GetComponent<Element>().elementType = type;
                 temp = Instantiate(potionAsh);
+                temp.gameObject.name = "Ash";
+                temp.transform.parent = null;
                 break;
             case ElementEnum.Elements.Fire:
                 potionFire.transform.position = p.position;
                 potionFire.GetComponent<Element>().elementType = type;
                 temp = Instantiate(potionFire);
+                temp.gameObject.name = "Fire";
+                temp.transform.parent = null;
                 break;
             case ElementEnum.Elements.Grass:
                 potionGrass.transform.position = p.position;
                 potionGrass.GetComponent<Element>().elementType = type;
                 temp = Instantiate(potionGrass);
+                temp.gameObject.name = "Grass";
+                temp.transform.parent = null;
                 break;
             case ElementEnum.Elements.Water:
                 potionWater.transform.position = p.position;
                 potionWater.GetComponent<Element>().elementType = type;
                 temp = Instantiate(potionWater);
+                temp.gameObject.name = "Water";
                 break;
             case ElementEnum.Elements.Cheese:
                 potionCheese.transform.position = p.position;
                 potionCheese.GetComponent<Element>().elementType = type;
                 temp = Instantiate(potionCheese);
+                temp.gameObject.name = "Cheese";
+                temp.transform.parent = null;
                 break;
         }
         if (temp != null)

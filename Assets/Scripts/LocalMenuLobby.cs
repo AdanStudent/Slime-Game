@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElementEnum : MonoBehaviour
+public class LocalMenuLobby : MonoBehaviour
 {
-    public enum Elements {
-        Fire,
-        Water,
-        Grass,
-        Ash,
-        Cheese,
-        None
-    };
+    public GameObject lobby;
     // Start is called before the first frame update
     void Start()
     {
-        
+        lobby = GameObject.FindGameObjectWithTag("Lobby");
+        lobby.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void ActivateLobby()
+    {
+        lobby.SetActive(true);
     }
 }

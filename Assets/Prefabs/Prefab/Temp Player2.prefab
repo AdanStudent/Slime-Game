@@ -64,7 +64,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9076648427423868313}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 7, y: 30.14, z: -1.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1180425703981644177}
@@ -213,11 +213,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementType: 2
+  previousElementType: 2
   ash: {fileID: 2100000, guid: 7adb050a8cbfb074595420bf7568e83c, type: 2}
   fire: {fileID: 2100000, guid: 75ebcd8fc072e0644aec67a95c935348, type: 2}
   grass: {fileID: 2100000, guid: 2dbbeb58ce443624fa8044affb84d4fe, type: 2}
   water: {fileID: 2100000, guid: 35f524810b866a840b4321ea60394554, type: 2}
   cheese: {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
+  cheeseTime: 7
 --- !u!114 &3189112095991579367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,7 +239,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9076648427423868313}
-  m_Mesh: {fileID: 4300000, guid: 0c9d9e49dd585914995ebc878e92cc85, type: 3}
+  m_Mesh: {fileID: 4300000, guid: c585f7cf294cfca418d337a4996be348, type: 3}
 --- !u!135 &3147086480239486172
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -249,8 +251,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0.2, z: 0}
+  m_Radius: 0.9449347
+  m_Center: {x: -0.01859355, y: 0.45, z: 0.0030559301}
 --- !u!65 &3571721699052235223
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -262,5 +264,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Size: {x: 1.1938348, y: 1.1824784, z: 1.045993}
+  m_Center: {x: -0.028427482, y: 0.49, z: 0.004375279}

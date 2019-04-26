@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -79,39 +77,10 @@ public class Server : NetworkBehaviour
     void CmdSpawnPersonalPlayer()
     {
         System.Random rnd = new System.Random();
-        int index = rnd.Next(0, spawnPoints.Count);
-        if (connectionToClient.isReady)
-        {
-            myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
-            NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-        }
-        else
-        {
-            //connectionToClient.RegisterHandler(MsgType.Ready, OnReady);
-            StartCoroutine(WaitForReady());
-        }
-    }
-
-    IEnumerator WaitForReady()
-    {
-        while (!connectionToClient.isReady)
-        {
-            yield return new WaitForSeconds(0.25f);
-        }
-        OnReady();
-    }
-
-    [Server]
-    private void OnReady()
-    {
-        Debug.Log("Spawning Object1");
-        System.Random rnd = new System.Random();
-        int index = rnd.Next(0, spawnPoints.Count);
-        if (connectionToClient.isReady)
-        {
-            myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
-            NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-        }
+        int index = rnd.Next(0,spawnPoints.Count);
+        myPlayer = Instantiate(playerUnit,spawnPoints[index].position,spawnPoints[index].rotation);
+        NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
+        Debug.Log("Spawning Object");
     }
    
     //adds each player to dictonary
@@ -125,6 +94,7 @@ public class Server : NetworkBehaviour
         }
     }*/
 
+    
     [Command]
     void CmdSpawnTimer()
     {
@@ -265,32 +235,27 @@ public class Server : NetworkBehaviour
             case ElementEnum.Elements.Ash:
                 potionAsh.transform.position = p.position;
                 potionAsh.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionAsh);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionAsh);
                 break;
             case ElementEnum.Elements.Fire:
                 potionFire.transform.position = p.position;
                 potionFire.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionFire);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionFire);
                 break;
             case ElementEnum.Elements.Grass:
                 potionGrass.transform.position = p.position;
                 potionGrass.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionGrass);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionGrass);
                 break;
             case ElementEnum.Elements.Water:
                 potionWater.transform.position = p.position;
                 potionWater.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionWater);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionWater);
                 break;
             case ElementEnum.Elements.Cheese:
                 potionCheese.transform.position = p.position;
                 potionCheese.GetComponent<Element>().elementType = type;
-                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionCheese);
-                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                temp = Instantiate(potionCheese);
                 break;
         }
         if (temp != null)

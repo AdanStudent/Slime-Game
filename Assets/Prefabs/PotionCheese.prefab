@@ -29,7 +29,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< HEAD
   m_LocalPosition: {x: 3.16298, y: 0.57, z: 15.218054}
+=======
+  m_LocalPosition: {x: -4.483032, y: -0.31, z: 2.8770452}
+>>>>>>> parent of f3de761... Merge branch 'master' into RoundTimer
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8783275282421595217}

@@ -25,6 +25,7 @@ public class InputHandler : NetworkBehaviour
         playerb.freezeRotation = true;
 
         camTransform = Camera.main.transform;
+        print(camTransform);
 
         Timer[] timers = FindObjectsOfType<Timer>();
 
@@ -142,7 +143,7 @@ public class InputHandler : NetworkBehaviour
         currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw),
             ref rotationSmoothVel, rotationSmoothTime);
 
-        if (currentRotation != prevRotation /*&& camTransform.eulerAngles != prevcamRotation*/)
+        if (currentRotation != prevRotation/*&& camTransform.eulerAngles != prevcamRotation*/)
         {
             CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform, currentTimer.timer);
             //print(cameraRotation.Log());

@@ -5,7 +5,7 @@ using System.Collections;
 namespace Prototype.NetworkLobby
 {
     //Main menu, mainly only a bunch of callback called by the UI (setup throught the Inspector)
-    public class LobbyMainMenu : MonoBehaviour 
+    public class LobbyMainMenu : MonoBehaviour
     {
         public LobbyManager lobbyManager;
 
@@ -28,16 +28,17 @@ namespace Prototype.NetworkLobby
 
         public void OnClickHost()
         {
-            //lobbyManager.StartupHost();
+            print("host");
             lobbyManager.StartHost();
         }
 
         public void OnClickJoin()
         {
+            print("join");
             lobbyManager.ChangeTo(lobbyPanel);
-            lobbyManager.JoinGame();
-            //lobbyManager.networkAddress = ipInput.text;
-            //lobbyManager.StartClient();
+
+            lobbyManager.networkAddress = ipInput.text;
+            lobbyManager.StartClient();
 
             lobbyManager.backDelegate = lobbyManager.StopClientClbk;
             lobbyManager.DisplayIsConnecting();
@@ -57,13 +58,14 @@ namespace Prototype.NetworkLobby
 
         public void OnClickCreateMatchmakingGame()
         {
+            print("join");
             lobbyManager.StartMatchMaker();
             lobbyManager.matchMaker.CreateMatch(
                 matchNameInput.text,
                 (uint)lobbyManager.maxPlayers,
                 true,
-				"", "", "", 0, 0,
-				lobbyManager.OnMatchCreate);
+                "", "", "", 0, 0,
+                lobbyManager.OnMatchCreate);
 
             lobbyManager.backDelegate = lobbyManager.StopHost;
             lobbyManager._isMatchmaking = true;

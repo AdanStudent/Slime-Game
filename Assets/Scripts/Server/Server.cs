@@ -194,26 +194,7 @@ public class Server : NetworkBehaviour
         //    }
         //}
     }
-  
-    bool CheckWinState()
-    {
-        int someoneWon = 0;
-        foreach (LivesStruct ls in playerLives)
-        {
-            if(ls.lives <= 0)
-            {
-                someoneWon++;
-            }
-        }
-
-        if (someoneWon == playerLives.Count - 1)
-        {
-            RpcReturnToLobby();
-            return true;
-        }
-        else
-            return false;
-    }
+ 
 
     [ClientRpc]
     public void RpcReturnToLobby()
@@ -300,6 +281,7 @@ public class Server : NetworkBehaviour
         if (someoneWon == playerLives.Count - 1)
         {
             Debug.Log(potentialWinner + " Has one the game!");
+            RpcReturnToLobby();
             return true;
         }
         else

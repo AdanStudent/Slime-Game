@@ -45,8 +45,10 @@ public class PlayerInteraction : NetworkBehaviour
         serverRef = server.GetComponent<Server>();
         //initialize the render
         renderer1 = gameObject.GetComponent<Renderer>();
-        //intialize material
-        ChangeMaterial();
+        //if (isServer == true)
+           // RpcSetType(elementType);
+        //else
+          CmdSetType(elementType);
         //freeze rotation
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
         tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 2);

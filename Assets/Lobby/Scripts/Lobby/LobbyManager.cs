@@ -15,29 +15,6 @@ namespace Prototype.NetworkLobby
     public class LobbyManager : NetworkLobbyManager 
 
     {
-        public ServerNetworkDiscovery SND;
-        public CustomNetworkDiscovery CND;
-
-        //Chekcking to see if at menu
-        // public bool isatStartup = true;
-        public const int PORT = 26000;
-        private int lastInt = 0;
-        private bool foundServer = false;
-        ConnectionConfig connection;
-        private const int MAX_CONNECTIONS = 4;
-
-        private const int SERVERPORT = 5000;
-        private string serverIP;
-
-        private const int STARTPORT = 5100;
-        private IPAddress groupAddress = IPAddress.Parse("127.0.0.1");
-        private UdpClient udpClient;
-        private IPEndPoint remoteEnd;
-
-        //this cimputers client
-        NetworkClient myClient;
-        bool ConnectedToServer = false;
-
         static short MsgKicked = MsgType.Highest + 1;
 
         static public LobbyManager s_Singleton;
@@ -65,6 +42,8 @@ namespace Prototype.NetworkLobby
         public Text statusInfo;
         public Text hostInfo;
 
+        public bool isAHost;
+
         //Client numPlayers from NetworkManager is always 0, so we count (throught connect/destroy in LobbyPlayer) the number
         //of players, so that even client know how many player there is.
         [HideInInspector]
@@ -75,7 +54,7 @@ namespace Prototype.NetworkLobby
         public bool _isMatchmaking = false;
 
         protected bool _disconnectServer = false;
-        
+
         protected ulong _currentMatchID;
 
         protected LobbyHook _lobbyHooks;
@@ -92,43 +71,9 @@ namespace Prototype.NetworkLobby
             DontDestroyOnLoad(gameObject);
 
             SetServerInfo("Offline", "None");
-            
+
+            isAHost = false;
         }
-        public void StartupHost()
-        {
-            SetPort();
-            SND.StartServer();
-
-        }
-
-        public void JoinGame()
-        {
-            SetPort();
-            CND.StartClient();
-        }
-        void SetIPAddress()
-        {
-            if (lastInt < 256)
-            {
-                string IPAddressTest = "192.168.1." + lastInt;
-
-                Debug.Log("Current IP Address: " + IPAddressTest);
-                lastInt++;
-            }
-
-
-        }
-        private void SetPort()
-        {
-            NetworkManager.singleton.networkPort = PORT;
-        }
-        private void SetServerPort()
-        {
-            NetworkManager.singleton.networkPort = SERVERPORT;
-            //StartCoroutine(StartBroadcast());
-
-        }
-
 
         public override void OnLobbyClientSceneChanged(NetworkConnection conn)
         {
@@ -224,7 +169,7 @@ namespace Prototype.NetworkLobby
         public void GoBackButton()
         {
             backDelegate();
-			topPanel.isInGame = false;
+            topPanel.isInGame = false;
         }
 
         // ----------------- Server management
@@ -243,20 +188,20 @@ namespace Prototype.NetworkLobby
         {
             ChangeTo(mainMenuPanel);
         }
-                 
+
         public void StopHostClbk()
         {
             if (_isMatchmaking)
             {
-				matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
-				_disconnectServer = true;
+                matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
+                _disconnectServer = true;
             }
             else
             {
                 StopHost();
             }
 
-            
+
             ChangeTo(mainMenuPanel);
         }
 
@@ -301,20 +246,20 @@ namespace Prototype.NetworkLobby
 
             ChangeTo(lobbyPanel);
             backDelegate = StopHostClbk;
-            StartupHost();
-          // SetServerInfo("Hosting", networkAddress);
+            isAHost = true;
+            SetServerInfo("Hosting", networkAddress);
         }
 
-		public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo)
-		{
-			base.OnMatchCreate(success, extendedInfo, matchInfo);
+        public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo)
+        {
+            base.OnMatchCreate(success, extendedInfo, matchInfo);
             _currentMatchID = (System.UInt64)matchInfo.networkId;
-		}
+        }
 
-		public override void OnDestroyMatch(bool success, string extendedInfo)
-		{
-			base.OnDestroyMatch(success, extendedInfo);
-			if (_disconnectServer)
+        public override void OnDestroyMatch(bool success, string extendedInfo)
+        {
+            base.OnDestroyMatch(success, extendedInfo);
+            if (_disconnectServer)
             {
                 StopMatchMaker();
                 StopHost();
@@ -403,15 +348,15 @@ namespace Prototype.NetworkLobby
 
         public override void OnLobbyServerPlayersReady()
         {
-			bool allready = true;
-			for(int i = 0; i < lobbySlots.Length; ++i)
-			{
-				if(lobbySlots[i] != null)
-					allready &= lobbySlots[i].readyToBegin;
-			}
+            bool allready = true;
+            for (int i = 0; i < lobbySlots.Length; ++i)
+            {
+                if (lobbySlots[i] != null)
+                    allready &= lobbySlots[i].readyToBegin;
+            }
 
-			if(allready)
-				StartCoroutine(ServerCountdownCoroutine());
+            if (allready)
+                StartCoroutine(ServerCountdownCoroutine());
         }
 
         public IEnumerator ServerCountdownCoroutine()

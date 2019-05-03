@@ -50,6 +50,8 @@ GameObject:
   - component: {fileID: 3147086480239486172}
   - component: {fileID: 3571721699052235223}
   - component: {fileID: 7686402936348654630}
+  - component: {fileID: 5295588505797008134}
+  - component: {fileID: 928646250929186311}
   m_Layer: 0
   m_Name: Temp Player2
   m_TagString: Player
@@ -223,6 +225,8 @@ MonoBehaviour:
   water: {fileID: 2100000, guid: 35f524810b866a840b4321ea60394554, type: 2}
   cheese: {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
   Respawning: 0
+  ElementUI: {fileID: 2384814705610903689, guid: aacd5cfad4182614895a4ce2cde0d512,
+    type: 3}
   cheeseTime: 7
   Dying: {fileID: 8300000, guid: 67f42df41597310418242e826a6732c3, type: 3}
 --- !u!114 &3189112095991579367
@@ -273,6 +277,9 @@ BoxCollider:
   m_Center: {x: -0.028427482, y: 0.49, z: 0.004375279}
 --- !u!82 &7686402936348654630
 AudioSource:
+--- !u!95 &5295588505797008134
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -367,3 +374,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Avatar: {fileID: 9000000, guid: 43684d3a79a83874a95ac3d904f87f7c, type: 3}
+  m_Controller: {fileID: 9100000, guid: 055e6ac18bdc9a24ea020575890f5ea2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &928646250929186311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9076648427423868313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 5295588505797008134}
+  m_ParameterSendBits: 0
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 

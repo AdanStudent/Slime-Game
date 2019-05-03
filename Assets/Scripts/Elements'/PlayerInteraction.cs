@@ -19,7 +19,6 @@ public class PlayerInteraction : NetworkBehaviour
     public Material cheese;
     private Server serverRef;
     public LivesStruct tempLives;
-    Animator elementUI;
     public float cheeseTime=7;
 
     // Start is called before the first frame update
@@ -40,15 +39,15 @@ public class PlayerInteraction : NetworkBehaviour
                 elementType = ElementEnum.Elements.Grass;
                 break;
         }
-        elementUI = GameObject.FindGameObjectWithTag("Animator").GetComponent<Animator>();
-        elementUI.SetInteger("Element", (int)elementType);
+
         serverRef = server.GetComponent<Server>();
         //initialize the render
         renderer1 = gameObject.GetComponent<Renderer>();
-        //if (isServer == true)
-           // RpcSetType(elementType);
-        //else
-          CmdSetType(elementType);
+        if (isServer == true)
+            RpcSetType(elementType);
+        else
+            CmdSetType(elementType);
+
         //freeze rotation
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
         tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 2);
@@ -62,11 +61,13 @@ public class PlayerInteraction : NetworkBehaviour
         serverRef.playerLives.Add(tempLives);
     }
 
+
+
     float timePassed = 0;
     private void Update()
     {
         //cheese is temporary
-        if(elementType==ElementEnum.Elements.Cheese)
+        if (elementType==ElementEnum.Elements.Cheese)
         {
             //check timer
             if(timePassed<cheeseTime)
@@ -110,7 +111,6 @@ public class PlayerInteraction : NetworkBehaviour
         Debug.Log(this+" Current Type: " + elementType.ToString());
         elementType = element;
         ChangeMaterial();
-        elementUI.SetInteger("Element", (int)elementType);
         Debug.Log(this+" New Type: " + elementType.ToString());
     }
 
@@ -148,25 +148,25 @@ public class PlayerInteraction : NetworkBehaviour
         PlayerInteraction interaction = other.GetComponent<PlayerInteraction>();
         switch (elementType)
         {
-            //check other player against current element
-            case ElementEnum.Elements.Ash:
-                //Destroy self if lose
-                switch (interaction.elementType)
-                {
-                    //cheese always wins
-                    case ElementEnum.Elements.Cheese:
-                        Debug.Log(this + " Loses to cheese");
-                        callRespawn();
-                        gameObject.SetActive(false);
-                        break;
-                        //Grass beats ash
-                    case ElementEnum.Elements.Grass:
-                        Debug.Log(this + " Loses to Grass");
-                        callRespawn();
-                        gameObject.SetActive(false);
-                        break;
-                }
-                break;
+            ////check other player against current element
+            //case ElementEnum.Elements.Ash:
+            //    //Destroy self if lose
+            //    switch (interaction.elementType)
+            //    {
+            //        //cheese always wins
+            //        case ElementEnum.Elements.Cheese:
+            //            Debug.Log(this + " Loses to cheese");
+            //            callRespawn();
+            //            gameObject.SetActive(false);
+            //            break;
+            //            //Grass beats ash
+            //        case ElementEnum.Elements.Grass:
+            //            Debug.Log(this + " Loses to Grass");
+            //            callRespawn();
+            //            gameObject.SetActive(false);
+            //            break;
+            //    }
+            //    break;
                 //cheese always win
             case ElementEnum.Elements.Cheese:
                 Debug.Log("Cheese always wins");
@@ -193,7 +193,7 @@ public class PlayerInteraction : NetworkBehaviour
                 switch (interaction.elementType)
                 {
                     //ahs beats water
-                    case ElementEnum.Elements.Ash:
+                    case ElementEnum.Elements.Grass:
                         Debug.Log(this + " Loses to Ash");
                         callRespawn();
                         gameObject.SetActive(false);

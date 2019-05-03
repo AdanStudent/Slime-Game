@@ -42,6 +42,10 @@ public class Server : NetworkBehaviour
 
     public GameObject Timer;
 
+    public GameObject currentElement;
+    public GameObject elementWheel;
+    public GameObject lifeBar;
+
     public List<Transform> spawnPoints;
     //list of elements in the scene
     [SyncVar]
@@ -53,6 +57,7 @@ public class Server : NetworkBehaviour
     public SyncListLives playerLives = new SyncListLives();
     // public GameObject spawnArea;
     // Start is called before the first frame update
+    public SyncListInt spawnPointIndexs = new SyncListInt();
 
     void Start()
     {
@@ -81,8 +86,22 @@ public class Server : NetworkBehaviour
         int index = rnd.Next(0, spawnPoints.Count);
         if (connectionToClient.isReady)
         {
+            if (spawnPointIndexs.Contains(index))
+            {
+                for(int i=0;i<spawnPoints.Count;i++)
+                {
+                    if(!spawnPointIndexs.Contains(i))
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+
             myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
+            CmdSpawnLocalUI();
+            spawnPointIndexs.Add(index);
         }
         else
         {
@@ -108,8 +127,22 @@ public class Server : NetworkBehaviour
         int index = rnd.Next(0, spawnPoints.Count);
         if (connectionToClient.isReady)
         {
+            if (spawnPointIndexs.Contains(index))
+            {
+                for (int i = 0; i < spawnPoints.Count; i++)
+                {
+                    if (!spawnPointIndexs.Contains(i))
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+
             myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
+            CmdSpawnLocalUI();
+
         }
     }
 
@@ -123,7 +156,39 @@ public class Server : NetworkBehaviour
             Debug.Log("Player: " + pl.Key + " Lives: " + pl.Value);
         }
     }*/
+    [Command]
+    public void CmdSpawnLocalUI()
+    {
+        //current 
+        GameObject current = Instantiate(currentElement);
+        current.transform.rotation = Camera.main.transform.rotation;
+        current.transform.position = new Vector3(Camera.main.transform.position.x + 1.05f,
+   Camera.main.transform.position.y - 0.46f,
+   Camera.main.transform.position.z + 0.84f);
+        current.transform.parent = Camera.main.transform;
+        NetworkServer.Spawn(current);
+        current.GetComponent<ChangeCurrentElement>().myPlayer = myPlayer.GetComponent<PlayerInteraction>();
 
+        //wheel
+        GameObject wheel = Instantiate(elementWheel);
+        wheel.transform.rotation = Camera.main.transform.rotation;
+        wheel.transform.position = new Vector3(Camera.main.transform.position.x + 1.03f,
+           Camera.main.transform.position.y + 0.42f,
+           Camera.main.transform.position.z - 0.8f);
+        wheel.transform.parent = Camera.main.transform;
+        NetworkServer.Spawn(wheel);
+
+        //life
+        GameObject life = Instantiate(lifeBar);
+        life.transform.rotation = Camera.main.transform.rotation;
+        life.transform.position = new Vector3(Camera.main.transform.position.x + 0.83f,
+Camera.main.transform.position.y - 0.37f,
+Camera.main.transform.position.z + 0.37f);
+        life.transform.parent = Camera.main.transform;
+        NetworkServer.Spawn(life);
+        life.GetComponent<UpdateLifeBar>().myPlayer = myPlayer.GetComponent<PlayerInteraction>();
+
+    }
 
     [Command]
     void CmdSpawnTimer()
@@ -195,15 +260,15 @@ public class Server : NetworkBehaviour
 
         if (someoneWon == playerLives.Count - 1)
         {
-            RpcReturnToLobby();
+            CmdReturnToLobby();
             return true;
         }
         else
             return false;
     }
 
-    [ClientRpc]
-    public void RpcReturnToLobby()
+    [Command]
+    public void CmdReturnToLobby()
     {
        LobbyManager.s_Singleton.SendReturnToLobby();
     }

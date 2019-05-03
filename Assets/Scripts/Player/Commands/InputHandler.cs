@@ -12,17 +12,20 @@ public class InputHandler : NetworkBehaviour
     public Rigidbody playerb;
     public GameObject player;
     public float Speed = 5f;
-
+    [SyncVar]
+    int cameraNumeber = 0;
     private Timer currentTimer;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         moves = new Stack<Command>();
         playerb = this.gameObject.GetComponent<Rigidbody>();
         player = playerb.gameObject;
         playerb.freezeRotation = true;
+
         camTransform = Camera.main.transform;
+        print(camTransform);
 
         Timer[] timers = FindObjectsOfType<Timer>();
 
@@ -34,6 +37,8 @@ public class InputHandler : NetworkBehaviour
             }
         }
     }
+
+
 
     bool undo;
     // Update is called once per frame
@@ -110,10 +115,10 @@ public class InputHandler : NetworkBehaviour
     public float dstFromTarget = 3;
 
     //used to limit the min and max angles the camera can rotate
-    public Vector2 pitchMinMax = new Vector2(-40, 85);
+    public Vector2 pitchMinMax = new Vector2(-15, 85);
 
     //both are used for smoothing the rotation
-    public float rotationSmoothTime = 0.12f;
+    public float rotationSmoothTime = 0.6f;
     private Vector3 rotationSmoothVel;
 
     //keeping the currentRotation to be modified for the next frame
@@ -125,6 +130,9 @@ public class InputHandler : NetworkBehaviour
 
 
     public Transform camTransform;
+    private Vector3 prevRotation;
+    private Vector3 prevcamRotation;
+
 
     private void MouseInputForCameraRotation()
     {
@@ -135,8 +143,14 @@ public class InputHandler : NetworkBehaviour
         currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw),
             ref rotationSmoothVel, rotationSmoothTime);
 
-        CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform, currentTimer.timer);
-        moves.Push(cameraRotation);
+        if (currentRotation != prevRotation/*&& camTransform.eulerAngles != prevcamRotation*/)
+        {
+            CameraRotationCommand cameraRotation = new CameraRotationCommand(currentRotation, target.position, dstFromTarget, target, camTransform, currentTimer.timer);
+            //print(cameraRotation.Log());
+            moves.Push(cameraRotation);
+        }
+            prevRotation = currentRotation;
+            prevcamRotation = camTransform.eulerAngles;
     }
 
     private float turnSmoothVel;
@@ -154,6 +168,7 @@ public class InputHandler : NetworkBehaviour
                 ref turnSmoothVel, turnSmoothTime);
 
             PlayerRotationCommand playerRotationCommand = new PlayerRotationCommand(playerMovement, player.transform, currentTimer.timer);
+            //print(playerRotationCommand.Log());
             moves.Push(playerRotationCommand);
         }
 
@@ -163,10 +178,21 @@ public class InputHandler : NetworkBehaviour
         if (translation.magnitude > 0.001)
         {
             Move_Command moveCommand = new Move_Command(translation, player.transform, currentTimer.timer);
+            //print(moveCommand.Log());
             moves.Push(moveCommand);
         }
     
     }
+
+    //void OnDrawGizmos()
+    //{
+    //    // Draws a 5 unit long red line in front of the object
+    //    Gizmos.color = Color.green;
+    //    Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
+    //    Gizmos.DrawRay(transform.position, direction);
+    //    print("Gizmo > " + direction);
+    //}
+
 
     float counter;
     //this is just being used to Test out the Replay not intended to actually be called outside of testing

@@ -87,7 +87,7 @@ public class Element : NetworkBehaviour
                 other.GetComponent<PlayerInteraction>().RpcSetType(elementType);
             else
                 other.GetComponent<PlayerInteraction>().CmdSetType(elementType);
-            gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
         }
     }
 

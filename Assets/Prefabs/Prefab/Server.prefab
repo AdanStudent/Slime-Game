@@ -82,13 +82,19 @@ MonoBehaviour:
   spawnArea: {fileID: 2186477657866881519, guid: 9e850e4d505885a4e8156aa66df3331e,
     type: 3}
   potionAsh: {fileID: 65, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
-  potionFire: {fileID: 72, guid: db37d6c223a9d314e927d84caa583068, type: 3}
-  potionGrass: {fileID: 68, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
-  potionWater: {fileID: 71, guid: 1eaa8817e01cb3c4b811197f98971e44, type: 3}
-  potionCheese: {fileID: 70, guid: 31f043fb58320a64da1bc2d1e4dc4378, type: 3}
+  potionFire: {fileID: 138, guid: db37d6c223a9d314e927d84caa583068, type: 3}
+  potionGrass: {fileID: 135, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
+  potionWater: {fileID: 137, guid: 1eaa8817e01cb3c4b811197f98971e44, type: 3}
+  potionCheese: {fileID: 133, guid: 31f043fb58320a64da1bc2d1e4dc4378, type: 3}
   Timer: {fileID: 6215896002768908045, guid: ca5aea97b65d3cb4d950f22609e0682a, type: 3}
+  currentElement: {fileID: 2384814705610903689, guid: aacd5cfad4182614895a4ce2cde0d512,
+    type: 3}
+  elementWheel: {fileID: 2302204051653594911, guid: 1fb1df3e3034a974eb7c988d6935ee9b,
+    type: 3}
+  lifeBar: {fileID: 853949058291584827, guid: 00c368f1e7605174aa41608a4f0b1eff, type: 3}
   spawnPoints:
   - {fileID: 1211455116610217180, guid: 23c7301f3065ef24e9f0345e906c566d, type: 3}
   - {fileID: 643847652392032678, guid: a8de0a5556fa9034ea6d1a5dbcba8d8c, type: 3}
   - {fileID: 1704265235991745751, guid: 2d3c0be444ad27748902e00901380f38, type: 3}
+  - {fileID: 1704265235991745751, guid: 5c1ce3f42d1284d47944dc9b3c61a8ce, type: 3}
   myPlayer: {fileID: 0}

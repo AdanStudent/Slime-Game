@@ -32,10 +32,17 @@ ModelImporter:
     2000000: left
     2100000: lambert1
     4300000: Slime
-    7400000: Take 001
+    7400000: Walk
+    7400002: Take 001 (1)
     9500000: //RootNode
     13700000: Slime
-  externalObjects: {}
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: 1498d71c92556ad48870b9ff345f49f9, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -55,14 +62,42 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Walk
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -102,7 +137,72 @@ ModelImporter:
   humanDescription:
     serializedVersion: 2
     human: []
-    skeleton: []
+    skeleton:
+    - name: Walk(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MasterCNTRL
+      parentName: Walk(Clone)
+      position: {x: 0.0006928171, y: 0.01772214, z: 0.0003177208}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.8705271, y: 0.8705271, z: 0.8705271}
+    - name: BottomCNTRL
+      parentName: MasterCNTRL
+      position: {x: -0.0007956521, y: -0.012492985, z: -0.00036497522}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1.1488031, y: 1.1488745, z: 1.1488031}
+    - name: SlimeRig2:SlimeRig1:Slime_rig:transform2
+      parentName: MasterCNTRL
+      position: {x: 0.00021800322, y: -0.01740203, z: -0.0003177208}
+      rotation: {x: 0, y: -0, z: -0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BodyCNTRL
+      parentName: SlimeRig2:SlimeRig1:Slime_rig:transform2
+      position: {x: -0.027531406, y: -0.0043054284, z: -0.000047254394}
+      rotation: {x: 0, y: 0, z: 0.70717514, w: 0.7070385}
+      scale: {x: 1.1487293, y: 1.1487293, z: 1.1487293}
+    - name: Body
+      parentName: SlimeRig2:SlimeRig1:Slime_rig:transform2
+      position: {x: -0.027531404, y: -0.0045519522, z: 9.709957e-13}
+      rotation: {x: 0, y: 0, z: 0.00009659545, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: SlimeRig2:transform1
+      parentName: Body
+      position: {x: 0.030487316, y: -0.0010138626, z: -0.000047254394}
+      rotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+      scale: {x: 1.1487293, y: 1.1487293, z: 1.1487293}
+    - name: MouthCNTRL
+      parentName: SlimeRig2:transform1
+      position: {x: -0.011628932, y: 0.025898892, z: -0.00016546038}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 0.9992596, z: 1}
+    - name: Mouth
+      parentName: SlimeRig2:transform1
+      position: {x: -0.011628932, y: 0.025898892, z: -0.00016546038}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 0.9992596, z: 1}
+    - name: TopHead
+      parentName: Body
+      position: {x: -0.033553086, y: 6.8098455e-18, z: 8.673617e-21}
+      rotation: {x: 0.005253274, y: -0.006917125, z: 0.70665056, w: 0.7075094}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Root
+      parentName: MasterCNTRL
+      position: {x: 0.00021821042, y: -0.017267184, z: -0.0003177208}
+      rotation: {x: 0, y: -0, z: -0.7071068, w: 0.7071068}
+      scale: {x: 1.0000383, y: 1.0000755, z: 1.0000383}
+    - name: Slime
+      parentName: Walk(Clone)
+      position: {x: 1.3877787e-19, y: 0, z: 8.673617e-21}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: left
+      parentName: Walk(Clone)
+      position: {x: 10.000999, y: 0, z: 0}
+      rotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -110,9 +210,9 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: MasterCNTRL
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2

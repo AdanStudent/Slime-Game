@@ -24,13 +24,13 @@ namespace Assets.Scripts.Player.Commands
 
         public override void Execute()
         {
-            playerTransform.eulerAngles = new Vector3(rotateTowards.x, rotateTowards.y);
+            playerTransform.eulerAngles = rotateTowards;
 
         }
 
         public override string Log()
         {
-            return $"{this.GetType()} has been called: eulerAngles > {this.playerTransform.eulerAngles}";
+            throw new NotImplementedException();
         }
 
         public override void UnExecute()

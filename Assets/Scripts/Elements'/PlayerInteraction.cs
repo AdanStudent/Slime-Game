@@ -8,7 +8,6 @@ public class PlayerInteraction : NetworkBehaviour
     //player's element type
   
     public ElementEnum.Elements elementType = ElementEnum.Elements.Ash;
-    public ElementEnum.Elements previousElementType = ElementEnum.Elements.Ash;
     //Object renderer
     private Renderer renderer1;
     //element materials
@@ -18,154 +17,28 @@ public class PlayerInteraction : NetworkBehaviour
     public Material water;
     public Material cheese;
     private Server serverRef;
-    private int lives;
-    public bool Respawning = false;
-
-    public LivesStruct tempLives;
-    public float cheeseTime=7;
-    public string Winner = "";
-    private bool iWon = false;
-    private bool someoneWon;
 
     // Start is called before the first frame update
     void Start()
     {
-        
-       if(hasAuthority == true)
-        {
-            this.gameObject.name = "LocalPlayer";
-        }
-       else
-        {
-            this.gameObject.name = "RemotePlayer";
-        }
-        lives = 3;
-        Respawning = false;
         GameObject server = GameObject.FindGameObjectWithTag("Server");
-        System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
-        int randomType = rnd.Next(0, 3);
-        switch(randomType)
-        {
-            case 0:
-                elementType = ElementEnum.Elements.Fire;
-                break;
-            case 1:
-                elementType = ElementEnum.Elements.Water;
-                break;
-            case 2:
-                elementType = ElementEnum.Elements.Grass;
-                break;
-        }
-
         serverRef = server.GetComponent<Server>();
         //initialize the render
         renderer1 = gameObject.GetComponent<Renderer>();
-        if (isServer == true)
-            RpcSetType(elementType);
-        else
-            CmdSetType(elementType);
-
+        //intialize material
+        ChangeMaterial();
         //freeze rotation
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
-        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 3, this.gameObject);
-        serverRef.playerLives.Add(tempLives);
-
-
-
     }
 
-    private void Awake()
-    {
-       /* GameObject server = GameObject.FindGameObjectWithTag("Server");
-        serverRef = server.GetComponent<Server>();
-        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 3);
-        serverRef.playerLives.Add(tempLives);*/
-    }
-    private void OnGUI()
-    {
-        if (hasAuthority == true)
-        {
-            GUI.Label(new Rect(450, 10, 100, 20), $"Lives:{lives}");
-            
-        }
-        
-    }
-
-    public void SetWinner(string netID)
-    {
-        Winner = netID;
-        iWon = CheckIfIWon();
-        Debug.Log("SetWinner is Called");
-
-    }
-
-    private bool CheckIfIWon()
-    {
-        if (Winner == this.gameObject.GetComponent<NetworkIdentity>().netId.ToString())
-        {
-            return true;
-        }
-        else return false;
-    }
-    private void RespawnDelay()
-    {
-        Respawning = false;
-    }
-
-    private void UpdateLives()
-    {
-        lives--;
-        //GameObject server = GameObject.FindGameObjectWithTag("Server");
-        //serverRef = server.GetComponent<Server>();
-       /* int currentLives = lives;
-        for (int i = 0; i < serverRef.playerLives.Count; i++)
-        {pdatel
-            if (this.gameObject.GetComponent<NetworkIdentity>().netId.ToString()  == serverRef.playerLives[i].netID)
-            {
-                currentLives = serverRef.playerLives[i].lives;
-                --;
-            }
-        }
-        lives = currentLives;*/
-    }
-    float timePassed = 0;
-    private void Update()
-    {
-        //cheese is temporary
-        if (elementType==ElementEnum.Elements.Cheese)
-        {
-            //check timer
-            if(timePassed<cheeseTime)
-            {
-                timePassed += Time.deltaTime;
-            }
-            //if cheese time has passed then reset element
-            else
-            {
-                if (isServer == true)
-                    RpcSetType(previousElementType);
-                else
-                    CmdSetType(previousElementType);
-                timePassed = 0;
-            }
-        }
-    }
     private void callRespawn()
     {
-        if (Respawning == false)
-        {
-            
-            Respawning = true;
-            Invoke("RespawnDelay", 4.0f);
-            serverRef.RespawnReference(this.gameObject);
-            UpdateLives();
-            if (isServer == true)
-                serverRef.RpcPlayerRespawn();
-            else
-                serverRef.CmdPlayerRespawn();
-        }
+        serverRef.myPlayer = this.gameObject;
+        if (isServer == true)
+            serverRef.RpcPlayerRespawn();
+        else
+            serverRef.CmdPlayerRespawn();
     }
-    //server command
     [Command]
     public void CmdSetType(ElementEnum.Elements elements)
     {
@@ -176,17 +49,18 @@ public class PlayerInteraction : NetworkBehaviour
     //Set the new element type for player if new element is picked up
     public void RpcSetType(ElementEnum.Elements element)
     {
-        //cheese is temporary so store previous type
-        if (element == ElementEnum.Elements.Cheese)
-            previousElementType = elementType;
-        //change material
         Debug.Log(this+" Current Type: " + elementType.ToString());
         elementType = element;
         ChangeMaterial();
         Debug.Log(this+" New Type: " + elementType.ToString());
     }
 
-
+//     [ClientRpc]
+//     //Spawn the player again
+//     public void RpcSetActiveAgain()
+//     {
+//         gameObject.SetActive(true);
+//     }
 
     //change the player's element type
     public void ChangeMaterial()
@@ -220,25 +94,25 @@ public class PlayerInteraction : NetworkBehaviour
         PlayerInteraction interaction = other.GetComponent<PlayerInteraction>();
         switch (elementType)
         {
-            ////check other player against current element
-            //case ElementEnum.Elements.Ash:
-            //    //Destroy self if lose
-            //    switch (interaction.elementType)
-            //    {
-            //        //cheese always wins
-            //        case ElementEnum.Elements.Cheese:
-            //            Debug.Log(this + " Loses to cheese");
-            //            callRespawn();
-            //            gameObject.SetActive(false);
-            //            break;
-            //            //Grass beats ash
-            //        case ElementEnum.Elements.Grass:
-            //            Debug.Log(this + " Loses to Grass");
-            //            callRespawn();
-            //            gameObject.SetActive(false);
-            //            break;
-            //    }
-            //    break;
+            //check other player against current element
+            case ElementEnum.Elements.Ash:
+                //Destroy self if lose
+                switch (interaction.elementType)
+                {
+                    //cheese always wins
+                    case ElementEnum.Elements.Cheese:
+                        Debug.Log(this + " Loses to cheese");
+                        callRespawn();
+                        gameObject.SetActive(false);
+                        break;
+                        //Grass beats ash
+                    case ElementEnum.Elements.Grass:
+                        Debug.Log(this + " Loses to Grass");
+                        callRespawn();
+                        gameObject.SetActive(false);
+                        break;
+                }
+                break;
                 //cheese always win
             case ElementEnum.Elements.Cheese:
                 Debug.Log("Cheese always wins");
@@ -248,13 +122,13 @@ public class PlayerInteraction : NetworkBehaviour
                 {
                     //cheese always wins
                     case ElementEnum.Elements.Cheese:
-                      //  Debug.Log(this + " Loses to Cheese");
+                        Debug.Log(this + " Loses to Cheese");
                         callRespawn();
                         gameObject.SetActive(false);
                         break;
                         //water beats fire
                     case ElementEnum.Elements.Water:
-                     //   Debug.Log(this + " Loses to Water");
+                        Debug.Log(this + " Loses to Water");
                         callRespawn();
                         gameObject.SetActive(false);
                         break;
@@ -265,13 +139,13 @@ public class PlayerInteraction : NetworkBehaviour
                 switch (interaction.elementType)
                 {
                     //ahs beats water
-                    case ElementEnum.Elements.Grass:
+                    case ElementEnum.Elements.Ash:
                         Debug.Log(this + " Loses to Ash");
                         callRespawn();
                         gameObject.SetActive(false);
                         break;
                     case ElementEnum.Elements.Cheese:
-                       // Debug.Log(this + " Loses to Cheese");
+                        Debug.Log(this + " Loses to Cheese");
                         callRespawn();
                         gameObject.SetActive(false);
                         break;
@@ -281,13 +155,13 @@ public class PlayerInteraction : NetworkBehaviour
                 switch (interaction.elementType)
                 {
                     case ElementEnum.Elements.Cheese:
-                       // Debug.Log(this + " Loses to Cheese");
+                        Debug.Log(this + " Loses to Cheese");
                         callRespawn();
                         gameObject.SetActive(false);
                         break;
                         //fire beats grass
                     case ElementEnum.Elements.Fire:
-                       // Debug.Log(this + " Loses to Fire");
+                        Debug.Log(this + " Loses to Fire");
                         callRespawn();
                         gameObject.SetActive(false);
                         break;
@@ -297,13 +171,11 @@ public class PlayerInteraction : NetworkBehaviour
     }
 
 
-    //sever command
     [Command]
     void CmdComparePlayersElementTypes(GameObject other)
     {
         RpcComparePlayersElementTypes(other);
     }
-    //compare element types
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag=="Player")
@@ -314,22 +186,4 @@ public class PlayerInteraction : NetworkBehaviour
                 CmdComparePlayersElementTypes(other.gameObject);
         }
     }
-}
-public class Delay
-{
-    public float WaitTime;
-    private float completionTime;
-
-    public Delay(float waitTime)
-    {
-        WaitTime = waitTime;
-        Reset();
-    }
-
-    public void Reset()
-    {
-        completionTime = Time.time + WaitTime;
-    }
-
-    public bool IsReady { get { return Time.time >= completionTime; } }
 }

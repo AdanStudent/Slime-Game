@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1203359251382590453
+--- !u!1 &362485844544887985
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5156379721863409852}
+  - component: {fileID: 5029786639038429067}
   m_Layer: 0
   m_Name: pasted__details
   m_TagString: Untagged
@@ -16,22 +16,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5156379721863409852
+--- !u!4 &5029786639038429067
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1203359251382590453}
+  m_GameObject: {fileID: 362485844544887985}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.023381323, y: -0.046482243, z: -0.0003319238}
+  m_LocalPosition: {x: -0.011690661, y: -0.023241121, z: -0.0001659619}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1885708597956810195}
-  m_Father: {fileID: 4039310420725425842}
+  - {fileID: 3070065292294566569}
+  m_Father: {fileID: 2908670253675396306}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1805608853912073736
+--- !u!1 &2355165372184456157
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39,9 +39,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1885708597956810195}
-  - component: {fileID: 8359035674937696470}
-  - component: {fileID: 4944711813416326015}
+  - component: {fileID: 3070065292294566569}
+  - component: {fileID: 5322162504716714108}
+  - component: {fileID: 7557859118453056284}
   m_Layer: 0
   m_Name: pasted__polySurface8
   m_TagString: Untagged
@@ -49,35 +49,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1885708597956810195
+--- !u!4 &3070065292294566569
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1805608853912073736}
+  m_GameObject: {fileID: 2355165372184456157}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.011436399, y: 0.022285985, z: -0.005291659}
+  m_LocalPosition: {x: 0.0057181995, y: 0.011142992, z: -0.0026458295}
   m_LocalScale: {x: 169.26173, y: 169.26173, z: 169.26173}
   m_Children: []
-  m_Father: {fileID: 5156379721863409852}
+  m_Father: {fileID: 5029786639038429067}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8359035674937696470
+--- !u!33 &5322162504716714108
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1805608853912073736}
+  m_GameObject: {fileID: 2355165372184456157}
   m_Mesh: {fileID: 4300000, guid: db1848f02995b824b8d69a269946b333, type: 3}
---- !u!23 &4944711813416326015
+--- !u!23 &7557859118453056284
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1805608853912073736}
+  m_GameObject: {fileID: 2355165372184456157}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -88,7 +88,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2181fd532c061db4fbc498333f2544c6, type: 2}
+  - {fileID: 2100000, guid: c9c7768512193e94e9f3f369386ea295, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,7 +108,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &4724201203758784425
+--- !u!1 &7613190550783978497
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,82 +116,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4039310420725425842}
-  - component: {fileID: 4198001379679023835}
-  - component: {fileID: 3775750824968035643}
+  - component: {fileID: 2908670253675396306}
   m_Layer: 0
-  m_Name: PotionGray
+  m_Name: Potion_Round
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4039310420725425842
+--- !u!4 &2908670253675396306
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4724201203758784425}
+  m_GameObject: {fileID: 7613190550783978497}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.7898436, y: 0.57, z: -9.3853655}
+  m_LocalPosition: {x: -6.871316, y: 3.2970056e-17, z: -7.544061}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5156379721863409852}
+  - {fileID: 5029786639038429067}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4198001379679023835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4724201203758784425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 0
-    i1: 0
-    i2: 0
-    i3: 0
-    i4: 0
-    i5: 0
-    i6: 0
-    i7: 0
-    i8: 0
-    i9: 0
-    i10: 0
-    i11: 0
-    i12: 0
-    i13: 0
-    i14: 0
-    i15: 0
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &3775750824968035643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4724201203758784425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6055a04ef50fea649b257138f8f42c7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  elementType: 2
-  elements:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  spawnArea: {fileID: 0}
-  potionsInScene: 1

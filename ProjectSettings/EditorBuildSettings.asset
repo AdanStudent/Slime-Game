@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MultiplayerExample 1.unity
     guid: 09ed20dbe4fc1f24ab8c1cf6f25b674e
+  - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: 9d0539aec14e0004d8c0bdcd8ba9ec3f
   - enabled: 0
     path: Assets/Scenes/GreyBox_Main.unity
     guid: 4d5b5293d580a1f47ad8ee2a14b26ac2
@@ -18,15 +21,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MultiplayerExample.unity
     guid: 31bc1dde5cc7c5947a8edef84b4a4ca2
   - enabled: 1
-    path: Assets/Scenes/Lobby.unity
-    guid: af654dc994fc74c40bf97dbf03f48ab8
-  - enabled: 1
     path: Assets/Scenes/NewAssetLevel.unity
     guid: 3c5f18c77babb3c48983df23240e90f5
-  - enabled: 1
-    path: Assets/Scenes/Instructions.unity
-    guid: 6ff361f6154d59b4686092c0a4475e88
-  - enabled: 1
-    path: Assets/Scenes/Credits.unity
-    guid: 294c5222087d58a40a8d03769667c1a4
   m_configObjects: {}

@@ -74,7 +74,7 @@ public class CustomNetworkManager : NetworkManager
 
     }
 
-    /*void SetIPAddress()
+    void SetIPAddress()
     {
         if (lastInt < 256)
         {
@@ -84,9 +84,18 @@ public class CustomNetworkManager : NetworkManager
             lastInt++;
         }
 
-               
+        //         // string ipAddress = GameObject.Find("InputFieldIPAddress").transform.Find("Text").GetComponent<Text>().text;
+        //         if (lastInt < 256)
+        //         {
+        //             lastInt++;
+        //             string IPAddressTest = "192.168.1." + lastInt;
+        //             NetworkManager.singleton.networkAddress = IPAddressTest;
+        //             Debug.Log("Current IP Address: " + IPAddressTest);
+        //         }
+
+        //         
     }
-    */
+
     private void SetPort()
     {
         NetworkManager.singleton.networkPort = PORT;

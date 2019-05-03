@@ -41,7 +41,7 @@ namespace Assets.Scripts.Player.Commands
 
         public override void Execute()
         {
-            camTransform.eulerAngles = new Vector3(currentRotation.x, currentRotation.y, currentRotation.z);
+            camTransform.eulerAngles = currentRotation;
             camTransform.position = camTarget.position - camTransform.forward * distFromTarget;
         }
 

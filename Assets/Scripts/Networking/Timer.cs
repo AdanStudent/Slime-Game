@@ -1,5 +1,4 @@
-﻿using Prototype.NetworkLobby;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -17,16 +16,10 @@ public class Timer : NetworkBehaviour
     [SyncVar] public float masterDeltaTime;
 
     Timer serverTimer;
-
-    private LobbyManager lobby;
  
     void Start()
     {
-        lobby = GameObject.FindGameObjectWithTag("Lobby").GetComponent<LobbyManager>();
-
-        print(lobby.isAHost.ToString());
-
-        if(!lobby.isAHost)
+        if(NetworkServer.connections.Count > 1)
         {
             Timer[] timers = FindObjectsOfType<Timer>();
             for(int i =0; i<timers.Length; i++)

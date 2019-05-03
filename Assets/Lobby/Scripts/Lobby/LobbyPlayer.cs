@@ -19,7 +19,7 @@ namespace Prototype.NetworkLobby
         public InputField nameInput;
         public Button readyButton;
         public Button waitingPlayerButton;
-        public Button removePlayerButton;
+        public Button removePlayerButton; 
 
         public GameObject localIcone;
         public GameObject remoteIcone;

@@ -1,7 +1,7 @@
-﻿using Prototype.NetworkLobby;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-//using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -11,22 +11,8 @@ public struct ElementStruct
     public int elementType;
     public Vector3 position;
 }
-public struct LivesStruct
-{
-    public string netID;
-    public int lives;
-    public GameObject playerObject;
-    public LivesStruct(string net, int li, GameObject po)
-    {
-        netID = net;
-        lives = li;
-        playerObject = po;
-    }
-    //GameObject 
-}
-public class SyncListLives : SyncListStruct<LivesStruct> { }
-public class SyncListElement : SyncListStruct<ElementStruct> { }
 
+public class SyncListElement : SyncListStruct<ElementStruct> { }
 
 public class Server : NetworkBehaviour
 {
@@ -45,10 +31,6 @@ public class Server : NetworkBehaviour
 
     public GameObject Timer;
 
-    public GameObject currentElement;
-    public GameObject elementWheel;
-    public GameObject lifeBar;
-
     public List<Transform> spawnPoints;
     //list of elements in the scene
     [SyncVar]
@@ -56,14 +38,8 @@ public class Server : NetworkBehaviour
     public GameObject myPlayer;
     private GameObject SpawnArea;
     private ElementSpawn elementSpawnRef;
-    public SyncListLives playerLives = new SyncListLives();
-    bool duplicateCheck = false;
-
-    private bool localPlayerWon = false;
-    private bool someoneWonBool = false;
     // public GameObject spawnArea;
     // Start is called before the first frame update
-    public SyncListInt spawnPointIndexs = new SyncListInt();
 
     void Start()
     {
@@ -80,23 +56,9 @@ public class Server : NetworkBehaviour
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
         CmdSpawnTimer();
+        
     }
 
-    void CheckForDuplicates()
-    {
-        for (int i = 0; i < playerLives.Count; i++)
-        {
-
-            for (int j = 0; j < playerLives.Count; j++)
-            {
-                if((i!=j) && (playerLives[i].netID == playerLives[j].netID))
-                {
-                    playerLives.RemoveAt(j);
-                }
-            }
-        }
-        duplicateCheck = true;
-    }
     [Command]
     void CmdSpawnPersonalPlayer()
     {
@@ -104,22 +66,8 @@ public class Server : NetworkBehaviour
         int index = rnd.Next(0, spawnPoints.Count);
         if (connectionToClient.isReady)
         {
-            if (spawnPointIndexs.Contains(index))
-            {
-                for(int i=0;i<spawnPoints.Count;i++)
-                {
-                    if(!spawnPointIndexs.Contains(i))
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-
             myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-            CmdSpawnLocalUI();
-            spawnPointIndexs.Add(index);
         }
         else
         {
@@ -145,67 +93,9 @@ public class Server : NetworkBehaviour
         int index = rnd.Next(0, spawnPoints.Count);
         if (connectionToClient.isReady)
         {
-            if (spawnPointIndexs.Contains(index))
-            {
-                for (int i = 0; i < spawnPoints.Count; i++)
-                {
-                    if (!spawnPointIndexs.Contains(i))
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-
             myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-            CmdSpawnLocalUI();
-
         }
-    }
-
-    //adds each player to dictonary
-    /*[ClientRpc]
-    void RpcAddPlayersToDictonary(string playerName)
-    {
-        playerLives.Add(playerName, 3);
-        foreach (KeyValuePair<string, int> pl in playerLives)
-        {
-            Debug.Log("Player: " + pl.Key + " Lives: " + pl.Value);
-        }
-    }*/
-    [Command]
-    public void CmdSpawnLocalUI()
-    {
-        //current 
-        GameObject current = Instantiate(currentElement);
-        current.transform.rotation = Camera.main.transform.rotation;
-        current.transform.position = new Vector3(Camera.main.transform.position.x + 1.05f,
-   Camera.main.transform.position.y - 0.46f,
-   Camera.main.transform.position.z + 0.84f);
-        current.transform.parent = Camera.main.transform;
-        NetworkServer.Spawn(current);
-        current.GetComponent<ChangeCurrentElement>().myPlayer = myPlayer.GetComponent<PlayerInteraction>();
-
-        //wheel
-        GameObject wheel = Instantiate(elementWheel);
-        wheel.transform.rotation = Camera.main.transform.rotation;
-        wheel.transform.position = new Vector3(Camera.main.transform.position.x + 1.03f,
-           Camera.main.transform.position.y + 0.42f,
-           Camera.main.transform.position.z - 0.8f);
-        wheel.transform.parent = Camera.main.transform;
-        NetworkServer.Spawn(wheel);
-
-        //life
-        GameObject life = Instantiate(lifeBar);
-        life.transform.rotation = Camera.main.transform.rotation;
-        life.transform.position = new Vector3(Camera.main.transform.position.x + 0.83f,
-Camera.main.transform.position.y - 0.37f,
-Camera.main.transform.position.z + 0.37f);
-        life.transform.parent = Camera.main.transform;
-        NetworkServer.Spawn(life);
-        life.GetComponent<UpdateLifeBar>().myPlayer = myPlayer.GetComponent<PlayerInteraction>();
-
     }
 
     [Command]
@@ -218,8 +108,6 @@ Camera.main.transform.position.z + 0.37f);
     [Command]
     void CmdSpawnArea()
     {
-
-        
         //Get the spawn area object
         GameObject spawn = GameObject.FindGameObjectWithTag("SpawnArea");
 
@@ -230,7 +118,6 @@ Camera.main.transform.position.z + 0.37f);
             SpawnArea = Instantiate(spawnArea);
             NetworkServer.Spawn(SpawnArea);
             //List of struct elements
-            SpawnArea.GetComponent<ElementSpawn>().DetermineMinSpawnNum();
             List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
 
             //spawn each potion
@@ -241,141 +128,68 @@ Camera.main.transform.position.z + 0.37f);
             }
             Debug.Log("Spawn Area is Spawning");
         }
+        //else
+        //{
+        //    //Get the element list from another server
+        //    GameObject[] serverObjs = GameObject.FindGameObjectsWithTag("Server");
+        //    Server server=null;
+        //    foreach(GameObject s in serverObjs)
+        //    {
+        //        if(s.GetComponent<Server>().elementList.Count>0)
+        //        {
+        //            server = s.GetComponent<Server>();
+        //            break;
+        //        }
+        //    }
+        //    //set the element list
+        //    if (server != null)
+        //        elementList = server.elementList;
+        //    //Instatiate the potions
+        //    foreach(ElementStruct p in elementList)
+        //    {
+        //        CmdSpawnPotions(p);
+        //    }
+        //}
     }
- 
-
     [Command]
-    public void CmdReturnToLobby()
+    public void CmdPotionRespawn()
     {
-       LobbyManager.s_Singleton.SendReturnToLobby();
+//         Debug.Log("Potion Respawn in server is called");
+//         List<ElementStruct> tempPotions = SpawnArea.GetComponent<ElementSpawn>().SpawnPotions();
+//         elementList.Clear();
+//         Debug.Log("Length of temp Potions: " + tempPotions.Count);
+//         //spawn each potion
+//         for (int i = 0; i < tempPotions.Count; i++)
+//         {
+//             Debug.Log("New potions should be created");
+//             CmdSpawnPotions(tempPotions[i]);
+//             elementList.Add(tempPotions[i]);
+//         }
     }
 
-    public void RespawnReference(GameObject player)
-    {
-        myPlayer = player;
-    }
     [ClientRpc]
     public void RpcPlayerRespawn()
     {
-       /// Debug.Log("RPCPLAYERRESPAWN BEING CALLED");
-        if (duplicateCheck == false)
-        {
-           
-            CheckForDuplicates();
-        }
+       
+        StartCoroutine(PlayerRespawnWait());
 
-        for (int i = 0; i < playerLives.Count; i++)
-        {
-            Debug.Log("Net ID: " + playerLives[i].netID + "  Players lives left " + playerLives[i].lives);
-        }
-        
-        
-        //Debug.Log("A player won");
-        bool foundPlayer = false;
-        int foundIndex = -1;
-        for (int i = 0; i < playerLives.Count; i++)
-        {
-            //Debug.Log("Struct net id: " + playerLives[i].netID + " Player Net ID" + myPlayer.GetComponent<NetworkIdentity>().netId.ToString() + "Struct net id Currentlives : " + playerLives[i].lives);
-            if (playerLives[i].netID == myPlayer.GetComponent<NetworkIdentity>().netId.ToString())
-            {
-                
-                foundPlayer = true;
-                foundIndex = i;
-                i = playerLives.Count + 1;
-            }
-        }
 
-        
-        if (foundIndex != -1 )
-        {
-            Debug.Log("We are chaging " + playerLives[foundIndex].netID + "from " + playerLives[foundIndex].lives + " lives to -1 of that");
-            LivesStruct temp = playerLives[foundIndex];
-            temp.lives = temp.lives - 1;
-            playerLives[foundIndex] = temp;
-            if (playerLives[foundIndex].lives > 0)
-            {
-                StartCoroutine(PlayerRespawnWait());
-            }
-            //Debug.Log("Results of Check winstate:" + CheckWinState());
-        }
-        CheckWinState();
-    }
-    bool CheckWinState()
-    {
-        Debug.Log("Check win state is called)");
-        string potentialWinner = "";
-        int someoneWon = 0;
-        
-        foreach (LivesStruct ls in playerLives)
-        {
-            Debug.Log("LS Check win state id: " + ls.netID + " lives: " + ls.lives);
-            if (ls.lives <= 0)
-            {
-                someoneWon++;
-            }
-            else
-            {
-                potentialWinner = ls.netID;
-            }
-        }
-        Debug.Log("Count of player lives" + playerLives.Count + " SomeoneWon count: " + someoneWon + "Potential Winner: " + potentialWinner);
-
-        if (someoneWon == playerLives.Count - 1)
-        {
-            GameObject localPlayer = GameObject.Find("LocalPlayer");
-            Debug.Log(potentialWinner + " Has one the game!");
-            if (localPlayer != null)
-            {
-                localPlayerWon = true;
-
-            }
-            else
-            {
-                localPlayerWon = false;
-            }
-           
-            someoneWonBool= true;
-           
-            //RpcReturnToLobby();
-            return true;
-        }
-        else
-            return false;
-    }
-
-    
-
-    private void OnGUI()
-    {
-        if(someoneWonBool == true)
-        {
-            if(localPlayerWon == true)
-            {
-                GUI.Label(new Rect(450, 450, 100, 20), "YOU WON");
-            }
-            else
-            {
-                GUI.Label(new Rect(450, 450, 100, 20), "YOU LOST");
-            }
-        }
     }
     [Command]
     public void CmdPlayerRespawn()
     {
-        Debug.Log("CMDPLAYERRESPAWN");
         RpcPlayerRespawn();
     }
 
     IEnumerator PlayerRespawnWait()
     {
-       
 
         System.Random rnd = new System.Random();
         int index = rnd.Next(0, spawnPoints.Count);
         yield return new WaitForSeconds(3);
         myPlayer.SetActive(true);
         myPlayer.transform.position = spawnPoints[index].position;
-       // myPlayer.transform.rotation = spawnPoints[index].rotation;
+        myPlayer.transform.rotation = spawnPoints[index].rotation;
 
     }
     
@@ -394,36 +208,32 @@ Camera.main.transform.position.z + 0.37f);
             case ElementEnum.Elements.Ash:
                 potionAsh.transform.position = p.position;
                 potionAsh.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionAsh);
-                temp.gameObject.name = "Ash";
-                temp.transform.parent = null;
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionAsh);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Fire:
                 potionFire.transform.position = p.position;
                 potionFire.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionFire);
-                temp.gameObject.name = "Fire";
-                temp.transform.parent = null;
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionFire);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Grass:
                 potionGrass.transform.position = p.position;
                 potionGrass.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionGrass);
-                temp.gameObject.name = "Grass";
-                temp.transform.parent = null;
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionGrass);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Water:
                 potionWater.transform.position = p.position;
                 potionWater.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionWater);
-                temp.gameObject.name = "Water";
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionWater);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
             case ElementEnum.Elements.Cheese:
                 potionCheese.transform.position = p.position;
                 potionCheese.GetComponent<Element>().elementType = type;
-                temp = Instantiate(potionCheese);
-                temp.gameObject.name = "Cheese";
-                temp.transform.parent = null;
+                temp = (GameObject)PrefabUtility.InstantiatePrefab(potionCheese);
+                PrefabUtility.UnpackPrefabInstance(temp, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
                 break;
         }
         if (temp != null)

@@ -22,6 +22,7 @@ public class Element : NetworkBehaviour
             RandomType();
         }
 
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -79,6 +80,9 @@ public class Element : NetworkBehaviour
         }
     }
 
+    public AudioClip Potion;
+    AudioSource source;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -88,6 +92,13 @@ public class Element : NetworkBehaviour
             else
                 other.GetComponent<PlayerInteraction>().CmdSetType(elementType);
             this.gameObject.SetActive(false);
+
+            //if (!source.isPlaying)
+            //{
+                source.volume = 1;
+                source.PlayOneShot(Potion);
+                print("Play Potion");
+            //}
         }
     }
 

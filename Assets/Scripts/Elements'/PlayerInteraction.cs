@@ -26,7 +26,6 @@ public class PlayerInteraction : NetworkBehaviour
     public float cheeseTime=7;
 
     public AudioClip Dying;
-    public AudioClip Potion;
 
     // Start is called before the first frame update
     void Start()
@@ -69,8 +68,6 @@ public class PlayerInteraction : NetworkBehaviour
         {
             GUI.Label(new Rect(450, 10, 100, 20), $"Lives:{lives}");
         }
-        
-
     }
   
 

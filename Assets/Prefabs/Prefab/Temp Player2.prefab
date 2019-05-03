@@ -225,7 +225,6 @@ MonoBehaviour:
   Respawning: 0
   cheeseTime: 7
   Dying: {fileID: 8300000, guid: 67f42df41597310418242e826a6732c3, type: 3}
-  Potion: {fileID: 8300000, guid: 939c28ea9220d784096129d583dd3acb, type: 3}
 --- !u!114 &3189112095991579367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,7 +282,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

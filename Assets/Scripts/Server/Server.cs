@@ -15,10 +15,12 @@ public struct LivesStruct
 {
     public string netID;
     public int lives;
-    public LivesStruct(string net, int li)
+    public GameObject playerObject;
+    public LivesStruct(string net, int li, GameObject po)
     {
         netID = net;
         lives = li;
+        playerObject = po;
     }
     //GameObject 
 }
@@ -52,6 +54,9 @@ public class Server : NetworkBehaviour
     private ElementSpawn elementSpawnRef;
     public SyncListLives playerLives = new SyncListLives();
     bool duplicateCheck = false;
+
+    private bool localPlayerWon = false;
+    private bool someoneWonBool = false;
     // public GameObject spawnArea;
     // Start is called before the first frame update
 
@@ -125,18 +130,7 @@ public class Server : NetworkBehaviour
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
         }
     }
-
-    //adds each player to dictonary
-    /*[ClientRpc]
-    void RpcAddPlayersToDictonary(string playerName)
-    {
-        playerLives.Add(playerName, 3);
-        foreach (KeyValuePair<string, int> pl in playerLives)
-        {
-            Debug.Log("Player: " + pl.Key + " Lives: " + pl.Value);
-        }
-    }*/
-
+    
 
     [Command]
     void CmdSpawnTimer()
@@ -171,28 +165,6 @@ public class Server : NetworkBehaviour
             }
             Debug.Log("Spawn Area is Spawning");
         }
-        //else
-        //{
-        //    //Get the element list from another server
-        //    GameObject[] serverObjs = GameObject.FindGameObjectsWithTag("Server");
-        //    Server server=null;
-        //    foreach(GameObject s in serverObjs)
-        //    {
-        //        if(s.GetComponent<Server>().elementList.Count>0)
-        //        {
-        //            server = s.GetComponent<Server>();
-        //            break;
-        //        }
-        //    }
-        //    //set the element list
-        //    if (server != null)
-        //        elementList = server.elementList;
-        //    //Instatiate the potions
-        //    foreach(ElementStruct p in elementList)
-        //    {
-        //        CmdSpawnPotions(p);
-        //    }
-        //}
     }
  
 
@@ -274,12 +246,42 @@ public class Server : NetworkBehaviour
 
         if (someoneWon == playerLives.Count - 1)
         {
+            GameObject localPlayer = GameObject.Find("LocalPlayer");
             Debug.Log(potentialWinner + " Has one the game!");
-            RpcReturnToLobby();
+            if (localPlayer != null)
+            {
+                localPlayerWon = true;
+
+            }
+            else
+            {
+                localPlayerWon = false;
+            }
+           
+            someoneWonBool= true;
+           
+            //RpcReturnToLobby();
             return true;
         }
         else
             return false;
+    }
+
+    
+
+    private void OnGUI()
+    {
+        if(someoneWonBool == true)
+        {
+            if(localPlayerWon == true)
+            {
+                GUI.Label(new Rect(450, 450, 100, 20), "YOU WON");
+            }
+            else
+            {
+                GUI.Label(new Rect(450, 450, 100, 20), "YOU LOST");
+            }
+        }
     }
     [Command]
     public void CmdPlayerRespawn()

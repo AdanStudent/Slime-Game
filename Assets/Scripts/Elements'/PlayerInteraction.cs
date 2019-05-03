@@ -24,12 +24,22 @@ public class PlayerInteraction : NetworkBehaviour
     public LivesStruct tempLives;
     Animator elementUI;
     public float cheeseTime=7;
+    public string Winner = "";
+    private bool iWon = false;
+    private bool someoneWon;
 
     // Start is called before the first frame update
     void Start()
     {
         
-       
+       if(hasAuthority == true)
+        {
+            this.gameObject.name = "LocalPlayer";
+        }
+       else
+        {
+            this.gameObject.name = "RemotePlayer";
+        }
         lives = 3;
         Respawning = false;
         GameObject server = GameObject.FindGameObjectWithTag("Server");
@@ -56,7 +66,7 @@ public class PlayerInteraction : NetworkBehaviour
         ChangeMaterial();
         //freeze rotation
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
-        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 3);
+        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 3, this.gameObject);
         serverRef.playerLives.Add(tempLives);
 
 
@@ -75,12 +85,27 @@ public class PlayerInteraction : NetworkBehaviour
         if (hasAuthority == true)
         {
             GUI.Label(new Rect(450, 10, 100, 20), $"Lives:{lives}");
+            
         }
         
+    }
+
+    public void SetWinner(string netID)
+    {
+        Winner = netID;
+        iWon = CheckIfIWon();
+        Debug.Log("SetWinner is Called");
 
     }
-  
 
+    private bool CheckIfIWon()
+    {
+        if (Winner == this.gameObject.GetComponent<NetworkIdentity>().netId.ToString())
+        {
+            return true;
+        }
+        else return false;
+    }
     private void RespawnDelay()
     {
         Respawning = false;

@@ -151,6 +151,11 @@ public class PlayerInteraction : NetworkBehaviour
                 timePassed = 0;
             }
         }
+
+        if(renderer1==null)
+        {
+            renderer1 = gameObject.GetComponent<Renderer>();
+        }
     }
     private void callRespawn()
     {
@@ -196,24 +201,48 @@ public class PlayerInteraction : NetworkBehaviour
         switch(elementType)
         {
             case ElementEnum.Elements.Ash:
-                renderer1.material = ash;
+                if (renderer1 != null)
+                    renderer1.material = ash;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             case ElementEnum.Elements.Cheese:
-                renderer1.material = cheese;
+                if (renderer1 != null)
+                    renderer1.material = cheese;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             case ElementEnum.Elements.Fire:
-                renderer1.material = fire;
+                if (renderer1 != null)
+                    renderer1.material = fire;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             case ElementEnum.Elements.Grass:
-                renderer1.material = grass;
+                if (renderer1 != null)
+                    renderer1.material = grass;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             case ElementEnum.Elements.Water:
-                renderer1.material = water;
+                if (renderer1 != null)
+                    renderer1.material = water;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             default:
                 renderer1.material = ash;
                 break;
         }
+    }
+
+    IEnumerator WaitForReady()
+    {
+        while (renderer1==null)
+        {
+            yield return new WaitForSeconds(0.25f);
+        }
+       ChangeMaterial();
     }
 
     [ClientRpc]

@@ -100,7 +100,7 @@ public class Server : NetworkBehaviour
     [Command]
     void CmdSpawnPersonalPlayer()
     {
-        System.Random rnd = new System.Random();
+        System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
         int index = rnd.Next(0, spawnPoints.Count);
         if (connectionToClient.isReady)
         {
@@ -108,7 +108,7 @@ public class Server : NetworkBehaviour
             {
                 for(int i=0;i<spawnPoints.Count;i++)
                 {
-                    if(!spawnPointIndexs.Contains(i))
+                    if(!spawnPointIndexs.Contains(i) && CheckSpawnPoint(index))
                     {
                         index = i;
                         break;
@@ -140,16 +140,17 @@ public class Server : NetworkBehaviour
     [Server]
     private void OnReady()
     {
-        Debug.Log("Spawning Object1");
-        System.Random rnd = new System.Random();
-        int index = rnd.Next(0, spawnPoints.Count);
+        //Debug.Log("Spawning Object1");
+        //System.Random rnd = new System.Random();
+        System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
+        int index = rnd.Next(0,spawnPoints.Count);
         if (connectionToClient.isReady)
         {
             if (spawnPointIndexs.Contains(index))
             {
                 for (int i = 0; i < spawnPoints.Count; i++)
                 {
-                    if (!spawnPointIndexs.Contains(i))
+                    if (!spawnPointIndexs.Contains(i)&&CheckSpawnPoint(index))
                     {
                         index = i;
                         break;
@@ -162,6 +163,21 @@ public class Server : NetworkBehaviour
             CmdSpawnLocalUI();
 
         }
+    }
+
+    bool CheckSpawnPoint(int index)
+    {
+        //check for overlap
+        Collider[] colliders = Physics.OverlapSphere(spawnPoints[index].position, 1);
+        if(colliders.Length<=3)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     //adds each player to dictonary
@@ -183,7 +199,7 @@ public class Server : NetworkBehaviour
         current.transform.position = new Vector3(Camera.main.transform.position.x + 1.05f,
    Camera.main.transform.position.y - 0.46f,
    Camera.main.transform.position.z + 0.84f);
-        current.transform.parent = Camera.main.transform;
+        current.transform.parent = myPlayer.transform;
         NetworkServer.Spawn(current);
         current.GetComponent<ChangeCurrentElement>().myPlayer = myPlayer.GetComponent<PlayerInteraction>();
 
@@ -193,7 +209,7 @@ public class Server : NetworkBehaviour
         wheel.transform.position = new Vector3(Camera.main.transform.position.x + 1.03f,
            Camera.main.transform.position.y + 0.42f,
            Camera.main.transform.position.z - 0.8f);
-        wheel.transform.parent = Camera.main.transform;
+        wheel.transform.parent = myPlayer.transform;
         NetworkServer.Spawn(wheel);
 
         //life
@@ -202,7 +218,7 @@ public class Server : NetworkBehaviour
         life.transform.position = new Vector3(Camera.main.transform.position.x + 0.83f,
 Camera.main.transform.position.y - 0.37f,
 Camera.main.transform.position.z + 0.37f);
-        life.transform.parent = Camera.main.transform;
+        life.transform.parent = myPlayer.transform;
         NetworkServer.Spawn(life);
         life.GetComponent<UpdateLifeBar>().myPlayer = myPlayer.GetComponent<PlayerInteraction>();
 
@@ -335,12 +351,20 @@ Camera.main.transform.position.z + 0.37f);
             }
            
             someoneWonBool= true;
-           
-            //RpcReturnToLobby();
+
+            StartCoroutine(WaitUntilLobby());
+            
             return true;
         }
         else
             return false;
+    }
+
+    IEnumerator WaitUntilLobby()
+    {
+        yield return new WaitForSeconds(5);
+        CmdReturnToLobby();
+
     }
 
     
@@ -368,8 +392,6 @@ Camera.main.transform.position.z + 0.37f);
 
     IEnumerator PlayerRespawnWait()
     {
-       
-
         System.Random rnd = new System.Random();
         int index = rnd.Next(0, spawnPoints.Count);
         yield return new WaitForSeconds(3);

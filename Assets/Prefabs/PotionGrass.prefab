@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &135
+--- !u!1 &138
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,13 +8,13 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 181}
-  - component: {fileID: 229}
-  - component: {fileID: 288}
-  - component: {fileID: 214}
-  - component: {fileID: 289}
-  - component: {fileID: 290}
-  - component: {fileID: 2961152697937700162}
+  - component: {fileID: 184}
+  - component: {fileID: 237}
+  - component: {fileID: 296}
+  - component: {fileID: 217}
+  - component: {fileID: 297}
+  - component: {fileID: 298}
+  - component: {fileID: 227}
   m_Layer: 0
   m_Name: PotionGrass
   m_TagString: Potion
@@ -22,41 +22,41 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &181
+--- !u!4 &184
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135}
+  m_GameObject: {fileID: 138}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.442357, y: 0.57, z: 11.111969}
+  m_LocalPosition: {x: 8.251438, y: 0.57, z: -4.880568}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 182}
+  - {fileID: 185}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &229
+--- !u!135 &237
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135}
+  m_GameObject: {fileID: 138}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &288
+--- !u!114 &296
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135}
+  m_GameObject: {fileID: 138}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6055a04ef50fea649b257138f8f42c7c, type: 3}
@@ -72,13 +72,13 @@ MonoBehaviour:
   spawnArea: {fileID: 0}
   potionsInScene: 1
   Potion: {fileID: 8300000, guid: 9e939f399d4b3664aa9898b66ce29ec7, type: 3}
---- !u!54 &214
+--- !u!54 &217
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135}
+  m_GameObject: {fileID: 138}
   serializedVersion: 2
   m_Mass: 0.0000001
   m_Drag: 0
@@ -88,13 +88,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &289
+--- !u!114 &297
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135}
+  m_GameObject: {fileID: 138}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
@@ -121,13 +121,13 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &290
+--- !u!114 &298
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135}
+  m_GameObject: {fileID: 138}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
@@ -143,13 +143,13 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!82 &2961152697937700162
+--- !u!82 &227
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135}
+  m_GameObject: {fileID: 138}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -239,7 +239,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &136
+--- !u!1 &139
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,9 +247,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 182}
-  - component: {fileID: 208}
-  - component: {fileID: 202}
+  - component: {fileID: 185}
+  - component: {fileID: 211}
+  - component: {fileID: 205}
   m_Layer: 0
   m_Name: pasted__polySurface8
   m_TagString: Untagged
@@ -257,35 +257,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &182
+--- !u!4 &185
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136}
+  m_GameObject: {fileID: 139}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.008, y: -0.457, z: -0.004}
   m_LocalScale: {x: 169.26173, y: 169.26173, z: 169.26173}
   m_Children: []
-  m_Father: {fileID: 181}
+  m_Father: {fileID: 184}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &208
+--- !u!33 &211
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136}
+  m_GameObject: {fileID: 139}
   m_Mesh: {fileID: 4300000, guid: db1848f02995b824b8d69a269946b333, type: 3}
---- !u!23 &202
+--- !u!23 &205
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136}
+  m_GameObject: {fileID: 139}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1

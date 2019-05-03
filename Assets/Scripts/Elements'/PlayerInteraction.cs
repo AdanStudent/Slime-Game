@@ -25,6 +25,9 @@ public class PlayerInteraction : NetworkBehaviour
     Animator elementUI;
     public float cheeseTime=7;
 
+    public AudioClip Dying;
+    public AudioClip Potion;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,8 +59,8 @@ public class PlayerInteraction : NetworkBehaviour
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
 
         tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 3);
-        serverRef.playerLives.Add(tempLives);
-        
+        serverRef.playerLives.Add(tempLives); 
+
     }
 
     private void OnGUI()

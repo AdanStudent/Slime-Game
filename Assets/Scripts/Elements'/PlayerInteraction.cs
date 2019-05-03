@@ -18,7 +18,7 @@ public class PlayerInteraction : NetworkBehaviour
     public Material water;
     public Material cheese;
     private Server serverRef;
-    private int lives;
+    public int lives;
     public bool Respawning = false;
 
     public LivesStruct tempLives;
@@ -41,8 +41,8 @@ public class PlayerInteraction : NetworkBehaviour
         {
             this.gameObject.name = "RemotePlayer";
         }
-        lives = 3;
         Respawning = false;
+        lives = 3;
         GameObject server = GameObject.FindGameObjectWithTag("Server");
         System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
         int randomType = rnd.Next(0, 3);

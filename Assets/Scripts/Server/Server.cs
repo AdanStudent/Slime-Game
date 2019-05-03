@@ -101,7 +101,7 @@ public class Server : NetworkBehaviour
     void CmdSpawnPersonalPlayer()
     {
         System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
-        int index = rnd.Next(0, spawnPoints.Count);
+        int index = rnd.Next(0,spawnPoints.Count);
         if (connectionToClient.isReady)
         {
             if (spawnPointIndexs.Contains(index))
@@ -118,7 +118,7 @@ public class Server : NetworkBehaviour
 
             myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-            CmdSpawnLocalUI();
+           //CmdSpawnLocalUI();
             spawnPointIndexs.Add(index);
         }
         else
@@ -160,7 +160,7 @@ public class Server : NetworkBehaviour
 
             myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-            CmdSpawnLocalUI();
+            //CmdSpawnLocalUI();
 
         }
     }
@@ -199,7 +199,7 @@ public class Server : NetworkBehaviour
         current.transform.position = new Vector3(Camera.main.transform.position.x + 1.05f,
    Camera.main.transform.position.y - 0.46f,
    Camera.main.transform.position.z + 0.84f);
-        current.transform.parent = myPlayer.transform;
+        current.transform.parent = Camera.main.transform;
         NetworkServer.Spawn(current);
         current.GetComponent<ChangeCurrentElement>().myPlayer = myPlayer.GetComponent<PlayerInteraction>();
 
@@ -209,7 +209,7 @@ public class Server : NetworkBehaviour
         wheel.transform.position = new Vector3(Camera.main.transform.position.x + 1.03f,
            Camera.main.transform.position.y + 0.42f,
            Camera.main.transform.position.z - 0.8f);
-        wheel.transform.parent = myPlayer.transform;
+        wheel.transform.parent = Camera.main.transform;
         NetworkServer.Spawn(wheel);
 
         //life
@@ -218,7 +218,7 @@ public class Server : NetworkBehaviour
         life.transform.position = new Vector3(Camera.main.transform.position.x + 0.83f,
 Camera.main.transform.position.y - 0.37f,
 Camera.main.transform.position.z + 0.37f);
-        life.transform.parent = myPlayer.transform;
+        life.transform.parent = Camera.main.transform;
         NetworkServer.Spawn(life);
         life.GetComponent<UpdateLifeBar>().myPlayer = myPlayer.GetComponent<PlayerInteraction>();
 

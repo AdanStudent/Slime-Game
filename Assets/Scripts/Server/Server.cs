@@ -202,12 +202,17 @@ public class Server : NetworkBehaviour
        LobbyManager.s_Singleton.SendReturnToLobby();
     }
 
-
+    public void RespawnReference(GameObject player)
+    {
+        myPlayer = player;
+    }
     [ClientRpc]
     public void RpcPlayerRespawn()
     {
-        if(duplicateCheck == false)
+       /// Debug.Log("RPCPLAYERRESPAWN BEING CALLED");
+        if (duplicateCheck == false)
         {
+           
             CheckForDuplicates();
         }
 
@@ -216,8 +221,8 @@ public class Server : NetworkBehaviour
             Debug.Log("Net ID: " + playerLives[i].netID + "  Players lives left " + playerLives[i].lives);
         }
         
-        CheckWinState();
-        Debug.Log("A player won");
+        
+        //Debug.Log("A player won");
         bool foundPlayer = false;
         int foundIndex = -1;
         for (int i = 0; i < playerLives.Count; i++)
@@ -225,7 +230,7 @@ public class Server : NetworkBehaviour
             //Debug.Log("Struct net id: " + playerLives[i].netID + " Player Net ID" + myPlayer.GetComponent<NetworkIdentity>().netId.ToString() + "Struct net id Currentlives : " + playerLives[i].lives);
             if (playerLives[i].netID == myPlayer.GetComponent<NetworkIdentity>().netId.ToString())
             {
-
+                
                 foundPlayer = true;
                 foundIndex = i;
                 i = playerLives.Count + 1;
@@ -233,8 +238,9 @@ public class Server : NetworkBehaviour
         }
 
         
-        if (foundIndex != -1)
+        if (foundIndex != -1 )
         {
+            Debug.Log("We are chaging " + playerLives[foundIndex].netID + "from " + playerLives[foundIndex].lives + " lives to -1 of that");
             LivesStruct temp = playerLives[foundIndex];
             temp.lives = temp.lives - 1;
             playerLives[foundIndex] = temp;
@@ -242,31 +248,19 @@ public class Server : NetworkBehaviour
             {
                 StartCoroutine(PlayerRespawnWait());
             }
-            Debug.Log("Results of Check winstate:" + CheckWinState());
+            //Debug.Log("Results of Check winstate:" + CheckWinState());
         }
-
-
-
-        if(foundIndex != -1)
-        {
-            LivesStruct temp = playerLives[foundIndex];
-            temp.lives = temp.lives - 1;
-            playerLives[foundIndex] = temp;
-            if(playerLives[foundIndex].lives > 0)
-            {
-                StartCoroutine(PlayerRespawnWait());
-            }
-        }
-        
+        CheckWinState();
     }
     bool CheckWinState()
     {
+        Debug.Log("Check win state is called)");
         string potentialWinner = "";
         int someoneWon = 0;
         
         foreach (LivesStruct ls in playerLives)
         {
-            Debug.Log("LS Check win state lives: " + ls.lives);
+            Debug.Log("LS Check win state id: " + ls.netID + " lives: " + ls.lives);
             if (ls.lives <= 0)
             {
                 someoneWon++;

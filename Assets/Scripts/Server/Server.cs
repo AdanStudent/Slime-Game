@@ -22,9 +22,10 @@ public struct LivesStruct
     }
     //GameObject 
 }
-
-public class SyncListElement : SyncListStruct<ElementStruct> { }
 public class SyncListLives : SyncListStruct<LivesStruct> { }
+public class SyncListElement : SyncListStruct<ElementStruct> { }
+
+
 public class Server : NetworkBehaviour
 {
     public GameObject playerUnit;
@@ -53,8 +54,8 @@ public class Server : NetworkBehaviour
     public GameObject myPlayer;
     private GameObject SpawnArea;
     private ElementSpawn elementSpawnRef;
-    //Dictionary<string, int> playerLives = new Dictionary<string, int>();
     public SyncListLives playerLives = new SyncListLives();
+    bool duplicateCheck = false;
     // public GameObject spawnArea;
     // Start is called before the first frame update
     public SyncListInt spawnPointIndexs = new SyncListInt();
@@ -74,11 +75,23 @@ public class Server : NetworkBehaviour
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
         CmdSpawnTimer();
-
-
     }
 
+    void CheckForDuplicates()
+    {
+        for (int i = 0; i < playerLives.Count; i++)
+        {
 
+            for (int j = 0; j < playerLives.Count; j++)
+            {
+                if((i!=j) && (playerLives[i].netID == playerLives[j].netID))
+                {
+                    playerLives.RemoveAt(j);
+                }
+            }
+        }
+        duplicateCheck = true;
+    }
     [Command]
     void CmdSpawnPersonalPlayer()
     {
@@ -246,26 +259,7 @@ Camera.main.transform.position.z + 0.37f);
         //    }
         //}
     }
-  
-    bool CheckWinState()
-    {
-        int someoneWon = 0;
-        foreach (LivesStruct ls in playerLives)
-        {
-            if(ls.lives <= 0)
-            {
-                someoneWon++;
-            }
-        }
-
-        if (someoneWon == playerLives.Count - 1)
-        {
-            CmdReturnToLobby();
-            return true;
-        }
-        else
-            return false;
-    }
+ 
 
     [Command]
     public void CmdReturnToLobby()
@@ -273,24 +267,49 @@ Camera.main.transform.position.z + 0.37f);
        LobbyManager.s_Singleton.SendReturnToLobby();
     }
 
+
     [ClientRpc]
     public void RpcPlayerRespawn()
     {
+        if(duplicateCheck == false)
+        {
+            CheckForDuplicates();
+        }
+
+        for (int i = 0; i < playerLives.Count; i++)
+        {
+            Debug.Log("Net ID: " + playerLives[i].netID + "  Players lives left " + playerLives[i].lives);
+        }
+        
         CheckWinState();
         Debug.Log("A player won");
         bool foundPlayer = false;
         int foundIndex = -1;
         for (int i = 0; i < playerLives.Count; i++)
         {
-            Debug.Log("Struct net id: " + playerLives[i].netID + " Player Net ID" + myPlayer.GetComponent<NetworkIdentity>().netId.ToString());
-            if(playerLives[i].netID == myPlayer.GetComponent<NetworkIdentity>().netId.ToString())
+            //Debug.Log("Struct net id: " + playerLives[i].netID + " Player Net ID" + myPlayer.GetComponent<NetworkIdentity>().netId.ToString() + "Struct net id Currentlives : " + playerLives[i].lives);
+            if (playerLives[i].netID == myPlayer.GetComponent<NetworkIdentity>().netId.ToString())
             {
-                
+
                 foundPlayer = true;
                 foundIndex = i;
                 i = playerLives.Count + 1;
             }
         }
+
+        
+        if (foundIndex != -1)
+        {
+            LivesStruct temp = playerLives[foundIndex];
+            temp.lives = temp.lives - 1;
+            playerLives[foundIndex] = temp;
+            if (playerLives[foundIndex].lives > 0)
+            {
+                StartCoroutine(PlayerRespawnWait());
+            }
+            Debug.Log("Results of Check winstate:" + CheckWinState());
+        }
+
 
 
         if(foundIndex != -1)
@@ -305,9 +324,38 @@ Camera.main.transform.position.z + 0.37f);
         }
         
     }
+    bool CheckWinState()
+    {
+        string potentialWinner = "";
+        int someoneWon = 0;
+        
+        foreach (LivesStruct ls in playerLives)
+        {
+            Debug.Log("LS Check win state lives: " + ls.lives);
+            if (ls.lives <= 0)
+            {
+                someoneWon++;
+            }
+            else
+            {
+                potentialWinner = ls.netID;
+            }
+        }
+        Debug.Log("Count of player lives" + playerLives.Count + " SomeoneWon count: " + someoneWon + "Potential Winner: " + potentialWinner);
+
+        if (someoneWon == playerLives.Count - 1)
+        {
+            Debug.Log(potentialWinner + " Has one the game!");
+            RpcReturnToLobby();
+            return true;
+        }
+        else
+            return false;
+    }
     [Command]
     public void CmdPlayerRespawn()
     {
+        Debug.Log("CMDPLAYERRESPAWN");
         RpcPlayerRespawn();
     }
 

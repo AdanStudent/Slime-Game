@@ -18,12 +18,17 @@ public class PlayerInteraction : NetworkBehaviour
     public Material water;
     public Material cheese;
     private Server serverRef;
+    private int lives;
+    public bool Respawning = false;
+
     public LivesStruct tempLives;
     public float cheeseTime=7;
 
     // Start is called before the first frame update
     void Start()
     {
+        lives = 3;
+        Respawning = false;
         GameObject server = GameObject.FindGameObjectWithTag("Server");
         System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
         int randomType = rnd.Next(0, 3);
@@ -50,19 +55,44 @@ public class PlayerInteraction : NetworkBehaviour
 
         //freeze rotation
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
-        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 2);
+
+        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 3);
         serverRef.playerLives.Add(tempLives);
+        
     }
 
-
-    [ClientRpc]
-    void RpcUpdateStruct()
+    private void OnGUI()
     {
-        serverRef.playerLives.Add(tempLives);
+        if (hasAuthority == true)
+        {
+            GUI.Label(new Rect(450, 10, 100, 20), $"Lives:{lives}");
+        }
+        
+
+    }
+  
+
+    private void RespawnDelay()
+    {
+        Respawning = false;
     }
 
-
-
+    private void UpdateLives()
+    {
+        lives--;
+        //GameObject server = GameObject.FindGameObjectWithTag("Server");
+        //serverRef = server.GetComponent<Server>();
+       /* int currentLives = lives;
+        for (int i = 0; i < serverRef.playerLives.Count; i++)
+        {
+            if (this.gameObject.GetComponent<NetworkIdentity>().netId.ToString()  == serverRef.playerLives[i].netID)
+            {
+                currentLives = serverRef.playerLives[i].lives;
+                --;
+            }
+        }
+        lives = currentLives;*/
+    }
     float timePassed = 0;
     private void Update()
     {
@@ -87,11 +117,18 @@ public class PlayerInteraction : NetworkBehaviour
     }
     private void callRespawn()
     {
-        serverRef.myPlayer = this.gameObject;
-        if (isServer == true)
-            serverRef.RpcPlayerRespawn();
-        else
-            serverRef.CmdPlayerRespawn();
+        if (Respawning == false)
+        {
+            Respawning = true;
+            Invoke("RespawnDelay", 4.0f);
+            Debug.Log("CALLRESPAWNBEINGCALLED");
+            serverRef.myPlayer = this.gameObject;
+            UpdateLives();
+            if (isServer == true)
+                serverRef.RpcPlayerRespawn();
+            else
+                serverRef.CmdPlayerRespawn();
+        }
     }
     //server command
     [Command]
@@ -242,4 +279,22 @@ public class PlayerInteraction : NetworkBehaviour
                 CmdComparePlayersElementTypes(other.gameObject);
         }
     }
+}
+public class Delay
+{
+    public float WaitTime;
+    private float completionTime;
+
+    public Delay(float waitTime)
+    {
+        WaitTime = waitTime;
+        Reset();
+    }
+
+    public void Reset()
+    {
+        completionTime = Time.time + WaitTime;
+    }
+
+    public bool IsReady { get { return Time.time >= completionTime; } }
 }

@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class PlayerInteraction : NetworkBehaviour
 {
     //player's element type
-  
+
     public ElementEnum.Elements elementType = ElementEnum.Elements.Ash;
     public ElementEnum.Elements previousElementType = ElementEnum.Elements.Ash;
     //Object renderer
@@ -18,7 +18,7 @@ public class PlayerInteraction : NetworkBehaviour
     public Material water;
     public Material cheese;
     private Server serverRef;
-    private int lives;
+    public int lives;
     public bool Respawning = false;
 
     public LivesStruct tempLives;
@@ -32,8 +32,18 @@ public class PlayerInteraction : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+       if(hasAuthority == true)
+        {
+            this.gameObject.name = "LocalPlayer";
+        }
+       else
+        {
+            this.gameObject.name = "RemotePlayer";
+        }
         lives = 3;
         Respawning = false;
+        lives = 3;
         GameObject server = GameObject.FindGameObjectWithTag("Server");
         System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
         int randomType = rnd.Next(0, 3);
@@ -88,9 +98,9 @@ public class PlayerInteraction : NetworkBehaviour
         if (hasAuthority == true)
         {
             GUI.Label(new Rect(450, 10, 100, 20), $"Lives:{lives}");
-            
+
         }
-        
+
     }
 
     public void SetWinner(string netID)
@@ -151,12 +161,17 @@ public class PlayerInteraction : NetworkBehaviour
                 timePassed = 0;
             }
         }
+
+        if(renderer1==null)
+        {
+            renderer1 = gameObject.GetComponent<Renderer>();
+        }
     }
     private void callRespawn()
     {
         if (Respawning == false)
         {
-            
+
             Respawning = true;
             Invoke("RespawnDelay", 4.0f);
             serverRef.RespawnReference(this.gameObject);
@@ -196,19 +211,34 @@ public class PlayerInteraction : NetworkBehaviour
         switch(elementType)
         {
             case ElementEnum.Elements.Ash:
-                renderer1.material = ash;
+                if (renderer1 != null)
+                    renderer1.material = ash;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             case ElementEnum.Elements.Cheese:
-                renderer1.material = cheese;
+                if (renderer1 != null)
+                    renderer1.material = cheese;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             case ElementEnum.Elements.Fire:
-                renderer1.material = fire;
+                if (renderer1 != null)
+                    renderer1.material = fire;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             case ElementEnum.Elements.Grass:
-                renderer1.material = grass;
+                if (renderer1 != null)
+                    renderer1.material = grass;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             case ElementEnum.Elements.Water:
-                renderer1.material = water;
+                if (renderer1 != null)
+                    renderer1.material = water;
+                else
+                    StartCoroutine(WaitForReady());
                 break;
             default:
                 renderer1.material = ash;
@@ -216,6 +246,14 @@ public class PlayerInteraction : NetworkBehaviour
         }
     }
 
+    IEnumerator WaitForReady()
+    {
+        while (renderer1==null)
+        {
+            yield return new WaitForSeconds(0.25f);
+        }
+       ChangeMaterial();
+    }
     AudioSource source;
 
     [ClientRpc]

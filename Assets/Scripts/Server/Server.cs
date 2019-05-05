@@ -100,15 +100,15 @@ public class Server : NetworkBehaviour
     [Command]
     void CmdSpawnPersonalPlayer()
     {
-        System.Random rnd = new System.Random();
-        int index = rnd.Next(0, spawnPoints.Count);
+        System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
+        int index = rnd.Next(0,spawnPoints.Count);
         if (connectionToClient.isReady)
         {
             if (spawnPointIndexs.Contains(index))
             {
                 for(int i=0;i<spawnPoints.Count;i++)
                 {
-                    if(!spawnPointIndexs.Contains(i))
+                    if(!spawnPointIndexs.Contains(i) && CheckSpawnPoint(index))
                     {
                         index = i;
                         break;
@@ -118,7 +118,7 @@ public class Server : NetworkBehaviour
 
             myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-            CmdSpawnLocalUI();
+           //CmdSpawnLocalUI();
             spawnPointIndexs.Add(index);
         }
         else
@@ -140,16 +140,17 @@ public class Server : NetworkBehaviour
     [Server]
     private void OnReady()
     {
-        Debug.Log("Spawning Object1");
-        System.Random rnd = new System.Random();
-        int index = rnd.Next(0, spawnPoints.Count);
+        //Debug.Log("Spawning Object1");
+        //System.Random rnd = new System.Random();
+        System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
+        int index = rnd.Next(0,spawnPoints.Count);
         if (connectionToClient.isReady)
         {
             if (spawnPointIndexs.Contains(index))
             {
                 for (int i = 0; i < spawnPoints.Count; i++)
                 {
-                    if (!spawnPointIndexs.Contains(i))
+                    if (!spawnPointIndexs.Contains(i)&&CheckSpawnPoint(index))
                     {
                         index = i;
                         break;
@@ -159,9 +160,24 @@ public class Server : NetworkBehaviour
 
             myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
-            CmdSpawnLocalUI();
+            //CmdSpawnLocalUI();
 
         }
+    }
+
+    bool CheckSpawnPoint(int index)
+    {
+        //check for overlap
+        Collider[] colliders = Physics.OverlapSphere(spawnPoints[index].position, 1);
+        if(colliders.Length<=3)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     //adds each player to dictonary
@@ -335,12 +351,20 @@ Camera.main.transform.position.z + 0.37f);
             }
            
             someoneWonBool= true;
-           
-            //RpcReturnToLobby();
+
+            StartCoroutine(WaitUntilLobby());
+            
             return true;
         }
         else
             return false;
+    }
+
+    IEnumerator WaitUntilLobby()
+    {
+        yield return new WaitForSeconds(5);
+        CmdReturnToLobby();
+
     }
 
     
@@ -368,8 +392,6 @@ Camera.main.transform.position.z + 0.37f);
 
     IEnumerator PlayerRespawnWait()
     {
-       
-
         System.Random rnd = new System.Random();
         int index = rnd.Next(0, spawnPoints.Count);
         yield return new WaitForSeconds(3);

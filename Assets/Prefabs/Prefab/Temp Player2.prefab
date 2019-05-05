@@ -137,8 +137,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_SceneId:
     m_Value: 0
   m_AssetId:
@@ -170,8 +170,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_TransformSyncMode: 3
   m_SendInterval: 0.0625
   m_SyncRotationAxis: 7
@@ -192,8 +192,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c902dfd3bcea956459d1dfe2c9ee53bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   playerb: {fileID: 9076648427423868314}
   player: {fileID: 9076648427423868313}
   Speed: 5
@@ -202,7 +202,7 @@ MonoBehaviour:
   target: {fileID: 1180425703981644177}
   dstFromTarget: 3
   pitchMinMax: {x: 0, y: 85}
-  rotationSmoothTime: 0.6
+  rotationSmoothTime: 0.8
   camTransform: {fileID: 0}
   walkingVolume: 0.5
 --- !u!114 &1855868781923371568
@@ -215,8 +215,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b04cd8dc32c9951479964ceacad19d02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   elementType: 2
   previousElementType: 2
   ash: {fileID: 2100000, guid: 7adb050a8cbfb074595420bf7568e83c, type: 2}
@@ -226,7 +226,7 @@ MonoBehaviour:
   cheese: {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
   Respawning: 0
   cheeseTime: 7
-  Winner: 
+  Winner:
   Dying: {fileID: 8300000, guid: 67f42df41597310418242e826a6732c3, type: 3}
 --- !u!114 &3189112095991579367
 MonoBehaviour:
@@ -238,8 +238,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 150f89886f6d1ad409a776d3064ce254, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!33 &5597670576385849958
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -502,7 +502,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: 
+  m_WarningMessage:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -516,13 +516,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_Animator: {fileID: 5295588505797008134}
   m_ParameterSendBits: 0
-  param0: 
-  param1: 
-  param2: 
-  param3: 
-  param4: 
-  param5: 
+  param0:
+  param1:
+  param2:
+  param3:
+  param4:
+  param5:

@@ -71,6 +71,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
   spawnArea: {fileID: 0}
   potionsInScene: 1
+  speed: 3
   Potion: {fileID: 8300000, guid: 9e939f399d4b3664aa9898b66ce29ec7, type: 3}
 --- !u!54 &213
 Rigidbody:

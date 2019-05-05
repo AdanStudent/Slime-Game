@@ -28,27 +28,27 @@ public class Element : NetworkBehaviour
         angles[1] = (float)rnd.NextDouble();
         angles[2] = (float)rnd.NextDouble();
 
+        rotationSpeed = 90;
+        speed = 2f;
         source = GetComponent<AudioSource>();
     }
 
     float[] angles = new float[3];
-    public float rotationSpeed = 90;
-    public float speed = 5f;
-    public float height = 0.5f;
+    float rotationSpeed;
+    public float speed;
 
     // Update is called once per frame
     void Update()
     {
         //BobbingPotion();
-
         RotatingPotion();
     }
 
     private void BobbingPotion()
     {
-        Vector3 pos = this.transform.position;
         float newY = Mathf.Sin(Time.time * speed);
-        this.transform.position = new Vector3(pos.x, newY, pos.z) * height;
+        //newY = Mathf.Clamp01(newY);
+        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
 
     private void RotatingPotion()
@@ -121,7 +121,6 @@ public class Element : NetworkBehaviour
             //{
                 source.volume = 1;
                 source.PlayOneShot(Potion);
-                print("Play Potion");
             //}
         }
     }

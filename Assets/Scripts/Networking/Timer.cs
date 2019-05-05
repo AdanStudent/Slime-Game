@@ -29,7 +29,7 @@ public class Timer : NetworkBehaviour
         if(!lobby.isAHost)
         {
             Timer[] timers = FindObjectsOfType<Timer>();
-            for(int i =0; i<timers.Length; i++)
+            for(int i =0; i < timers.Length; i++)
             {
                 if(timers[i].masterTimer)
                 {
@@ -41,19 +41,20 @@ public class Timer : NetworkBehaviour
         {
             serverTimer = this;
             masterTimer = true;
+            timer = gameTime;
         }
     }
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 100, 20), $"Timer:{timer}");
+        GUI.Label(new Rect(10, 10, 100, 20), $"Timer:{Mathf.RoundToInt(timer)}");
     }
 
     void Update()
     {
         if(masterTimer)
         { //Only the MASTER timer controls the time
-            if(timer>=gameTime)
+            if(timer < 0)
             {
                 timer = -2;
             }
@@ -71,7 +72,7 @@ public class Timer : NetworkBehaviour
             else
             {
                 masterDeltaTime = Time.deltaTime;
-                timer += masterDeltaTime;
+                timer -= masterDeltaTime;
             }
         }
 
@@ -83,14 +84,14 @@ public class Timer : NetworkBehaviour
             minPlayers = serverTimer.minPlayers;
         }
         else
-        { //Maybe we don't have it yet?
+        {
             Timer[] timers = FindObjectsOfType<Timer>();
 
-            for(int i =0; i<timers.Length; i++)
+            for(int i =0; i < timers.Length; i++)
             {
                 if(timers[i].masterTimer)
                 {
-                    serverTimer = timers [i];
+                    serverTimer = timers[i];
                 }
             }
         }

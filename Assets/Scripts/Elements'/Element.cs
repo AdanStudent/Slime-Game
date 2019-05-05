@@ -111,17 +111,21 @@ public class Element : NetworkBehaviour
     {
         if (other.tag == "Player")
         {
-            if(isServer == true)
+            if (isServer == true)
+            {
                 other.GetComponent<PlayerInteraction>().RpcSetType(elementType);
+            }
             else
+            {
                 other.GetComponent<PlayerInteraction>().CmdSetType(elementType);
-            this.gameObject.SetActive(false);
+            }
 
-            //if (!source.isPlaying)
-            //{
-                source.volume = 1;
-                source.PlayOneShot(Potion);
-            //}
+            source = other.GetComponent<AudioSource>();
+
+            source.volume = 1;
+            source.PlayOneShot(Potion);
+            print("Play Sound");
+            this.gameObject.SetActive(false);
         }
     }
 

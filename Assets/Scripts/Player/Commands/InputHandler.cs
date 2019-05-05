@@ -161,9 +161,11 @@ public class InputHandler : NetworkBehaviour
 
     private float turnSmoothVel;
     private float turnSmoothTime = 0.1f;
+
+    public float walkingVolume = .5f;
+
     private void MouseInputForPlayerMovement()
     {
-        
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 inputDir = input.normalized;
 
@@ -197,7 +199,6 @@ public class InputHandler : NetworkBehaviour
     
     }
 
-    public float walkingVolume = .5f;
 
     //void OnDrawGizmos()
     //{

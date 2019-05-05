@@ -182,10 +182,10 @@ public class PlayerInteraction : NetworkBehaviour
         if (element == ElementEnum.Elements.Cheese)
             previousElementType = elementType;
         //change material
-        Debug.Log(this+" Current Type: " + elementType.ToString());
+        //Debug.Log(this+" Current Type: " + elementType.ToString());
         elementType = element;
         ChangeMaterial();
-        Debug.Log(this+" New Type: " + elementType.ToString());
+        //Debug.Log(this+" New Type: " + elementType.ToString());
     }
 
 

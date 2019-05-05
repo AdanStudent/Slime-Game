@@ -18,36 +18,41 @@ public class Timer : NetworkBehaviour
 
     Timer serverTimer;
 
-    private LobbyManager lobby;
+    public AudioClip fightMusic;
  
     void Start()
     {
-        lobby = GameObject.FindGameObjectWithTag("Lobby").GetComponent<LobbyManager>();
+        Timer[] timers = FindObjectsOfType<Timer>();
 
-        print(lobby.isAHost.ToString());
-
-        if(!lobby.isAHost)
+        //if (timers.Length > 0)
         {
-            Timer[] timers = FindObjectsOfType<Timer>();
-            for(int i =0; i < timers.Length; i++)
+            for (int i = 0; i < timers.Length; i++)
             {
-                if(timers[i].masterTimer)
+                if (i == timers.Length-1)
+                {
+                    serverTimer = this;
+                    masterTimer = true;
+                    timer = gameTime;
+                    AudioSource source = GetComponent<AudioSource>();
+                    source.loop = true;
+                    source.PlayOneShot(fightMusic);
+                }
+                else
                 {
                     serverTimer = timers [i];
+                    break;
                 }
             }
         }
-        else
-        {
-            serverTimer = this;
-            masterTimer = true;
-            timer = gameTime;
-        }
+
     }
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 100, 20), $"Timer:{Mathf.RoundToInt(timer)}");
+        if (masterTimer)
+        {
+            GUI.Label(new Rect(10, 10, 100, 20), $"Timer:{Mathf.RoundToInt(timer)}");
+        }
     }
 
     void Update()

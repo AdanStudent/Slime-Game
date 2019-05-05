@@ -32,15 +32,6 @@ public class PlayerInteraction : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-       if(hasAuthority == true)
-        {
-            this.gameObject.name = "LocalPlayer";
-        }
-       else
-        {
-            this.gameObject.name = "RemotePlayer";
-        }
         lives = 3;
         Respawning = false;
         GameObject server = GameObject.FindGameObjectWithTag("Server");
@@ -78,10 +69,19 @@ public class PlayerInteraction : NetworkBehaviour
 
     private void Awake()
     {
-       /* GameObject server = GameObject.FindGameObjectWithTag("Server");
-        serverRef = server.GetComponent<Server>();
-        tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 3);
-        serverRef.playerLives.Add(tempLives);*/
+        if (isServer)
+        {
+            this.gameObject.name = "LocalPlayer";
+        }
+        else
+        {
+            this.gameObject.name = "RemotePlayer";
+        }
+
+        /* GameObject server = GameObject.FindGameObjectWithTag("Server");
+         serverRef = server.GetComponent<Server>();
+         tempLives = new LivesStruct(this.gameObject.GetComponent<NetworkIdentity>().netId.ToString(), 3);
+         serverRef.playerLives.Add(tempLives);*/
     }
     private void OnGUI()
     {
@@ -216,6 +216,8 @@ public class PlayerInteraction : NetworkBehaviour
         }
     }
 
+    AudioSource source;
+
     [ClientRpc]
     public void RpcComparePlayersElementTypes(GameObject other)
     {
@@ -241,9 +243,10 @@ public class PlayerInteraction : NetworkBehaviour
             //            break;
             //    }
             //    break;
-                //cheese always win
+            //cheese always win
             case ElementEnum.Elements.Cheese:
                 Debug.Log("Cheese always wins");
+                DyingSound(other);
                 break;
             case ElementEnum.Elements.Fire:
                 switch (interaction.elementType)
@@ -253,12 +256,14 @@ public class PlayerInteraction : NetworkBehaviour
                       //  Debug.Log(this + " Loses to Cheese");
                         callRespawn();
                         gameObject.SetActive(false);
+                        DyingSound(other);
                         break;
                         //water beats fire
                     case ElementEnum.Elements.Water:
                      //   Debug.Log(this + " Loses to Water");
                         callRespawn();
                         gameObject.SetActive(false);
+                        DyingSound(other);
                         break;
                 }
                 break;
@@ -271,11 +276,13 @@ public class PlayerInteraction : NetworkBehaviour
                         Debug.Log(this + " Loses to Ash");
                         callRespawn();
                         gameObject.SetActive(false);
+                        DyingSound(other);
                         break;
                     case ElementEnum.Elements.Cheese:
                        // Debug.Log(this + " Loses to Cheese");
                         callRespawn();
                         gameObject.SetActive(false);
+                        DyingSound(other);
                         break;
                 }
                 break;
@@ -286,16 +293,24 @@ public class PlayerInteraction : NetworkBehaviour
                        // Debug.Log(this + " Loses to Cheese");
                         callRespawn();
                         gameObject.SetActive(false);
+                        DyingSound(other);
                         break;
                         //fire beats grass
                     case ElementEnum.Elements.Fire:
                        // Debug.Log(this + " Loses to Fire");
                         callRespawn();
                         gameObject.SetActive(false);
+                        DyingSound(other);
                         break;
                 }
                 break;
         }
+    }
+
+    private void DyingSound(GameObject other)
+    {
+        source = other.GetComponent<AudioSource>();
+        source.PlayOneShot(Dying);
     }
 
 

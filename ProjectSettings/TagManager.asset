@@ -15,6 +15,7 @@ TagManager:
   - Animator1
   - Animator2
   - Animator3
+  - Timer
   layers:
   - Default
   - TransparentFX

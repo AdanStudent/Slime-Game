@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8038380556759771830}
   m_Layer: 0
   m_Name: Timer
-  m_TagString: Untagged
+  m_TagString: Timer
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,6 +83,7 @@ MonoBehaviour:
   minPlayers: 2
   masterTimer: 0
   masterDeltaTime: 0
+  fightMusic: {fileID: 8300000, guid: 5366ec241484f7f4ba398ce4d83e9224, type: 3}
 --- !u!82 &8038380556759771830
 AudioSource:
   m_ObjectHideFlags: 0
@@ -93,7 +94,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5366ec241484f7f4ba398ce4d83e9224, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

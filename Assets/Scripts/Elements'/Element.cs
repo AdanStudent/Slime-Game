@@ -124,7 +124,6 @@ public class Element : NetworkBehaviour
 
             source.volume = 1;
             source.PlayOneShot(Potion);
-            print("Play Sound");
             this.gameObject.SetActive(false);
         }
     }

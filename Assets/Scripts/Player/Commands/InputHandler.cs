@@ -12,9 +12,13 @@ public class InputHandler : NetworkBehaviour
     public Rigidbody playerb;
     public GameObject player;
     public float Speed = 5f;
+
     [SyncVar]
     int cameraNumeber = 0;
     private Timer currentTimer;
+
+    public AudioClip Walking;
+    AudioSource source;
 
     // Start is called before the first frame update
     void Awake()
@@ -36,6 +40,8 @@ public class InputHandler : NetworkBehaviour
                 currentTimer = timers[i];
             }
         }
+
+        source = GetComponent<AudioSource>();
     }
 
 
@@ -178,11 +184,20 @@ public class InputHandler : NetworkBehaviour
         if (translation.magnitude > 0.001)
         {
             Move_Command moveCommand = new Move_Command(translation, player.transform, currentTimer.timer);
+
+            if (!source.isPlaying)
+            {
+                source.volume = walkingVolume;
+                source.PlayOneShot(Walking);
+            }
+
             //print(moveCommand.Log());
             moves.Push(moveCommand);
         }
     
     }
+
+    public float walkingVolume = .5f;
 
     //void OnDrawGizmos()
     //{

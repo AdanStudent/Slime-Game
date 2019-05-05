@@ -28,6 +28,7 @@ public class Element : NetworkBehaviour
         angles[1] = (float)rnd.NextDouble();
         angles[2] = (float)rnd.NextDouble();
 
+        source = GetComponent<AudioSource>();
     }
 
     float[] angles = new float[3];
@@ -103,6 +104,9 @@ public class Element : NetworkBehaviour
         }
     }
 
+    public AudioClip Potion;
+    AudioSource source;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -112,6 +116,13 @@ public class Element : NetworkBehaviour
             else
                 other.GetComponent<PlayerInteraction>().CmdSetType(elementType);
             this.gameObject.SetActive(false);
+
+            //if (!source.isPlaying)
+            //{
+                source.volume = 1;
+                source.PlayOneShot(Potion);
+                print("Play Potion");
+            //}
         }
     }
 

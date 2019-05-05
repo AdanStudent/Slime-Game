@@ -11,10 +11,11 @@ public class Element : NetworkBehaviour
     public Material[] elements = new Material[5];
     public ElementSpawn spawnArea;
     public bool potionsInScene = true;
+    System.Random rnd;
+
     // Start is called before the first frame update
     void Start()
     {
-        
         spawnArea = GameObject.FindGameObjectWithTag("SpawnArea").GetComponent<ElementSpawn>();
         spawnArea.elementReference.Add(this.gameObject);
         if (elementType == ElementEnum.Elements.None)
@@ -22,17 +23,40 @@ public class Element : NetworkBehaviour
             RandomType();
         }
 
+        rnd = new System.Random(Guid.NewGuid().GetHashCode());
+        angles[0] = (float)rnd.NextDouble();
+        angles[1] = (float)rnd.NextDouble();
+        angles[2] = (float)rnd.NextDouble();
+
     }
+
+    float[] angles = new float[3];
+    public float rotationSpeed = 90;
+    public float speed = 5f;
+    public float height = 0.5f;
 
     // Update is called once per frame
     void Update()
     {
+        //BobbingPotion();
+
+        RotatingPotion();
     }
-   
+
+    private void BobbingPotion()
+    {
+        Vector3 pos = this.transform.position;
+        float newY = Mathf.Sin(Time.time * speed);
+        this.transform.position = new Vector3(pos.x, newY, pos.z) * height;
+    }
+
+    private void RotatingPotion()
+    {
+        this.transform.RotateAround(this.transform.position, new Vector3(angles[0], angles[1], angles[2]), rotationSpeed * Time.deltaTime);
+    }
 
     void RandomType()
     {
-        System.Random rnd = new System.Random(Guid.NewGuid().GetHashCode());
         int typeNum = rnd.Next(0, 5);
         //randomly set element type if one was not set
         switch (typeNum)

@@ -29,7 +29,7 @@ public class InputHandler : NetworkBehaviour
         playerb.freezeRotation = true;
 
         camTransform = Camera.main.transform;
-        print(camTransform);
+        Camera.main.GetComponent<DeadPlayerView>().player = this.gameObject;
 
         Timer[] timers = FindObjectsOfType<Timer>();
 

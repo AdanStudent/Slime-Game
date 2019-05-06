@@ -8,8 +8,8 @@ public class ElementEnum : MonoBehaviour
         Fire,
         Water,
         Grass,
-        Ash,
         Cheese,
+        Ash,
         None
     };
     // Start is called before the first frame update

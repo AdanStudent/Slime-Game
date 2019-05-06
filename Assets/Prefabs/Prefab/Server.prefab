@@ -77,15 +77,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c438414fe2a184c851580fbd468b62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerUnit: {fileID: 9076648427423868313, guid: 0023a4476a1580747b876bb78147e40d,
+  playerUnit: {fileID: 1410436798648615304, guid: ed386148581d1174390590073c237c33,
     type: 3}
   spawnArea: {fileID: 2186477657866881519, guid: 9e850e4d505885a4e8156aa66df3331e,
     type: 3}
   potionAsh: {fileID: 65, guid: 381f401db92a5cb43965b2636218ef86, type: 3}
-  potionFire: {fileID: 141, guid: db37d6c223a9d314e927d84caa583068, type: 3}
-  potionGrass: {fileID: 138, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
-  potionWater: {fileID: 140, guid: 1eaa8817e01cb3c4b811197f98971e44, type: 3}
-  potionCheese: {fileID: 136, guid: 31f043fb58320a64da1bc2d1e4dc4378, type: 3}
+  potionFire: {fileID: 156, guid: db37d6c223a9d314e927d84caa583068, type: 3}
+  potionGrass: {fileID: 153, guid: 7a64a3964d8ecaa45a84ee5d26d7de53, type: 3}
+  potionWater: {fileID: 155, guid: 1eaa8817e01cb3c4b811197f98971e44, type: 3}
+  potionCheese: {fileID: 151, guid: 31f043fb58320a64da1bc2d1e4dc4378, type: 3}
   Timer: {fileID: 6215896002768908045, guid: ca5aea97b65d3cb4d950f22609e0682a, type: 3}
   currentElement: {fileID: 2384814705610903689, guid: aacd5cfad4182614895a4ce2cde0d512,
     type: 3}

@@ -15,9 +15,9 @@ public class DeadPlayerView : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (!player.activeSelf)
-        {
-            this.transform.RotateAround(this.transform.position, Vector3.up, 20 * Time.deltaTime);
-        }
+        //if (!player.activeSelf)
+        //{
+        //    this.transform.RotateAround(this.transform.position, Vector3.up, 20 * Time.deltaTime);
+        //}
     }
 }

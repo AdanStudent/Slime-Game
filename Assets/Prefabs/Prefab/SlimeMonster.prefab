@@ -368,9 +368,9 @@ MonoBehaviour:
   elementType: 2
   previousElementType: 2
   ash: {fileID: 2100000, guid: 7adb050a8cbfb074595420bf7568e83c, type: 2}
-  fire: {fileID: 2100000, guid: 75ebcd8fc072e0644aec67a95c935348, type: 2}
-  grass: {fileID: 2100000, guid: 2dbbeb58ce443624fa8044affb84d4fe, type: 2}
-  water: {fileID: 2100000, guid: 35f524810b866a840b4321ea60394554, type: 2}
+  fire: {fileID: 2100000, guid: f4d4072935275cb4e8c94120190c6d64, type: 2}
+  grass: {fileID: 2100000, guid: 3e406b4b58987b849b6195459d302ce1, type: 2}
+  water: {fileID: 2100000, guid: d3826064f72908746b08e128d1782329, type: 2}
   cheese: {fileID: 2100000, guid: 550afa155aeaf6544a6a386595e4a76f, type: 2}
   lives: 0
   Respawning: 0

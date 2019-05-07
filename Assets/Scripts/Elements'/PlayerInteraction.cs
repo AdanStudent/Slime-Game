@@ -20,7 +20,7 @@ public class PlayerInteraction : NetworkBehaviour
     private Server serverRef;
     public int lives;
     public bool Respawning = false;
-
+    Animator anim;
     public LivesStruct tempLives;
     public float cheeseTime=7;
     public string Winner = "";
@@ -32,7 +32,7 @@ public class PlayerInteraction : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        anim = GetComponent<Animator>();
        if(hasAuthority == true)
         {
             this.gameObject.name = "LocalPlayer";
@@ -256,6 +256,7 @@ public class PlayerInteraction : NetworkBehaviour
     }
     AudioSource source;
 
+
     [ClientRpc]
     public void RpcComparePlayersElementTypes(GameObject other)
     {
@@ -291,7 +292,8 @@ public class PlayerInteraction : NetworkBehaviour
                 {
                     //cheese always wins
                     case ElementEnum.Elements.Cheese:
-                      //  Debug.Log(this + " Loses to Cheese");
+                        //  Debug.Log(this + " Loses to Cheese");
+                        anim.SetBool("Dead", true);
                         callRespawn();
                         gameObject.SetActive(false);
                         DyingSound(other);
@@ -299,6 +301,7 @@ public class PlayerInteraction : NetworkBehaviour
                         //water beats fire
                     case ElementEnum.Elements.Water:
                      //   Debug.Log(this + " Loses to Water");
+                        anim.SetBool("Dead", true);
                         callRespawn();
                         gameObject.SetActive(false);
                         DyingSound(other);
@@ -312,6 +315,7 @@ public class PlayerInteraction : NetworkBehaviour
                     //ahs beats water
                     case ElementEnum.Elements.Grass:
                         Debug.Log(this + " Loses to Ash");
+                        anim.SetBool("Dead", true);
                         callRespawn();
                         gameObject.SetActive(false);
                         DyingSound(other);
@@ -319,6 +323,7 @@ public class PlayerInteraction : NetworkBehaviour
                     case ElementEnum.Elements.Cheese:
                        // Debug.Log(this + " Loses to Cheese");
                         callRespawn();
+                        anim.SetBool("Dead", true);
                         gameObject.SetActive(false);
                         DyingSound(other);
                         break;
@@ -330,6 +335,7 @@ public class PlayerInteraction : NetworkBehaviour
                     case ElementEnum.Elements.Cheese:
                        // Debug.Log(this + " Loses to Cheese");
                         callRespawn();
+                        anim.SetBool("Dead", true);
                         gameObject.SetActive(false);
                         DyingSound(other);
                         break;
@@ -337,6 +343,7 @@ public class PlayerInteraction : NetworkBehaviour
                     case ElementEnum.Elements.Fire:
                        // Debug.Log(this + " Loses to Fire");
                         callRespawn();
+                        anim.SetBool("Dead", true);
                         gameObject.SetActive(false);
                         DyingSound(other);
                         break;

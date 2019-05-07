@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class UpdateLifeBar : MonoBehaviour
+public class UpdateLifeBar : NetworkBehaviour
 {
     public PlayerInteraction myPlayer;
     private GameObject currentPlayer;
@@ -22,7 +23,9 @@ public class UpdateLifeBar : MonoBehaviour
     {
         if (myPlayer != null)
         {
-            
+            if (lives != myPlayer.lives)
+                lives = myPlayer.lives;
+
             if (anim.GetInteger("Element") != (int)myPlayer.elementType)
                 anim.SetInteger("Element", (int)myPlayer.elementType);
             if (anim.GetInteger("Lives") != lives)

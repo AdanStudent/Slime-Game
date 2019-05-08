@@ -43,7 +43,6 @@ public class PlayerInteraction : NetworkBehaviour
         }
         lives = 3;
         Respawning = false;
-        lives = 3;
         GameObject server = GameObject.FindGameObjectWithTag("Server");
         System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
         int randomType = rnd.Next(0, 3);
@@ -95,11 +94,7 @@ public class PlayerInteraction : NetworkBehaviour
     }
     private void OnGUI()
     {
-        if (hasAuthority == true)
-        {
-            GUI.Label(new Rect(450, 10, 100, 20), $"Lives:{lives}");
-
-        }
+      
 
     }
 
@@ -143,6 +138,7 @@ public class PlayerInteraction : NetworkBehaviour
     float timePassed = 0;
     private void Update()
     {
+
         //cheese is temporary
         if (elementType==ElementEnum.Elements.Cheese)
         {

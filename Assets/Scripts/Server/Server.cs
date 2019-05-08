@@ -104,7 +104,24 @@ public class Server : NetworkBehaviour
         int index = rnd.Next(0,spawnPoints.Count);
         if (connectionToClient.isReady)
         {
-            if (spawnPointIndexs.Contains(index))
+          /*  if(spawnPointIndexs.Count == 0)
+            {
+                FillSpawnPointLIst();
+            }
+
+            for (int i = 0; i < spawnPointIndexs.Count; i++)
+            {
+                if (spawnPointIndexs.Contains(index))
+                {
+                    spawnPointIndexs.Remove(index);
+                    i = spawnPointIndexs.Count + 100;
+                }
+                else
+                {
+                    index = spawnPointIndexs[i];
+                }
+            }*/
+           /* if (spawnPointIndexs.Contains(index))
             {
                 for(int i=0;i<spawnPoints.Count;i++)
                 {
@@ -114,7 +131,7 @@ public class Server : NetworkBehaviour
                         break;
                     }
                 }
-            }
+            }*/
 
             myPlayer = Instantiate(playerUnit, spawnPoints[index].position, spawnPoints[index].rotation);
             NetworkServer.SpawnWithClientAuthority(myPlayer, connectionToClient);
@@ -125,6 +142,14 @@ public class Server : NetworkBehaviour
         {
             //connectionToClient.RegisterHandler(MsgType.Ready, OnReady);
             StartCoroutine(WaitForReady());
+        }
+    }
+
+    private void FillSpawnPointLIst()
+    {
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            spawnPointIndexs.Add(i);
         }
     }
 
@@ -168,7 +193,14 @@ public class Server : NetworkBehaviour
     bool CheckSpawnPoint(int index)
     {
         //check for overlap
-        Collider[] colliders = Physics.OverlapSphere(spawnPoints[index].position, 1);
+        bool isColliding = spawnPoints[index].GetComponent<SpawnPointCollision>().anotherPlayerIsHere;
+        Debug.Log("Server reached.  Spawn Point " + spawnPoints[index].gameObject.name + "Reached" + isColliding);
+        return isColliding;
+       // Collider[] colliders = Physics.OverlapSphere(spawnPoints[index].position, 1);
+       /* foreach (var col in colliders)
+        {
+            Debug.Log(col.gameObject.name);
+        }
         if(colliders.Length<=3)
         {
             return true;
@@ -176,7 +208,7 @@ public class Server : NetworkBehaviour
         else
         {
             return false;
-        }
+        }*/
 
     }
 
@@ -394,6 +426,40 @@ Camera.main.transform.position.z + 0.37f);
     {
         System.Random rnd = new System.Random();
         int index = rnd.Next(0, spawnPoints.Count);
+        if (spawnPointIndexs.Count == 0)
+        {
+            FillSpawnPointLIst();
+        }
+
+        for (int i = 0; i < spawnPointIndexs.Count; i++)
+        {
+            if (spawnPointIndexs.Count == 0)
+            {
+                FillSpawnPointLIst();
+            }
+
+            if (spawnPointIndexs.Contains(index))
+            {
+                if (CheckSpawnPoint(index) == false)
+                {
+                    spawnPointIndexs.Remove(index);
+                    i = spawnPointIndexs.Count + 100;
+                }
+                else
+                {
+                    spawnPointIndexs.Remove(index);
+                    index = spawnPointIndexs[i];
+                    
+                }
+            
+            }
+            else
+            {
+                index = spawnPointIndexs[i];
+            }
+        }
+
+        
         yield return new WaitForSeconds(3);
         myPlayer.SetActive(true);
         myPlayer.transform.position = spawnPoints[index].position;

@@ -142,26 +142,36 @@ public class PlayerInteraction : NetworkBehaviour
         //cheese is temporary
         if (elementType==ElementEnum.Elements.Cheese)
         {
+
+            if (hasAuthority == true)
+            {
+                Invoke("CheeseDelay", 7.0f);
+            }
             //check timer
-            if(timePassed<cheeseTime)
+            /*if(timePassed<cheeseTime)
             {
                 timePassed += Time.deltaTime;
             }
             //if cheese time has passed then reset element
             else
             {
-                if (isServer == true)
-                    RpcSetType(previousElementType);
-                else
-                    CmdSetType(previousElementType);
-                timePassed = 0;
-            }
+                
+            }*/
         }
 
         if(renderer1==null)
         {
             renderer1 = gameObject.GetComponent<Renderer>();
         }
+    }
+
+    private void CheeseDelay()
+    {
+        if (isServer == true)
+            RpcSetType(previousElementType);
+        else
+            CmdSetType(previousElementType);
+       
     }
     private void callRespawn()
     {

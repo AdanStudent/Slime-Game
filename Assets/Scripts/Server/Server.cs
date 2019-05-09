@@ -64,6 +64,9 @@ public class Server : NetworkBehaviour
     // public GameObject spawnArea;
     // Start is called before the first frame update
     public SyncListInt spawnPointIndexs = new SyncListInt();
+    public Font winFont;
+    GUIStyle winStyle;
+    bool fontSet;
 
     void Start()
     {
@@ -76,12 +79,25 @@ public class Server : NetworkBehaviour
         {
             return;
         }
-        
+
+        fontSet = false;
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
         CmdSpawnTimer();
     }
 
+    private void Update()
+    {
+        if(fontSet == false)
+        {
+            fontSet = true;
+            winStyle = new GUIStyle();
+            winStyle.font = winFont;
+            winStyle.normal.textColor = Color.green;
+            winStyle.fontSize = 100;
+
+        }
+    }
     void CheckForDuplicates()
     {
         for (int i = 0; i < playerLives.Count; i++)
@@ -407,11 +423,12 @@ Camera.main.transform.position.z + 0.37f);
         {
             if(localPlayerWon == true)
             {
-                GUI.Label(new Rect(450, 450, 100, 20), "YOU WON");
+                
+                GUI.Label(new Rect(Screen.width/2 - 50, Screen.height/2 - 50, 100, 20), "YOU WON", winStyle);
             }
             else
             {
-                GUI.Label(new Rect(450, 450, 100, 20), "YOU LOST");
+                GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 50, 100, 20), "YOU LOST", winStyle);
             }
         }
     }

@@ -142,11 +142,7 @@ public class PlayerInteraction : NetworkBehaviour
         //cheese is temporary
         if (elementType==ElementEnum.Elements.Cheese)
         {
-
-            if (hasAuthority == true)
-            {
-                Invoke("CheeseDelay", 7.0f);
-            }
+            Invoke("CheeseDelay", 7.0f);
             //check timer
             /*if(timePassed<cheeseTime)
             {
@@ -168,9 +164,9 @@ public class PlayerInteraction : NetworkBehaviour
     private void CheeseDelay()
     {
         if (isServer == true)
-            RpcSetType(previousElementType);
+            RpcSetType(ElementEnum.Elements.Fire );
         else
-            CmdSetType(previousElementType);
+            CmdSetType(ElementEnum.Elements.Fire);
        
     }
     private void callRespawn()

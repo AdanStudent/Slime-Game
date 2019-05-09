@@ -95,6 +95,7 @@ public class Server : NetworkBehaviour
             winStyle.font = winFont;
             winStyle.normal.textColor = Color.green;
             winStyle.fontSize = 100;
+            winStyle.alignment = TextAnchor.UpperCenter;
 
         }
     }
@@ -368,11 +369,12 @@ Camera.main.transform.position.z + 0.37f);
     {
         Debug.Log("Check win state is called)");
         string potentialWinner = "";
+        bool timeRanOut = false;
+        string winner = "";
         int someoneWon = 0;
         
         foreach (LivesStruct ls in playerLives)
         {
-            Debug.Log("LS Check win state id: " + ls.netID + " lives: " + ls.lives);
             if (ls.lives <= 0)
             {
                 someoneWon++;
@@ -384,11 +386,55 @@ Camera.main.transform.position.z + 0.37f);
         }
         Debug.Log("Count of player lives" + playerLives.Count + " SomeoneWon count: " + someoneWon + "Potential Winner: " + potentialWinner);
 
-        if (someoneWon == playerLives.Count - 1)
+        if (Timer.GetComponent<Timer>().gameTime <= 0)
         {
+            
+            winner = "";
+            int highestLives = 0;
+            bool moreThanOneWinner;
+            for (int i = 0; i < playerLives.Count; i++)
+            {
+                if(winner == "")
+                {
+                    winner = playerLives[i].netID;
+                    highestLives = playerLives[i].lives;
+                }
+                else
+                {
+                    if(playerLives[i].lives > highestLives)
+                    {
+                        winner = playerLives[i].netID;
+                        highestLives = playerLives[i].lives;
+                    }
+                }
+                
+            }
+
+            timeRanOut = true;
+        }
+        if ((someoneWon == playerLives.Count - 1) || (timeRanOut == true))
+        {
+            
             GameObject localPlayer = GameObject.Find("LocalPlayer");
-            Debug.Log(potentialWinner + " Has one the game!");
-            if (localPlayer != null)
+            if(timeRanOut == true)
+            {
+               /* if(localPlayer!= null)
+                {
+                    if (localPlayer.GetComponent<NetworkIdentity>().netId.ToString() == winner)
+                    {
+                        localPlayerWon = true;
+                    }
+                    else
+                    {
+                        localPlayerWon = false;
+                    }
+                }
+                else
+                {
+                    localPlayerWon = false;
+                }*/
+            }
+            else if (localPlayer != null)
             {
                 localPlayerWon = true;
 
@@ -424,11 +470,11 @@ Camera.main.transform.position.z + 0.37f);
             if(localPlayerWon == true)
             {
                 
-                GUI.Label(new Rect(Screen.width/2 - 50, Screen.height/2 - 50, 100, 20), "YOU WON", winStyle);
+                GUI.Label(new Rect(Screen.width/2 - 50, Screen.height/2 - 50, 100, 50), "YOU WON", winStyle);
             }
             else
             {
-                GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 50, 100, 20), "YOU LOST", winStyle);
+                GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 25, 100, 50), "YOU LOST", winStyle);
             }
         }
     }

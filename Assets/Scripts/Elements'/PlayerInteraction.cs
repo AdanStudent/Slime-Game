@@ -44,20 +44,20 @@ public class PlayerInteraction : NetworkBehaviour
         lives = 3;
         Respawning = false;
         GameObject server = GameObject.FindGameObjectWithTag("Server");
-        System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
-        int randomType = rnd.Next(0, 3);
-        switch(randomType)
-        {
-            case 0:
-                elementType = ElementEnum.Elements.Fire;
-                break;
-            case 1:
-                elementType = ElementEnum.Elements.Water;
-                break;
-            case 2:
-                elementType = ElementEnum.Elements.Grass;
-                break;
-        }
+        //System.Random rnd = new System.Random(System.Guid.NewGuid().GetHashCode());
+        //int randomType = rnd.Next(0, 3);
+        //switch(randomType)
+        //{
+        //    case 0:
+        //        elementType = ElementEnum.Elements.Fire;
+        //        break;
+        //    case 1:
+        //        elementType = ElementEnum.Elements.Water;
+        //        break;
+        //    case 2:
+        //        elementType = ElementEnum.Elements.Grass;
+        //        break;
+        //}
 
         serverRef = server.GetComponent<Server>();
         //initialize the render

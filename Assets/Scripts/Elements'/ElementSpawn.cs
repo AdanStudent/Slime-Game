@@ -207,7 +207,8 @@ public class ElementSpawn : NetworkBehaviour
         new Tuple<string, bool>("Water",false),
 
     };
-  
+
+    System.Random rnd = new System.Random(Guid.NewGuid().GetHashCode());
     //set the material and element type 
     public int ChangeMaterial()
     {
@@ -223,21 +224,20 @@ public class ElementSpawn : NetworkBehaviour
         else if (spawnedEqualAmount[0].Item2 && spawnedEqualAmount[1].Item2 && spawnedEqualAmount[2].Item2)
         {
             //randomly choose element type
-            System.Random rnd = new System.Random(Guid.NewGuid().GetHashCode());
             //range 0-3
-            elementIndex = rnd.Next(0, 400);
+            elementIndex = rnd.Next(0, 4000);
             //for fire
-            if (elementIndex <= 100)
+            if (elementIndex <= 1000)
                 elementIndex = 0;
             //for grass
-            else if (elementIndex > 100 && elementIndex <= 200)
+            else if (elementIndex <= 2000)
                 elementIndex = 1;
             //for water
-            else if (elementIndex > 200 && elementIndex <= 300)
+            else if (elementIndex <= 3000)
                 elementIndex = 2;
             //for cheese, based on the way the code is written, this is needed because cheese only has a chance of appearing in a round
             //once or not at all to keep it fair
-            else if (elementIndex > 300 && elementIndex <= 400)
+            else if (elementIndex <= 4000)
                 elementIndex = 3;
         }
         ElementEnum.Elements type = ElementEnum.Elements.None;

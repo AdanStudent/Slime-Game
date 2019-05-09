@@ -16,14 +16,17 @@ public class Timer : NetworkBehaviour
 
     [SyncVar] public float masterDeltaTime;
 
+    bool gameOver = false;
     Timer serverTimer;
-
+    GUIStyle style = new GUIStyle();
     public AudioClip fightMusic;
  
     void Start()
     {
         Timer[] timers = FindObjectsOfType<Timer>();
-
+        style.fontSize = 25;
+        style.fontStyle = FontStyle.Bold;
+        style.normal.textColor = Color.white;
         //if (timers.Length > 0)
         {
             for (int i = 0; i < timers.Length; i++)
@@ -35,7 +38,8 @@ public class Timer : NetworkBehaviour
                     timer = gameTime;
                     AudioSource source = GetComponent<AudioSource>();
                     source.loop = true;
-                    source.PlayOneShot(fightMusic);
+                    source.clip= fightMusic;
+                    source.Play();
                 }
                 else
                 {
@@ -51,7 +55,7 @@ public class Timer : NetworkBehaviour
     {
         if (masterTimer)
         {
-            GUI.Label(new Rect(10, 10, 100, 20), $"Timer:{Mathf.RoundToInt(timer)}");
+            GUI.Label(new Rect(10, 10, 100, 20), $"Timer:{Mathf.RoundToInt(timer)}",style);
         }
     }
 
@@ -59,7 +63,7 @@ public class Timer : NetworkBehaviour
     {
         if(masterTimer)
         { //Only the MASTER timer controls the time
-            if(timer < 0)
+            if(timer < 0 && timer > -2)
             {
                 timer = -2;
             }
@@ -73,6 +77,11 @@ public class Timer : NetworkBehaviour
             else if(timer == -2)
             {
                 //Game done.
+                if (!gameOver)
+                {
+                    gameOver = true;
+                    StartCoroutine(WaitUntilLobby());
+                }
             }
             else
             {
@@ -80,7 +89,6 @@ public class Timer : NetworkBehaviour
                 timer -= masterDeltaTime;
             }
         }
-
 
         if (serverTimer)
         {
@@ -102,4 +110,17 @@ public class Timer : NetworkBehaviour
         }
     }
 
- }
+    [Command]
+    public void CmdReturnToLobby()
+    {
+        LobbyManager.s_Singleton.SendReturnToLobby();
+    }
+
+    IEnumerator WaitUntilLobby()
+    {
+        yield return new WaitForSeconds(2);
+        CmdReturnToLobby();
+
+    }
+
+}

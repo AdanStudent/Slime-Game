@@ -58,6 +58,9 @@ public class Server : NetworkBehaviour
     private ElementSpawn elementSpawnRef;
     public SyncListLives playerLives = new SyncListLives();
     bool duplicateCheck = false;
+    public Font winFont;
+    GUIStyle winStyle;
+    bool fontSet = false;
 
     private bool localPlayerWon = false;
     private bool someoneWonBool = false;
@@ -80,6 +83,20 @@ public class Server : NetworkBehaviour
         CmdSpawnArea();
         CmdSpawnPersonalPlayer();
         CmdSpawnTimer();
+    }
+
+    private void Update()
+    {
+        if (fontSet == false)
+        {
+            fontSet = true;
+            winStyle = new GUIStyle();
+            winStyle.font = winFont;
+            winStyle.normal.textColor = Color.green;
+            winStyle.fontSize = 100;
+            winStyle.alignment = TextAnchor.UpperCenter;
+
+        }
     }
 
     void CheckForDuplicates()
@@ -368,11 +385,15 @@ Camera.main.transform.position.z + 0.37f);
         }
         Debug.Log("Count of player lives" + playerLives.Count + " SomeoneWon count: " + someoneWon + "Potential Winner: " + potentialWinner);
 
-        if (someoneWon == playerLives.Count - 1)
+        if ((someoneWon == playerLives.Count - 1) || (Timer.GetComponent<Timer>().gameTime <= 0))
         {
             GameObject localPlayer = GameObject.Find("LocalPlayer");
             Debug.Log(potentialWinner + " Has one the game!");
-            if (localPlayer != null)
+            if(Timer.GetComponent<Timer>().gameTime <= 0)
+            {
+
+            }
+            else if (localPlayer != null)
             {
                 localPlayerWon = true;
 
@@ -407,11 +428,11 @@ Camera.main.transform.position.z + 0.37f);
         {
             if(localPlayerWon == true)
             {
-                GUI.Label(new Rect(450, 450, 100, 20), "YOU WON");
+                GUI.Label(new Rect(Screen.width/2, Screen.height/2, 100, 50), "YOU WON", winStyle);
             }
             else
             {
-                GUI.Label(new Rect(450, 450, 100, 20), "YOU LOST");
+                GUI.Label(new Rect(Screen.width / 2, Screen.height / 2, 100, 50), "YOU LOST", winStyle);
             }
         }
     }

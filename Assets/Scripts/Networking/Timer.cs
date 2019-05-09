@@ -38,8 +38,8 @@ public class Timer : NetworkBehaviour
                     timer = gameTime;
                     AudioSource source = GetComponent<AudioSource>();
                     source.loop = true;
-                    source.clip= fightMusic;
-                    source.Play();
+                    //source.clip= fightMusic;
+                    //source.Play();
                 }
                 else
                 {
